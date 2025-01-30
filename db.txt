@@ -1,0 +1,99 @@
+"person"
+    "column_name"	"data_type"	"is_nullable"	"column_default"
+    "role_id"	"integer"	"YES"	
+    "person_id"	"integer"	"NO"	
+    "surname"	"character varying"	"YES"	
+    "pnr"	"character varying"	"YES"	
+    "email"	"character varying"	"YES"	
+    "password"	"character varying"	"YES"	
+    "username"	"character varying"	"YES"	
+    "name"	"character varying"	"YES"	
+
+"availability"
+    "column_name"	"data_type"	"is_nullable"	"column_default"
+    "availability_id"	"integer"	"NO"	
+    "person_id"	"integer"	"YES"	
+    "from_date"	"date"	"YES"	
+    "to_date"	"date"	"YES"	
+
+"competence"
+    "column_name"	"data_type"	"is_nullable"
+    "competence_id"	"integer"	"NO"
+    "name"	"character varying"	"YES"
+"competence_profile"
+    "column_name"	"data_type"	"is_nullable"
+    "competence_profile_id"	"integer"	"NO"
+    "person_id"	"integer"	"YES"
+    "competence_id"	"integer"	"YES"
+    "years_of_experience"	"numeric"	"YES"
+"role"
+    "column_name"	"data_type"	"is_nullable"	"column_default"
+    "role_id"	"integer"	"NO"	
+    "name"	"character varying"	"YES"	
+
+
+
+Tables:
+
+availability: Contains availability records for people, with fields for availability_id, person_id, from_date, and to_date.
+competence: Stores the competencies with competence_id and name (e.g., ticket sales, lotteries, roller coaster operation).
+competence_profile: Associates people (person_id) with specific competencies (competence_id) and their years of experience.
+person: Holds information about individuals, including person_id, name, surname, pnr, email, password, role_id, and username.
+role: Contains roles (e.g., employee roles) with role_id and name.
+Sequences:
+
+Sequences have been created for availability_id, competence_id, competence_profile_id, person_id, and role_id to auto-generate primary keys for each table.
+Data:
+
+The availability table contains a list of records indicating when individuals are available. There are multiple records of availability spanning different dates.
+The competence table holds three competencies: ticket sales, lotteries, and roller coaster operation.
+The competence_profile table records the competencies of individuals and their respective years of experience.
+The person table stores information about several individuals, some with email addresses and usernames, while others only have an id and password. The roles in this table are linked by role_id.
+The role table links specific roles (such as staff) to the individuals in the person table.
+In conclusion, this database structure focuses on managing people, their roles, their competencies, and their availability for specific tasks. The data shows relationships between people and their respective competencies as well as their availability over time.
+
+
+
+1. Basic Information (from person table):
+    person_id: A unique identifier for the person.
+    name: The first name of the person.
+    surname: The last name of the person.
+    pnr: A personal identification number (for certain countries, like a social security or ID number).
+    email: The person's email address.
+    password: The person's password (encrypted).
+    role_id: The identifier for the person's role in the system (e.g., manager, employee).
+    username: The username associated with the person.
+2. Availability (from availability table):
+    availability_id: A unique identifier for the availability entry.
+    person_id: Links the availability record to the person.
+    from_date: The start date of the person's availability.
+    to_date: The end date of the person's availability.
+3. Competence (from competence_profile and competence tables):
+    competence_id: Links to a specific competence (e.g., ticket sales, roller coaster operation).
+    name: The name of the competence.
+    years_of_experience: The number of years the person has experience in a given competence.
+    A person can have multiple competencies listed with their corresponding experience levels.
+
+Example Query to Get a Person’s Information:
+If you wanted to find detailed information about a person (for example, person_id = 11), you would pull from the following:
+
+Personal Info:
+
+Person’s name: Leroy Crane
+Person’s email: l_crane118@finnsinte.se
+Username: N/A (not listed for this person in the example)
+Availability Info:
+
+The periods when the person is available (e.g., from 2020-07-06 to 2020-08-06).
+Competence Profile:
+
+Competence IDs: 1 (ticket sales), 2 (lotteries), 3 (roller coaster operation)
+Years of Experience: For instance, 0.20 years in ticket sales, 3.40 years in lotteries, etc.
+In essence, you can get a detailed view of a person by combining their personal data, availability periods, and professional competencies from the related tables.
+
+
+
+
+
+
+
