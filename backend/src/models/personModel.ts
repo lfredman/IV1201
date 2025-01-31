@@ -4,6 +4,9 @@ interface Person {
   id: number;
   name: string;
   email: string;
+  password: string;
+  username: string;
+  role_id: number;
 }
 
 // Define the database interaction methods (CRUD operations)
@@ -49,4 +52,9 @@ export const deletePerson = async (id: number): Promise<boolean> => {
   console.log(result);
   return true;
   //return result.rowCount > 0;
+};
+
+export const getUserByUsername = async (username: string): Promise<Person | null> => {
+  const result = await query(`SELECT * FROM public.person WHERE username = '${username}'`);
+  return result.length > 0 ? result[0] : null;
 };
