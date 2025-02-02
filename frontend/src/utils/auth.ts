@@ -1,38 +1,49 @@
 // src/utils/auth.ts
 import { User } from "../context/UserContext"; // Import User type from context
 
-export async function loginUser(username: string, password: string): Promise<{ message: string; token: string; userData: User }> {
-  const response = await fetch('http://localhost:3000/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ username, password }),
-  });
+export async function loginUser(loginField: string, password: string): Promise<{ message: string; accessToken: string; refreshToken: string; userData: User }> {
+  try {
+    const response = await fetch(`http://127.0.0.1:3000/account/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ loginField, password }),
+    });
 
-  if (!response.ok) {
-    throw new Error('Login failed');
+    // Check for non-OK status codes and throw an error with response message
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData?.message || 'Login failed');
+    }
+
+    const res = await response.json();
+    
+    // Validate response structure to ensure all required fields exist
+    const { message, data } = res;
+    if (!data || !data.user || !data.accessToken || !data.refreshToken) {
+      throw new Error('Invalid response structure');
+    }
+
+    // Use optional chaining and provide defaults for missing values
+    const userData: User = {
+      username: data.user.username,
+      person_id: data.user.person_id,
+      role_id: data.user.role_id || -1,
+      name: data.user.name || '',
+      surname: data.user.surname || '',
+      email: data.user.email || '',
+      pnr: data.user.pnr || 0,
+    };
+
+    return {
+      message: res.message,
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+      userData,
+    };
+  } catch (err) {
+    console.error('Error during login:', err);
+    throw err; // Propagate error to be handled by the caller
   }
-
-  const data = await response.json();
-  console.log(data);
-
-  // Assuming the response includes message, token, and userData
-  // Explicitly type the userData object
-  const userData: User = {
-    username: data.userData.username,
-    token: data.token,
-    person_id: data.userData.person_id,
-    role_id: data.userData.role_id,
-    name: data.userData.name,  // Default value if null or undefined
-    surname: data.userData.surname,  // Default value if null or undefined
-    email: data.userData.email,  // Default value if null or undefined
-    pnr: data.userData.pnr,  // Default value of 0 if null
-  };
-
-  return {
-    message: data.message,
-    token: data.token,
-    userData, // Return the properly typed userData
-  };
 }

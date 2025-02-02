@@ -1,10 +1,10 @@
+// src/context/UserContext.tsx
 import React, { createContext, useState, useEffect, ReactNode, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-// User type definition
+// User type definition (without the tokens)
 export interface User {
   username: string;
-  token: string;
   person_id: number;
   role_id: number;
   name: string;
@@ -15,7 +15,9 @@ export interface User {
 
 interface UserContextType {
   user: User | null;
-  loginUser: (user: User) => void;
+  accessToken: string | null;
+  refreshToken: string | null;
+  loginUser: (user: User, accessToken: string, refreshToken: string) => void;
   logoutUser: () => void;
 }
 
@@ -23,6 +25,8 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(localStorage.getItem("accessToken"));
+  const [refreshToken, setRefreshToken] = useState<string | null>(localStorage.getItem("refreshToken"));
   const navigate = useNavigate(); // Hook for redirection
 
   // Load user from localStorage when the app starts
@@ -33,23 +37,30 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // Function to log in and store user data securely
-  const loginUser = (user: User) => {
+  // Function to log in and store user data, access token, and refresh token
+  const loginUser = (user: User, accessToken: string, refreshToken: string) => {
     setUser(user);
-    localStorage.setItem("user", JSON.stringify(user));
+    setAccessToken(accessToken);
+    setRefreshToken(refreshToken);
+    localStorage.setItem("user", JSON.stringify(user));  // Store user data
+    localStorage.setItem("accessToken", accessToken); // Store access token
+    localStorage.setItem("refreshToken", refreshToken); // Store refresh token
   };
 
-  // ✅ Function to log out and ensure the token is removed
+  // Function to log out and ensure the token and user data are removed
   const logoutUser = () => {
     setUser(null);
+    setAccessToken(null);
+    setRefreshToken(null);
     localStorage.removeItem("user"); // Remove user data
-    localStorage.removeItem("token"); // Ensure token is deleted
+    localStorage.removeItem("accessToken"); // Remove access token
+    localStorage.removeItem("refreshToken"); // Remove refresh token
     sessionStorage.clear(); // Optionally clear session storage
-    //navigate("/"); // Redirect 
+    // navigate("/"); // Redirect if needed
   };
 
   return (
-    <UserContext.Provider value={{ user, loginUser, logoutUser }}>
+    <UserContext.Provider value={{ user, accessToken, refreshToken, loginUser, logoutUser }}>
       {children}
     </UserContext.Provider>
   );

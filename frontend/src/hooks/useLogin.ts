@@ -5,20 +5,22 @@ import { loginUser } from '../utils/auth'; // Import model function (API call)
 
 // Custom hook for login
 export const useLogin = () => {
-  const { loginUser: setUser } = useUser(); // Use `loginUser` from context to update the global state
+  const { loginUser: updateUserContext } = useUser(); // Renamed for clarity
   const [error, setError] = useState('');
 
   const login = async (username: string, password: string) => {
     try {
-      // Call the login API to get the token and userData
+      // Call the login API to get the tokens and userData
       const res = await loginUser(username, password); // Model function (API request)
-      const { message, token, userData } = res;
+      const { message, accessToken, refreshToken, userData } = res;
 
+      console.log(message);
       console.log("User Data:", userData); // Debugging to ensure userData is correct
 
-      // Set user globally in context and save the token to localStorage
-      setUser(userData); // Update global context with the new user data
-      localStorage.setItem('token', token); // Store token in localStorage
+      // Set user globally in context and save the tokens to localStorage
+      updateUserContext(userData, accessToken, refreshToken); // Update global context with the new user data
+      localStorage.setItem('accessToken', accessToken); // Store access token in localStorage
+      localStorage.setItem('refreshToken', refreshToken); // Store refresh token in localStorage
 
       return userData; // Return user or token if needed elsewhere
     } catch (err) {

@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
-import personRoutes from './routes/personRoutes';
+//import personRoutes from './routes/personRoutes';
+import accountRoutes from './routes/accountRoutes';
+
 import bodyParser from 'body-parser';
 const cors = require('cors');
 
@@ -25,7 +27,8 @@ app.get('/', (req: Request, res: Response) => {
 app.use(bodyParser.json());
 
 // Routes
-app.use('/', personRoutes);
+//app.use('/', personRoutes);
+app.use('/account', accountRoutes);
 
 // Error handling
 app.use((req: Request, res: Response) => {

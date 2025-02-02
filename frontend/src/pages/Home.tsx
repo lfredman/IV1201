@@ -1,27 +1,26 @@
-import LoginForm from "../components/LoginForm"
-import UserInspect from "../components/UserInspect"
-
+import Box from '@mui/material/Box';
 import { useUser } from '../context/UserContext';  // Import the useUser hook
 
 const Home: React.FC = () => {
   const { user } = useUser();
 
-    return (
+  return (
+    <Box 
+      component="section" 
+      sx={{ 
+        p: 2, 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh'  // Full viewport height to vertically center content
+      }}
+    >
       <div>
-        <h1>Home Page</h1>
-        <UserInspect/>
-        {user?(
-          <h3>Here you can apply for a clean job</h3>
-        ):(
-          <>
-          <h2>You have to login or create an account to apply for a job!</h2>
-          <LoginForm />
-          
-          </>
-        )}
-        
+        <h1>Welcome to Home</h1>
+        {user ? <p>Hello, {user.name}!</p> : <p>Please log in to access more features.</p>}
       </div>
-    );
-  };
-  
-  export default Home;
+    </Box>
+  );
+};
+
+export default Home;

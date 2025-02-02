@@ -49,7 +49,7 @@ const LoginForm: React.FC = () => {
 
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Username"
+          label="Username - Email - Personal number"
           variant="outlined"
           fullWidth
           margin="normal"
@@ -69,10 +69,15 @@ const LoginForm: React.FC = () => {
         <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
           Login
         </Button>
-        
-        <Typography gutterBottom> dont have an account?</Typography>
-        <Link to="/signup">Sign up</Link>
 
+        <Box sx={{ mt: 2 }}>
+          <Typography variant="body2" color="text.secondary">
+            Don't have an account?&nbsp;
+            <Link to="/signup" style={{ textDecoration: 'underline', color: '#1976d2' }}>
+              Sign up here
+            </Link>
+          </Typography>
+        </Box>
       </form>
     </Box>
   );

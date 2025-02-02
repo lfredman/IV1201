@@ -24,9 +24,9 @@ export const getPerson = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const createPerson = async (req: Request, res: Response): Promise<void> => {
-  const { name, email } = req.body;
+  const { name, surname, pnr, username, email, password } = req.body;
   try {
-    const newPerson = await personService.createPerson(name, email);
+    const newPerson = await personService.createPerson(name, surname, pnr, username, email, password);
     res.status(201).json(newPerson);
   } catch (error) {
     res.status(500).json({ error: 'Error creating person' });

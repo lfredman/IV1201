@@ -14,22 +14,26 @@ if (!JWT_SECRET) {
 
 // **Register a new user**
 export const register = async (req: Request, res: Response): Promise<void> => {
-  const { username, email, password } = req.body;
+  const { name, surname, pnr, username, email, password } = req.body;
 
-  if (!username || !email || !password) {
+  if (!name || !surname || !pnr || !username || !email || !password) {
     res.status(400).json({ message: "All fields are required" });
     return;
   }
 
   try {
-    const existingUser = await getUserByUsername(email);
+    // Check if email or username already exists
+    const existingUser = await getUserByUsername(username);
     if (existingUser) {
-      res.status(400).json({ message: "User already exists" });
+      res.status(400).json({ message: "Username already taken" });
       return;
     }
 
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await createPerson(username, email);
+
+    // Create the new user
+    const newUser = await createPerson(name, surname, pnr, username, email, hashedPassword);
 
     if (!newUser) {
       res.status(500).json({ message: "User registration failed" });

@@ -1,13 +1,18 @@
 import { query } from "../utils/db";
 
-interface Person {
+
+
+export interface Person {
   id: number;
   name: string;
+  surname: string;
+  pnr: string;
+  username: string;
   email: string;
   password: string;
-  username: string;
-  role_id: number;
+  role_id: string;
 }
+
 
 // Define the database interaction methods (CRUD operations)
 export const getAllPersons = async (): Promise<Person[]> => {
@@ -24,14 +29,34 @@ export const getPersonById = async (id: number): Promise<Person | null> => {
 };
 
 export const createPerson = async (
-  name: string,
-  email: string
-): Promise<Person> => {
-  console.log(name, email);
-  const result = await query(
-    `INSERT INTO person (name, email) VALUES ('${name}', '${email}') RETURNING *`
-  );
-  return result[0];
+  name: string, 
+  surname: string,
+  pnr: string,
+  username: string,
+  email: string,
+  password: string
+): Promise<Person | null> => {
+  try {
+    // Hash the password before storing it
+    //const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Use parameterized query to prevent SQL injection
+    const result = await query(
+      `INSERT INTO person (name, surname, pnr, username, email, password) 
+       VALUES ($1, $2, $3, $4, $5, $6) 
+       RETURNING *`,
+      [name, surname, pnr, username, email, password]
+    );
+
+    // Ensure result is not empty, otherwise return null
+    if (result && result.length > 0) {
+      return result[0];
+    }
+    return null;
+  } catch (error) {
+    console.error('Error creating person:', error);
+    throw new Error('Unable to create person');
+  }
 };
 
 export const updatePerson = async (
@@ -56,5 +81,10 @@ export const deletePerson = async (id: number): Promise<boolean> => {
 
 export const getUserByUsername = async (username: string): Promise<Person | null> => {
   const result = await query(`SELECT * FROM public.person WHERE username = '${username}'`);
+  return result.length > 0 ? result[0] : null;
+};
+
+export const getUserByEmail = async (email: string): Promise<Person | null> => {
+  const result = await query(`SELECT * FROM public.person WHERE email = '${email}'`);
   return result.length > 0 ? result[0] : null;
 };

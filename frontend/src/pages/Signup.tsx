@@ -6,7 +6,6 @@ const Login: React.FC = () => {
 
     return (
       <div>
-        <h1>Signup Page</h1>
         {user ? (
           <h2>You are logged in! Log out if you want to sign up</h2> 
         ) : (

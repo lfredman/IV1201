@@ -9,8 +9,14 @@ console.log(id);
   return await personModel.getPersonById(id);
 };
 
-export const createPerson = async (name: string, email: string) => {
-  return await personModel.createPerson(name, email);
+export const createPerson = async (
+  name: string, 
+  surname: string,
+  pnr: string,
+  username: string,
+  email: string,
+  password: string) => {
+  return await personModel.createPerson(name, surname, pnr, username, email, password);
 };
 
 export const updatePerson = async (id: number, name: string, email: string) => {
