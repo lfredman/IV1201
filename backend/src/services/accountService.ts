@@ -100,18 +100,18 @@ export const loginService = async (data: { loginField: string; password: string 
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new Error('Invalid credentials');
     }
-  
+
     // Generate JWT token
     // Generate Access Token
     const accessToken = jwt.sign(
-        { userId: user.id, role_id: user.role_id, username: user.username },
+        { userId: user.person_id, role_id: user.role_id, username: user.username },
         JWT_SECRET,
         { expiresIn: '1h' } // short expiration for access token
     );
 
     // Generate Refresh Token
     const refreshToken = jwt.sign(
-        { userId: user.id, role_id: user.role_id, username: user.username },
+        { userId: user.person_id, role_id: user.role_id, username: user.username },
         JWT_SECRET,
         { expiresIn: '7d' } // longer expiration for refresh token
     );
