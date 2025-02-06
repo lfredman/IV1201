@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Profile from "./pages/profile"
 import "./styles/App.css"; // Import global styles here
 
 
@@ -18,6 +19,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
