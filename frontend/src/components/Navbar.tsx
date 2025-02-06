@@ -3,17 +3,51 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from '../context/UserContext';  // Import the useUser hook
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 
 const Navbar: React.FC = () => {
-  const { user } = useUser();  // Access user from the context
+  const { user, logoutUser } = useUser();  // Get user and logout function from context
+
+  const buttonStyle = {
+    mx: 1, 
+    color: "white", // Default text color
+    transition: "background-color 0.3s ease", // Smooth transition
+    "&:hover": { 
+      backgroundColor: "rgba(255, 255, 255, 0.1)", // Light white overlay on hover
+      color: "#FFD700" // Optional: Gold text on hover
+    }
+  };
 
   return (
-    <nav>
-      <Link to="/">Home</Link> | <Link to="/about">About</Link> | 
-      
-      {/* Conditionally display 'Logged in as: USER' if user is logged in */}
-      {user ? ( <span> Logged in as: {user.username} </span> ):( <Link to="/login"> login </Link>)}
-    </nav>
+
+      <AppBar position = "sticky">
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            Recruitment System 
+          </Typography>
+          <Button color="inherit" component={Link} to="/" sx = {buttonStyle}>
+            Home
+          </Button>
+          <Button color="inherit" component={Link} to="/profile" sx = {buttonStyle}>
+            Profile
+          </Button>
+          <Button color="inherit" component={Link} to="/apply" sx = {buttonStyle}>
+            Apply for a Job
+          </Button>
+          <Button color="inherit" component={Link} to="/applications" sx = {buttonStyle}>
+            My Applications
+          </Button>
+          <Button color="inherit" component={Link} to="/" onClick={logoutUser} sx = {buttonStyle}>
+            Log out
+          </Button>
+        </Toolbar>
+      </AppBar>
+    
   );
 };
 

@@ -32,12 +32,14 @@ export const useSignup = () => {
         updateUserContext(userData, accessToken, refreshToken); // Update global context with the new user data
         localStorage.setItem('accessToken', accessToken); // Store access token in localStorage
         localStorage.setItem('refreshToken', refreshToken); // Store refresh token in localStorage
-
+        // navigate to home screen
+        navigate("/");
         return userData; // Return user or token if needed elsewhere
     } catch (err) {
       const errMsg: string = "Sign up failed! " + err.message;
       setError(errMsg);
     } finally {
+      
       setLoading(false);
     }
   };
