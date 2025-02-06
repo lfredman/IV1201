@@ -35,7 +35,8 @@ export const useSignup = () => {
 
         return userData; // Return user or token if needed elsewhere
     } catch (err) {
-      setError("Signup failed. Please try again.");
+      const errMsg: string = "Sign up failed! " + err.message;
+      setError(errMsg);
     } finally {
       setLoading(false);
     }

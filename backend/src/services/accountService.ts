@@ -8,9 +8,22 @@ const JWT_SECRET = process.env.JWT_SECRET as string;
 
 // Utility function to validate password strength
 const isValidPassword = (password: string) => {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
-    return passwordRegex.test(password);
-  };
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+  return passwordRegex.test(password);
+};
+
+// Utility function to validate Pnr
+const isPnrValid = (input: string) => {
+  const pnrRegex = /^[0-9 -]+$/;
+  const digitsOnly = input.replace(/\D/g, '');
+  return pnrRegex.test(input) && (digitsOnly.length == 10 || digitsOnly.length == 12);
+}
+
+// Utility function to validate email
+const isEmailValid = (input: string) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(input);
+}
   
 export const registerService = async (data: { 
 name: string; 
@@ -24,8 +37,18 @@ const { name, surname, pnr, username, email, password } = data;
 
 console.log(data)
 
+// DOES FIELDS LOOK OK FOR SIGNUP?
+
 if (!name || !surname || !pnr || !username || !email || !password){
-    throw new Error('Fields are missing');
+  throw new Error('Fields are missing');
+}
+
+if(!isPnrValid(pnr)){
+  throw new Error('Invalid person number');
+}
+
+if(!isEmailValid(email)){
+  throw new Error("Invalid email");
 }
 
 // BUSINESS LOGIC RELATED TO REGISTER
