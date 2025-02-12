@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { registerService, loginService } from "../services/accountService";
+import { registerService, loginService, tokenRefreshService } from "../services/accountService";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -19,6 +19,32 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const data = await loginService(req.body);
     res.json({ message: "Login successful", data });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    if (error instanceof Error) {
+      res.status(400).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: "Server error", error });
+    }
+  }
+};
+
+export const refreshToken = async (req: Request, res: Response): Promise<void> => {
+  try {
+    // Extract refreshToken from query parameters
+    const refreshToken = req.query.refreshToken as string;
+
+    if (!refreshToken) {
+      res.status(400).json({ message: "Refresh token is required" });
+      return;
+    }
+    // Call the tokenRefreshService with the extracted token
+    const data = await tokenRefreshService(refreshToken);
+
+    res.json({ message: "Token refresh successful", data });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: "Server error", error });
+    }
   }
 };

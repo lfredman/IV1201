@@ -1,4 +1,3 @@
-// src/context/UserContext.tsx
 import React, { createContext, useState, useEffect, ReactNode, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -19,6 +18,7 @@ interface UserContextType {
   refreshToken: string | null;
   loginUser: (user: User, accessToken: string, refreshToken: string) => void;
   logoutUser: () => void;
+  updateAccessToken: (accessToken: string) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -59,8 +59,14 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     // navigate("/"); // Redirect if needed
   };
 
+  // Function to update the access token
+  const updateAccessToken = (newAccessToken: string) => {
+    setAccessToken(newAccessToken);
+    localStorage.setItem("accessToken", newAccessToken); // Store updated access token
+  };
+
   return (
-    <UserContext.Provider value={{ user, accessToken, refreshToken, loginUser, logoutUser }}>
+    <UserContext.Provider value={{ user, accessToken, refreshToken, loginUser, logoutUser, updateAccessToken }}>
       {children}
     </UserContext.Provider>
   );

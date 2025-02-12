@@ -1,7 +1,8 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { createPerson, getUserByUsername, getUserByEmail, getUserByPnr } from '../models/accountModel';
+import { access } from 'fs';
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET as string;
@@ -129,14 +130,14 @@ export const loginService = async (data: { loginField: string; password: string 
     const accessToken = jwt.sign(
         { userId: user.person_id, role_id: user.role_id, username: user.username },
         JWT_SECRET,
-        { expiresIn: '1h' } // short expiration for access token
+        { expiresIn: '5m' } // short expiration for access token
     );
 
     // Generate Refresh Token
     const refreshToken = jwt.sign(
         { userId: user.person_id, role_id: user.role_id, username: user.username },
         JWT_SECRET,
-        { expiresIn: '7d' } // longer expiration for refresh token
+        { expiresIn: '1h' } // longer expiration for refresh token
     );
 
     const { password: _password, ...userWithoutPassword } = user;
@@ -147,3 +148,23 @@ export const loginService = async (data: { loginField: string; password: string 
       user: userWithoutPassword,
     };
   };
+
+// TOKEN REFRESH
+export const tokenRefreshService = async (refreshToken: string) => {
+  // Try to determine if the loginField is an email, username, or personal number (PNR)
+  let accessToken = {};
+  try {
+    const user = jwt.verify(refreshToken, JWT_SECRET)  as JwtPayload;;
+    accessToken = jwt.sign(
+      { userId: user.userId, role_id: user.role_id, username: user.username },
+      JWT_SECRET,
+      { expiresIn: '5m' } // short expiration for access token
+  );
+  } catch (error) {
+    throw new Error('Invalid or expired refresh token');
+  }
+
+  return {
+    accessToken
+  };
+};

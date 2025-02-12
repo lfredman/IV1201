@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt, { JwtPayload, TokenExpiredError } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -24,12 +24,19 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET)  as JwtPayload;;
-    req.user = decoded; // Attaching decoded token to the request object for later use
-    //console.log("AUTHENTICATED: ", decoded)
-    next(); // Continue to the next middleware/route handler
+    // Try to verify the token and decode it
+    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+    req.user = decoded; // Attach the decoded token to the request object
+    next(); // Proceed to the next middleware or route handler
   } catch (error) {
-    res.status(401).json({ message: 'Invalid token' });
+    // Handle the specific error types:
+    if (error instanceof TokenExpiredError) {
+      // Token expired error
+      res.status(401).json({ message: 'Token has expired. Please log in again.' });
+    } else {
+      // Invalid token or other errors
+      res.status(401).json({ message: 'Invalid token. Access denied.' });
+    }
   }
 };
 
@@ -44,7 +51,7 @@ export const authorizeRoleOrOwnership = (req: AuthRequest, res: Response, next: 
   // Case 2: Non-admin user - Must check if the user is trying to access their own resource
   const resourceUserId = req.params.id;  // Assuming userId is passed as part of the URL parameter
 
-  if (userId != resourceUserId) {
+  if (userId !== resourceUserId) {
     res.status(403).json({ message: 'Access denied. You can only access your own resources' });
     return;
   }
