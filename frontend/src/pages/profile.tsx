@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import { useUser } from '../context/UserContext';  // Import the useUser hook
 import Navbar from '../components/Navbar';
 import AccountInfoForm from '../components/AccountInfoForm';
-import ProfileForm from '../components/ProfileForm'
+import UserCompetences from '../components/UserCompetences'
 
 const Profile: React.FC = () => {
   const { user } = useUser();
@@ -10,6 +10,7 @@ const Profile: React.FC = () => {
   return (
     <Box>
       {user && user.role_id == -1 ? <Navbar /> : <></>}
+      
       <Box 
         component="section" 
         sx={{ 
@@ -17,16 +18,15 @@ const Profile: React.FC = () => {
           display: 'flex', 
           justifyContent: 'center', 
           alignItems: 'center', 
-          height: '100vh'  // Full viewport height to vertically center content
+          height: '100vh',  // Full viewport height to vertically center content
         }}
       >
         <div>
-        <h1>Profile Page</h1>
           {user ?
-            <>
+            <Box sx={{mx: 'auto', display: 'flex', }}>
               <AccountInfoForm />
-              <ProfileForm editable={false} />
-            </>
+              <UserCompetences editable={false} />
+            </Box>
             :
             <p>You cant be here</p>}
         </div>

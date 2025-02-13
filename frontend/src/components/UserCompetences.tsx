@@ -5,11 +5,11 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useProfile } from '../hooks/useProfile'; // Using the custom hook
 import { useNavigate } from 'react-router-dom';
 
-interface ProfileFormProps {
+interface UserCompetencesProps {
   editable?: boolean;
 }
 
-const ProfileForm: React.FC<ProfileFormProps> = ({ editable = false }) => {
+const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) => {
   const navigate = useNavigate();
   const { competences, tempCompetences, loading, error, saveProfileChanges, handleDeleteCompetence } = useProfile();
 
@@ -44,7 +44,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ editable = false }) => {
   return (
     <Box sx={{ width: 400, mx: "auto", mt: 5, p: 3, borderRadius: 2, boxShadow: 3, textAlign: "center" }}>
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Typography variant="h5" gutterBottom>Profile</Typography>
+        <Typography variant="h5" gutterBottom>Competences</Typography>
         {!editable && (
           <IconButton aria-label="edit" size="small" onClick={handleEdit}>
             <EditNoteIcon fontSize="inherit" />
@@ -108,4 +108,4 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ editable = false }) => {
   );
 };
 
-export default ProfileForm;
+export default UserCompetences;

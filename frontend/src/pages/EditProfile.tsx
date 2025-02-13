@@ -1,5 +1,5 @@
 import AddCompetence from '../components/AddCompetence';
-import ProfileForm from '../components/ProfileForm';
+import UserCompetences from '../components/UserCompetences';
 import { useUser } from '../context/UserContext';
 import { Box } from '@mui/material';
 
@@ -11,7 +11,7 @@ const EditProfile: React.FC = () => {
         {user ? (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Box sx={{ marginRight: 1 }}> 
-                        <ProfileForm editable={true} />
+                        <UserCompetences editable={true} />
                 </Box>
                 <Box>
                     <AddCompetence />

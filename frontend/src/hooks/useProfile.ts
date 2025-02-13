@@ -21,7 +21,7 @@ export const useProfile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (!accessToken) return; // ✅ Ensures there's an access token before fetching
+      if (!accessToken) return; // Ensures there's an access token before fetching
 
       // Check if competences are available in localStorage
       const cachedCompetences = localStorage.getItem("competences");
