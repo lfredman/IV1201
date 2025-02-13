@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import { useUser } from '../context/UserContext';  // Import the useUser hook
 import Navbar from '../components/Navbar';
 import AccountInfoForm from '../components/AccountInfoForm';
+import ProfileForm from '../components/ProfileForm'
 
 const Profile: React.FC = () => {
   const { user } = useUser();
@@ -21,7 +22,13 @@ const Profile: React.FC = () => {
       >
         <div>
         <h1>Profile Page</h1>
-          {user ? <AccountInfoForm /> : <p>You cant be here</p>}
+          {user ?
+            <>
+              <AccountInfoForm />
+              <ProfileForm editable={false} />
+            </>
+            :
+            <p>You cant be here</p>}
         </div>
       </Box>
     </Box>
