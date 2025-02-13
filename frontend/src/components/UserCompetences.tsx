@@ -30,7 +30,7 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
   const handleSave = (event: React.FormEvent) => {
     event.preventDefault();
     saveProfileChanges();
-    navigate('/');
+    //navigate('/');
   };
 
   const handleDelete = (id: number) => {

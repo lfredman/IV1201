@@ -100,7 +100,7 @@ const AddCompetence: React.FC = () => {
         />
 
         <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }} disabled={loading}>
-          {loading ? "Saving..." : "Save"}
+          {loading ? "Adding..." : "Add"}
         </Button>
       </form>
     </Box>

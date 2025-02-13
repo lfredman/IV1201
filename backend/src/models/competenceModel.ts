@@ -1,4 +1,4 @@
-import { query } from "../utils/db";
+import { query, getClient, queryWithClient } from "../utils/db";
 
 export interface Competence {
   competence_id: number;
@@ -35,5 +35,38 @@ export const getCompetenceById = async (person_id: number): Promise<Competences 
     };
   } else {
     return null;  // In case no results were found
+  }
+};
+
+export const updateCompetenceById = async (person_id: number, competences: Competences): Promise<Competences | null> => {
+  const client = await getClient(); // Acquire a client for transactions
+
+  try {
+    await client.query("BEGIN"); // Start the transaction
+    
+    // Insert or update each competence
+    for (const competence of competences.competences) {
+      await queryWithClient(
+        client,
+        `
+        INSERT INTO competence_profile (person_id, competence_id, years_of_experience)
+        VALUES ($1, $2, $3)
+        ON CONFLICT (person_id, competence_id)
+        DO UPDATE SET years_of_experience = EXCLUDED.years_of_experience
+        `,
+        [person_id, competence.competence_id, competence.years_of_experience]
+      );
+    }
+
+    await client.query("COMMIT"); // Commit the transaction
+
+    // Return the updated competences
+    return getCompetenceById(person_id);
+  } catch (error) {
+    await client.query("ROLLBACK"); // Rollback on error
+    console.error("Error updating competences:", error);
+    throw error; // Propagate error
+  } finally {
+    client.release(); // Release the client back to the pool
   }
 };
