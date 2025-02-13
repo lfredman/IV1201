@@ -16,6 +16,12 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
   // Use tempCompetences when editable, otherwise use competences
   const displayedCompetences = editable ? tempCompetences : competences;
 
+  const competenceOptions = [
+    { id: 1, name: "ticket sales" },
+    { id: 2, name: "lotteries" },
+    { id: 3, name: "roller coaster operation" },
+  ];
+
   const handleEdit = (event: React.FormEvent) => {
     event.preventDefault();
     navigate('/editprofile');

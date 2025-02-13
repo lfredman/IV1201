@@ -58,6 +58,10 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     setTempCompetences(competences); // Reset temp changes
   };
 
+  const clearCachedCompetences = () => {
+    localStorage.removeItem("competences");
+  }
+
   return (
     <CompetenceContext.Provider value={{ competences, tempCompetences, setCompetencesAndCache, addCompetence, deleteCompetence, updateProfile, resetChanges }}>
       {children}
