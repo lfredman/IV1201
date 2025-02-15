@@ -11,7 +11,7 @@ interface UserCompetencesProps {
 
 const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) => {
   const navigate = useNavigate();
-  const { competences, tempCompetences, loading, error, saveProfileChanges, handleDeleteCompetence } = useProfile();
+  const { competences, tempCompetences, loading, error, resetChanges,saveProfileChanges, handleDeleteCompetence } = useProfile();
 
   // Use tempCompetences when editable, otherwise use competences
   const displayedCompetences = editable ? tempCompetences : competences;
@@ -27,10 +27,16 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
     navigate('/editprofile');
   };
 
+  const handleDiscard = (event: React.FormEvent) => {
+    event.preventDefault();
+    resetChanges();
+    navigate('/profile');
+  };
+
   const handleSave = (event: React.FormEvent) => {
     event.preventDefault();
     saveProfileChanges();
-    //navigate('/');
+    navigate('/profile');
   };
 
   const handleDelete = (id: number) => {
@@ -102,7 +108,7 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
 
       {editable && (
         <Box sx={{ mx: "auto", mt: 2, display: "flex", justifyContent: "space-between" }}>
-          <Button variant="contained" size="medium" color="error" >
+          <Button variant="contained" size="medium" color="error" onClick={handleDiscard}>
             Discard changes
           </Button>
           <Button variant="contained" size="medium" color="primary" onClick={handleSave}>

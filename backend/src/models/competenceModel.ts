@@ -44,6 +44,21 @@ export const updateCompetenceById = async (person_id: number, competences: Compe
   try {
     await client.query("BEGIN"); // Start the transaction
     
+    // Extract competence IDs to keep
+    const competenceIds = competences.competences.map(c => c.competence_id);
+    
+    // Delete competences that are not in the new list
+    if (competenceIds.length > 0) {
+      await queryWithClient(
+        client,
+        `DELETE FROM competence_profile WHERE person_id = $1 AND competence_id NOT IN (${competenceIds.map((_, i) => `$${i + 2}`).join(",")})`,
+        [person_id, ...competenceIds]
+      );
+    } else {
+      // If no competences are provided, delete all competences for this person
+      await queryWithClient(client, `DELETE FROM competence_profile WHERE person_id = $1`, [person_id]);
+    }
+
     // Insert or update each competence
     for (const competence of competences.competences) {
       await queryWithClient(
