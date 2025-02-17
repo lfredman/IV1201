@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { registerService, loginService, pwdResetService, pwdResetByEmailService } from "../services/accountService";
+import { registerService, loginService, pwdResetService, pwdResetByEmailService, tokenRefreshService } from "../services/accountService";
 import { AuthRequest } from "../middleware/authMiddleware";  // Import the AuthRequest type
 
 

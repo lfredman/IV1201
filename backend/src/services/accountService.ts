@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { createPerson, getUserByUsername, getUserByEmail, getUserByPnr } from '../models/accountModel';
+import { createPerson, getUserByUsername, getUserByEmail, getUserByPnr, changePassword, getUserById } from '../models/accountModel';
 import { logger } from '../utils/logger';
 import { sendEmail } from '../utils/email';
 
@@ -88,7 +88,7 @@ export const registerService = async (data: {
 
     // 5. Create new user
     const newUser = await createPerson(data.name, data.surname, pnr, username, email, hashedPassword);
-    logger.info('User registered successfully', { userId: newUser?.id });
+    logger.info('User registered successfully', { userId: newUser?.person_id });
 
     return await loginService({ loginField: username, password });
 
