@@ -1,7 +1,7 @@
 import { query } from "../utils/db";
 
 export interface Person {
-  id: number;
+  person_id: number;
   name: string;
   surname: string;
   pnr: string;
@@ -21,9 +21,10 @@ export const createPerson = async (
 ): Promise<Person | null> => {
   try {
 
+    // NOTE THIS CREATES AN NON-ADMIN USER ONLY BY USING HARD CODED ROLE ID
     const result = await query(
-      `INSERT INTO person (name, surname, pnr, username, email, password) 
-       VALUES ($1, $2, $3, $4, $5, $6) 
+      `INSERT INTO person (name, surname, pnr, username, email, password, role_id) 
+       VALUES ($1, $2, $3, $4, $5, $6, 2) 
        RETURNING *`,
       [name, surname, pnr, username, email, password]
     );
@@ -52,3 +53,27 @@ export const getUserByPnr = async (pnr: string): Promise<Person | null> => {
     const result = await query(`SELECT * FROM public.person WHERE pnr = '${pnr}'`);
     return result.length > 0 ? result[0] : null;
   };
+
+export const getUserById = async (id: string): Promise<Person | null> => {
+  const result = await query(`SELECT * FROM public.person WHERE person_id = '${id}'`);
+  return result.length > 0 ? result[0] : null;
+};
+
+export const changePassword = async (
+  person_id: number,
+  newPassword: string
+): Promise<boolean> => {
+  try {
+    // Update password in the database
+    const updateResult = await query(
+      `UPDATE person SET password = $1 WHERE person_id = $2 RETURNING *`,
+      [newPassword, person_id]
+    );
+
+    return updateResult.length > 0;
+  } catch (error) {
+    console.error("Error changing password:", error);
+    throw new Error("Unable to change password");
+  }
+};
+  

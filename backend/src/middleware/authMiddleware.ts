@@ -41,21 +41,35 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
 };
 
 // Middleware to authorize based on user role and ownership
-export const authorizeRoleOrOwnership = (req: AuthRequest, res: Response, next: NextFunction): void => {
-  const { role_id, userId } = req.user;  // Extract role and userId from the decoded token
-  // Case 1: Admin role (role_id = 1) - Admins have access to all resources
+export const authorizeRoleOrOwnership = (
+  req: AuthRequest, 
+  res: Response, 
+  next: NextFunction
+): void => {
+  const { role_id, userId } = req.user;  // Extract role and userId from the token
+
+  console.log("Role ID:", role_id, "User ID:", userId);
+
+  // Admins have full access
   if (role_id === 1) {
-    return next(); // Admin can access everything, proceed to the next middleware/route handler
+    return next();
   }
 
-  // Case 2: Non-admin user - Must check if the user is trying to access their own resource
-  const resourceUserId = req.params.id;  // Assuming userId is passed as part of the URL parameter
+  // Get the user ID from either URL params or request body
+  const resourceUserId = req.params.id || req.body.userId;
 
-  if (userId !== resourceUserId) {
-    res.status(403).json({ message: 'Access denied. You can only access your own resources' });
+  console.log("Resource id", resourceUserId)
+
+  if (!resourceUserId) {
+    res.status(400).json({ message: "User ID is required" });
     return;
   }
 
-  // If the userId matches the resource's userId, proceed to the next middleware/route handler
+  // Check if the authenticated user is trying to access their own resource
+  if (userId != resourceUserId) {
+    res.status(403).json({ message: "Access denied. You can only access your own resources" });
+    return;
+  }
+
   next();
 };

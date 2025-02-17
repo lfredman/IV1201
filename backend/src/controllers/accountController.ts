@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
-import { registerService, loginService, tokenRefreshService } from "../services/accountService";
+import { registerService, loginService, pwdResetService, pwdResetByEmailService } from "../services/accountService";
+import { AuthRequest } from "../middleware/authMiddleware";  // Import the AuthRequest type
+
 
 export const register = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -22,7 +24,36 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });
     } else {
-      res.status(500).json({ message: "Server error", error });
+      res.status(500).json({ message: 'An unknown error occurred' });
+    }
+  }
+};
+
+export const reset = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+
+    let id = req.user.userId; // Use the token userid by default
+
+    const data = await pwdResetService(id, req.body); // Pass the extracted user_id with the request body
+    res.json({ message: "Password reset successfully", data });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: 'An unknown error occurred' });
+    }
+  }
+};
+
+export const resetByEmail = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const data = await pwdResetByEmailService(req.body);
+    res.json({ message: "Reset link sent to your email!", data });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: 'An unknown error occurred' });
     }
   }
 };

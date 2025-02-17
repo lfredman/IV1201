@@ -56,7 +56,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem("accessToken"); // Remove access token
     localStorage.removeItem("refreshToken"); // Remove refresh token
     sessionStorage.clear(); // Optionally clear session storage
-    // navigate("/"); // Redirect if needed
+    navigate("/"); // Redirect if needed
   };
 
   // Function to update the access token

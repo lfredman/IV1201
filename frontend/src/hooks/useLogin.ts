@@ -21,8 +21,6 @@ export const useLogin = () => {
 
       // Set user globally in context and save the tokens to localStorage
       updateUserContext(userData, accessToken, refreshToken); // Update global context with the new user data
-      localStorage.setItem('accessToken', accessToken); // Store access token in localStorage
-      localStorage.setItem('refreshToken', refreshToken); // Store refresh token in localStorage
 
       return userData; // Return user or token if needed elsewhere
     } catch (err) {

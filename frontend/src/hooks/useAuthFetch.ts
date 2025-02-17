@@ -7,10 +7,14 @@ const useAuthFetch = () => {
 
   const backendURL = 'http://localhost:3000';
 
-  const authFetch = async (url: string, options: RequestInit = {}) => {
+  const authFetch = async (url: string, options: RequestInit = {}, customToken?: string) => {
+
+    const tokenToUse = customToken ?? accessToken; // Use the provided token or fallback to state token
+
+
     const headers = {
       ...options.headers,
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${tokenToUse}`,
     };
 
     try {
