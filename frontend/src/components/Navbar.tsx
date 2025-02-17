@@ -33,18 +33,30 @@ const Navbar: React.FC = () => {
           <Button color="inherit" component={Link} to="/" sx = {buttonStyle}>
             Home
           </Button>
-          <Button color="inherit" component={Link} to="/profile" sx = {buttonStyle}>
-            Profile
-          </Button>
-          <Button color="inherit" component={Link} to="/apply" sx = {buttonStyle}>
-            Apply for a Job
-          </Button>
-          <Button color="inherit" component={Link} to="/applications" sx = {buttonStyle}>
-            My Applications
-          </Button>
-          <Button color="inherit" component={Link} to="/" onClick={logoutUser} sx = {buttonStyle}>
-            Log out
-          </Button>
+          {user ? (
+          // If logged in, show profile, applications, and logout
+          <>
+            <Button color="inherit" component={Link} to="/profile" sx={buttonStyle}>
+              Profile
+            </Button>
+            <Button color="inherit" component={Link} to="/apply" sx={buttonStyle}>
+              Apply for a Job
+            </Button>
+            <Button color="inherit" component={Link} to="/applications" sx={buttonStyle}>
+              My Applications
+            </Button>
+            <Button color="inherit" onClick={logoutUser} sx={buttonStyle}>
+              Log out
+            </Button>
+          </>
+        ) : (
+          // If NOT logged in, show login and signup
+          <>
+            <Button color="inherit" component={Link} to="/login" sx={buttonStyle}>
+              Log in
+            </Button>
+          </>
+          )}
         </Toolbar>
       </AppBar>
     
