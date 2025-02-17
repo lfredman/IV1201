@@ -22,7 +22,6 @@ const Home: React.FC = () => {
       </div>
 
       {/* Navbar */}
-      {user && user.role_id == -1 ? <Navbar /> : null}
 
       {/* Content */}
       <Box
