@@ -8,7 +8,6 @@ const Profile: React.FC = () => {
 
   return (
     <Box>
-      {user && user.role_id == -1 ? <Navbar /> : <></>}
       <Box 
         component="section" 
         sx={{ 

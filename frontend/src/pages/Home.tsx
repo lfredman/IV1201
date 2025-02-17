@@ -9,7 +9,6 @@ const Home: React.FC = () => {
 
     <Box>
 
-      {user && user.role_id == -1 ? <Navbar /> : <></>}
       <Box 
         component="section" 
         sx={{ 
