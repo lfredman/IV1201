@@ -4,12 +4,14 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/profile"
+import EditProfile from "./pages/EditProfile"
 import ApplyForJob from "./pages/ApplyForJob";
 import "./styles/App.css"; // Import global styles here
 
 
 
 import { UserProvider } from './context/UserContext';  // Import UserProvider
+import { ProfileProvider } from './context/ProfileContext';  // Import ProfileProvider
 import Userstatus from "./components/Userstatus";
 import Navbar from "./components/Navbar";
 
@@ -17,6 +19,7 @@ import Navbar from "./components/Navbar";
 const App: React.FC = () => {
   return (
     <UserProvider>
+      <ProfileProvider>
       <Userstatus></Userstatus>
       <Navbar></Navbar>
       <Routes>
@@ -26,7 +29,9 @@ const App: React.FC = () => {
         <Route path="/apply" element={<ApplyForJob/>} />
         <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/editprofile" element={<EditProfile />} />
       </Routes>
+      </ProfileProvider>
     </UserProvider>
   );
 };

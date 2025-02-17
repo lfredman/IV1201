@@ -20,7 +20,7 @@ export async function getProfile(accessToken: string | null): Promise<null> {
 
     const res = await response.json();
     console.log(res);  // Optionally log or process the response
-    return null;
+    return res?.data?.competences;
 
   } catch (err) {
     console.error('Error during fetching profile data:', err);
