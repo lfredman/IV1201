@@ -1,4 +1,3 @@
-// src/context/UserContext.tsx
 import React, { createContext, useState, useEffect, ReactNode, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -19,6 +18,7 @@ interface UserContextType {
   refreshToken: string | null;
   loginUser: (user: User, accessToken: string, refreshToken: string) => void;
   logoutUser: () => void;
+  updateAccessToken: (accessToken: string) => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -56,11 +56,21 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem("accessToken"); // Remove access token
     localStorage.removeItem("refreshToken"); // Remove refresh token
     sessionStorage.clear(); // Optionally clear session storage
-    // navigate("/"); // Redirect if needed
+    navigate("/"); // Redirect if needed
+  };
+
+  // Function to update the access token
+  const updateAccessToken = async (newAccessToken: string) => {
+    setAccessToken(newAccessToken);
+    localStorage.setItem("accessToken", newAccessToken); // Store updated access token
+    // We simulate the async behavior by resolving here
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
   };
 
   return (
-    <UserContext.Provider value={{ user, accessToken, refreshToken, loginUser, logoutUser }}>
+    <UserContext.Provider value={{ user, accessToken, refreshToken, loginUser, logoutUser, updateAccessToken }}>
       {children}
     </UserContext.Provider>
   );

@@ -4,6 +4,7 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/profile"
+import ResetPassword from "./pages/ResetPassword"
 import "./styles/App.css"; // Import global styles here
 
 
@@ -20,6 +21,7 @@ const App: React.FC = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/reset" element={<ResetPassword />} />
         <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
