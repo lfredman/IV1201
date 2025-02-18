@@ -22,14 +22,15 @@ const Profile: React.FC = () => {
       >
         <div>
           {user ?
+            <>
             <Box sx={{mx: 'auto', display: 'flex', }}>
               <AccountInfoForm />
               <UserCompetences editable={false} />
             </Box>
+            <PasswordResetForm/>
+            </>
             :
-            <p>You cant be here</p>}
-        <h1>Profile Page</h1>
-          {user ? <><AccountInfoForm />  <PasswordResetForm/> </>: <p>You cant be here</p>}
+            <p>You cant be here! log in </p>}
         </div>
       </Box>
     </Box>
