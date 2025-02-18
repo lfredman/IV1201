@@ -78,6 +78,14 @@ const LoginForm: React.FC = () => {
             </Link>
           </Typography>
         </Box>
+
+        <Box sx={{ mt: 2 }}>
+          <Typography variant="body2" color="text.secondary">
+            <Link to="/reset" style={{ textDecoration: 'none', color: '#1976d2' }}>
+              Forgot your password?
+            </Link>
+          </Typography>
+        </Box>
       </form>
     </Box>
   );
