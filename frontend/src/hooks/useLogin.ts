@@ -3,15 +3,23 @@ import { useState } from 'react';
 import { useUser } from '../context/UserContext'; // Import the context
 import { loginUser } from '../utils/auth'; // Import model function (API call)
 import { getProfile } from '../utils/profile'; // Import model function (API call)
-
+import { useValidation } from './useValidation';
 
 // Custom hook for login
 export const useLogin = () => {
   const { loginUser: updateUserContext } = useUser(); // Renamed for clarity
   const [error, setError] = useState('');
 
+  //client side validation
+  const { validatePassword } = useValidation();
+
   const login = async (username: string, password: string) => {
     try {
+
+      if(!validatePassword(password)){
+        setError("Too weak to be password");
+      }
+
       // Call the login API to get the tokens and userData
       const res = await loginUser(username, password); // Model function (API request)
       const { message, accessToken, refreshToken, userData } = res;

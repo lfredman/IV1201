@@ -2,10 +2,6 @@ import React, { useState, useEffect } from "react";
 import { TextField, Button, Box, Typography, Alert, CircularProgress } from "@mui/material";
 import { usePasswordReset } from "../hooks/usePasswordReset";
 
-const isValidEmail = (email: string) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
 
 const PasswordEmailResetForm: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -19,11 +15,6 @@ const PasswordEmailResetForm: React.FC = () => {
     // Validate password before calling API
     if (!email) {
       setError("Email cannot be empty.");
-      return;
-    }
-
-    if (!isValidEmail(email)) {
-      setError("Invalid email format");
       return;
     }
 

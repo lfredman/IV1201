@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import useAuthFetch from "../hooks/useAuthFetch";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+import { useValidation } from "./useValidation";
 
 export const usePasswordReset = () => {
   const { logoutUser } = useUser();
@@ -13,6 +14,8 @@ export const usePasswordReset = () => {
   const location = useLocation();
   const [tokenFromUrl, setTokenFromUrl] = useState<string | undefined>(undefined);
 
+    //client side validation
+    const { validatePassword, validateEmail } = useValidation();
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -26,6 +29,11 @@ export const usePasswordReset = () => {
     setLoading(true);
 
     try {
+
+      if(!validatePassword(newPassword)){
+        setError("password is too weak!")
+      }
+
       // Get the reset token from URL params if available
       //const queryParams = new URLSearchParams(location.search);
       //const tokenFromUrl = queryParams.get("token") ?? undefined;
@@ -74,6 +82,11 @@ export const usePasswordReset = () => {
     setLoading(true);
 
     try {
+
+      if(!validateEmail(email)){
+        setError("no good email");
+      } 
+
       // Get the reset token from URL params if available
       const queryParams = new URLSearchParams(location.search);
       const tokenFromUrl = queryParams.get("token") ?? undefined;

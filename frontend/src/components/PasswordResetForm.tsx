@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 import { TextField, Button, Box, Typography, Alert, CircularProgress } from "@mui/material";
 import { usePasswordReset } from "../hooks/usePasswordReset"; // Custom hook for API request
 
-const isValidPassword = (password: string) => {
-  const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
-  return passwordRegex.test(password);
-};
-
 const PasswordResetForm: React.FC = () => {
   const [password, setPassword] = useState("");
+  
 
   // Use the custom hook to handle password reset logic
   const { passwordReset, loading, error, success, setError } = usePasswordReset();
@@ -19,11 +15,6 @@ const PasswordResetForm: React.FC = () => {
     // Validate password before calling API
     if (!password) {
       setError("Password cannot be empty.");
-      return;
-    }
-
-    if (!isValidPassword(password)) {
-      setError("Password must be at least 8 characters long, include an uppercase letter, a number, and a special character.");
       return;
     }
 

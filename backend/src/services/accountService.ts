@@ -96,7 +96,7 @@ export const registerService = async (data: {
   catch (error: unknown) {
     if (error instanceof Error) {
       logger.error('Error during registration', { error: error.message });
-      throw new Error('Invalid or expired refresh token');
+      throw new Error(error.message);
     } else {
       logger.error('Error during registration', { error: error });
       throw new Error('An unknown error occurred');
