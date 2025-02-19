@@ -34,7 +34,8 @@ export const useProfile = () => {
       console.log(res.data.competences)
 
       setCompetencesAndCache(res.data.competences)
-
+      updateProfile(); // Apply tempCompetences to competence
+      
       return res.data;
     } catch (err: any) {
       setError(err.message || 'An error occurred while updating competences');
@@ -43,7 +44,6 @@ export const useProfile = () => {
     }
     
 
-    updateProfile(); // Apply tempCompetences to competences
   };
 
   // Delete competence from temporary state
