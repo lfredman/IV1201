@@ -58,7 +58,7 @@ const ApplyForAJob: React.FC = () => {
   
 
   // Use the useProfile hook to fetch competences
-  const { competences, loading, error, saveProfileChanges, handleDeleteCompetence, resetChanges } = useProfile();
+  const { competences, loading, error, handleDeleteCompetence, resetChanges } = useProfile();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -110,7 +110,7 @@ const ApplyForAJob: React.FC = () => {
             <Button variant="text" onClick={handleClose}>
               Cancel
             </Button>
-            <Button variant="contained" color="primary" onClick={saveProfileChanges}>
+            <Button variant="contained" color="primary">
               Apply For Job
             </Button>
           </Box>
