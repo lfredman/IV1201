@@ -81,7 +81,7 @@ export const useProfile = () => {
     };
 
     fetchProfile();
-  }, [accessToken]); // ✅ Only re-fetch when token changes
+  }, [accessToken]); // Only re-fetch when token changes
 
   return { 
     competences, 
@@ -90,6 +90,7 @@ export const useProfile = () => {
     error, 
     saveProfileChanges, // Call this to apply changes
     handleDeleteCompetence,
-    resetChanges // Call this to discard changes
+    resetChanges, // Call this to discard changes
+    addCompetence
   };
 };
