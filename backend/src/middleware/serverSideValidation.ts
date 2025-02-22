@@ -35,9 +35,9 @@ export const validateRegister = (req: Request, res: Response, next: NextFunction
 export const validateLogin = (req: Request, res: Response, next: NextFunction): void => {
     const { password } = req.body;
     const errors: string[] = [];
-  
+
     // Validate password: must be provided and be a string (you may add more complexity checks if needed)
-    if (!password || typeof password !== 'string' || isPasswordValid(password)) {
+    if (!password || typeof password !== 'string' || !isPasswordValid(password)) {
       errors.push('Password is required.');
     }
 
