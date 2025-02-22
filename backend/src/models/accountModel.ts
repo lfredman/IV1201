@@ -77,3 +77,10 @@ export const changePassword = async (
   }
 };
   
+// Functions only used by testing
+
+export const deleteUserByUsername = async (usename: string): Promise<boolean> => {
+  const result = await query(`DELETE FROM public.person WHERE username = '${usename}' RETURNING *`);
+
+  return result.length > 0; // Returns true if a user was deleted, false otherwise
+};

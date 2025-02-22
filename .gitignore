@@ -31,3 +31,4 @@ backend/.env
 backend/logs/*
 logs/
 *.log
+backend/coverage/*

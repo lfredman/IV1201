@@ -70,7 +70,7 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
     // Call the tokenRefreshService with the extracted token
     const data = await tokenRefreshService(refreshToken);
 
-    res.json({ message: "Token refresh successful", data });
+    res.json({ message: "Token refreshed successfully", data });
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });

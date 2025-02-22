@@ -35,3 +35,6 @@ export const queryWithClient = async (
   const res = await client.query(text, params);
   return res.rows;
 };
+
+// Functions only used by testing
+export const closeDB = () => pool.end();
