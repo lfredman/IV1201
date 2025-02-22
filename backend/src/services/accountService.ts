@@ -4,28 +4,10 @@ import dotenv from 'dotenv';
 import { createPerson, getUserByUsername, getUserByEmail, getUserByPnr, changePassword, getUserById } from '../models/accountModel';
 import { logger } from '../utils/logger';
 import { sendEmail } from '../utils/email';
+import { isEmailValid, isPasswordValid, isPnrValid } from '../utils/validation';
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET as string;
-
-// Utility function to validate password strength
-const isValidPassword = (password: string) => {
-  const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
-  return passwordRegex.test(password);
-};
-
-// Utility function to validate Pnr
-const isPnrValid = (input: string) => {
-  const pnrRegex = /^[0-9 -]+$/;
-  const digitsOnly = input.replace(/\D/g, '');
-  return pnrRegex.test(input) && (digitsOnly.length == 10 || digitsOnly.length == 12);
-}
-
-// Utility function to validate email
-const isEmailValid = (input: string) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(input);
-}
 
 export const registerService = async (data: { 
   name: string; 
@@ -78,7 +60,7 @@ export const registerService = async (data: {
     }
 
     // 3. Validate password strength
-    if (!isValidPassword(password)) {
+    if (!isPasswordValid(password)) {
       throw new Error('Password must contain at least 8 characters, one uppercase letter, one number, and one special character');
     }
 
@@ -200,7 +182,7 @@ export const pwdResetService = async (id: string, data: { password: string }) =>
   }
   
   // Validate password strength
-  if (!isValidPassword(password)) {
+  if (!isPasswordValid(password)) {
     console.log(password);
     throw new Error('Password must contain at least 8 characters, one uppercase letter, one number, and one special character');
   }
@@ -224,7 +206,7 @@ export const pwdResetByEmailService = async (data: { email: string }) => {
   }
 
   // Validate email format
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!isEmailValid(email)) {
       throw new Error('Invalid email format');
   }
 
