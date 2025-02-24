@@ -1,4 +1,6 @@
+import { setDefaultAutoSelectFamilyAttemptTimeout } from "net";
 import { query, getClient, queryWithClient } from "../utils/db";
+import  {isCompetencesValid} from "../utils/validation"
 
 export interface Competence {
   competence_id: number;
@@ -42,6 +44,12 @@ export const updateCompetenceById = async (person_id: number, competences: Compe
   const client = await getClient(); // Acquire a client for transactions
 
   try {
+
+    if(!isCompetencesValid(competences)){
+      throw new Error("invalid competences");
+    }
+    console.log("comp were valid")
+
     await client.query("BEGIN"); // Start the transaction
     
     // Extract competence IDs to keep

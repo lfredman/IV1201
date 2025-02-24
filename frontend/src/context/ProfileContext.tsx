@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the Competence type with an id
-interface Competence {
+export interface Competence {
   competence_id: number;
   competence_name: string;
   years_of_experience: number;

@@ -3,6 +3,7 @@ import { getProfile } from "../utils/profile"; // API call function
 import { useUser } from "../context/UserContext"; // User context for tokens
 import { useProfile as useProfileContext } from "../context/ProfileContext"; // Profile context
 import useAuthFetch  from "./useAuthFetch";
+import { useValidation } from "../hooks/useValidation";
 
 export const useProfile = () => {
   const { user, accessToken } = useUser(); 
@@ -10,11 +11,18 @@ export const useProfile = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const authFetch = useAuthFetch();
+  const { validateCompetences} = useValidation();
 
   // Update tempCompetences first, and only apply them when updateProfile is called
   const saveProfileChanges = async () => {
     console.log("TEMP", tempCompetences)
     try {
+
+      if(!validateCompetences(tempCompetences)){
+        throw new Error("Invalid competences");
+      }
+      
+
       const response = await authFetch(`/profile/competence`, {
         method: 'POST',
         headers: {

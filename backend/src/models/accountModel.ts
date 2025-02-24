@@ -1,4 +1,5 @@
 import { query } from "../utils/db";
+import { isEmailValid, isInputSafe, isPasswordValid, isPnrValid } from '../utils/validation';
 
 export interface Person {
   person_id: number;
@@ -21,6 +22,17 @@ export const createPerson = async (
 ): Promise<Person | null> => {
   try {
 
+    // Validation
+    if(!isInputSafe(name) || !isInputSafe(surname)|| !isInputSafe(username)){
+      throw new Error("Not safe input in fields for DB");
+    }
+    if(!isEmailValid(email)){
+      throw new Error("Email not valid");
+    }
+    if(!isPnrValid(pnr)){
+      throw new Error("Pnr not valid");
+    }
+
     // NOTE THIS CREATES AN NON-ADMIN USER ONLY BY USING HARD CODED ROLE ID
     const result = await query(
       `INSERT INTO person (name, surname, pnr, username, email, password, role_id) 
@@ -40,21 +52,33 @@ export const createPerson = async (
 };
 
 export const getUserByUsername = async (username: string): Promise<Person | null> => {
+  if(!isInputSafe(username)){
+    throw new Error("unsafe DB input");
+  }
   const result = await query(`SELECT * FROM public.person WHERE username = '${username}'`);
   return result.length > 0 ? result[0] : null;
 };
 
 export const getUserByEmail = async (email: string): Promise<Person | null> => {
+  if(!isEmailValid(email)){
+    throw new Error("Invalid email");
+  }
   const result = await query(`SELECT * FROM public.person WHERE email = '${email}'`);
   return result.length > 0 ? result[0] : null;
 };
 
 export const getUserByPnr = async (pnr: string): Promise<Person | null> => {
+    if(!isPnrValid(pnr)){
+      throw new Error("Invalid pnr");
+    }
     const result = await query(`SELECT * FROM public.person WHERE pnr = '${pnr}'`);
     return result.length > 0 ? result[0] : null;
   };
 
 export const getUserById = async (id: string): Promise<Person | null> => {
+  if(!isInputSafe(id)){
+    throw new Error("unsafe DB input");
+  }
   const result = await query(`SELECT * FROM public.person WHERE person_id = '${id}'`);
   return result.length > 0 ? result[0] : null;
 };
@@ -80,6 +104,10 @@ export const changePassword = async (
 // Functions only used by testing
 
 export const deleteUserByUsername = async (usename: string): Promise<boolean> => {
+
+  if(!isInputSafe(usename)){
+    throw new Error("unsafe DB input");
+  }
   const result = await query(`DELETE FROM public.person WHERE username = '${usename}' RETURNING *`);
 
   return result.length > 0; // Returns true if a user was deleted, false otherwise

@@ -1,5 +1,4 @@
-
-
+import {Competence} from "../context/ProfileContext"
 
 export const useValidation = () => {
 
@@ -19,6 +18,15 @@ export const useValidation = () => {
         const digitsOnly = input.replace(/\D/g, '');
         return pnrRegex.test(input) && (digitsOnly.length == 10 || digitsOnly.length == 12);
     }
-  
-    return { validateEmail, validatePassword, validatePnr };
+
+    const validateCompetence = (competence: Competence) => {
+        return typeof competence.years_of_experience === 'number' &&
+               competence.years_of_experience >= 0;
+    }
+
+    const validateCompetences = (competences: Competence[]) => {
+        return competences.every(validateCompetence);
+    }
+
+    return { validateEmail, validatePassword, validatePnr, validateCompetence, validateCompetences };
 };
