@@ -54,6 +54,7 @@ const ApplyForAJob: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [showCompetenceForm, setShowCompetenceForm] = useState(false);
   const [showAvailabilityForm, setShowAvailabilityForm] = useState(false);
+  const {user, } = useUser();
   
 
   // Use the useProfile hook to fetch competences
