@@ -11,7 +11,7 @@ export const useAvailability = () => {
   const [error, setError] = useState<string | null>(null);
   const authFetch = useAuthFetch();
 
-  // Update tempCompetences first, and only apply them when updateProfile is called
+  // Update tempAvalilibty first, and only apply them when updateProfile is called
   const saveAvailabilitiesChanges = async () => {
     console.log("TEMP", tempAvailabilities)
     try {
@@ -21,24 +21,24 @@ export const useAvailability = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          availabilities: availabilities,
+          availabilities: tempAvailabilities,
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to update competences');
+        throw new Error(errorData.message || 'Failed to update availabilities');
       }
 
       const res = await response.json();
-      console.log(res.data.availabilities)
+      console.log(res.data)
 
       //setAvailabilitiesAndCache(res.data.av)
       //updateAvailability(); 
       
       return res.data;
     } catch (err: any) {
-      setError(err.message || 'An error occurred while updating competences');
+      setError(err.message || 'An error occurred while updating availabilities');
       console.error(err);
       throw err;
     }
@@ -46,20 +46,25 @@ export const useAvailability = () => {
 
   };
 
-  // Delete competence from temporary state
-  const handleDeleteAvailability = (competence_id: number) => {
-    deleteAvailability(competence_id); // Removes selected competence from tempCompetences
-  };
+  
+  const handleDeleteAvailability = (availability: Availablity) => {
+    deleteAvailability(availability); 
+    //   
+    };
+
+  const add = (availability: any) => {
+    addAvailability(availability); 
+  }
 
   useEffect(() => {
     const fetchProfile = async () => {
       if (!accessToken) return; // Ensures there's an access token before fetching
 
-      // Check if competences are available in localStorage
-      const cachedCompetences = localStorage.getItem("competences");
-      if (cachedCompetences) {
-        const parsedCompetences = JSON.parse(cachedCompetences);
-        setAvailabilitiesAndCache(parsedCompetences); // Use cached data if available
+      // Check if availibity are available in localStorage
+      const cachedAvailibility = localStorage.getItem("availabilities");
+      if (cachedAvailibility) {
+        const parsedAvailibity = JSON.parse(cachedAvailibility);
+        setAvailabilitiesAndCache(parsedAvailibity); // Use cached data if available
         return;
       }
 
@@ -67,24 +72,21 @@ export const useAvailability = () => {
       setError(null);
 
       try {
+          console.log("FETCHING AVAILABILITY")
           const response = await authFetch(`/profile/availability`, {
-            method: 'GET',
-
-            body: JSON.stringify({
-              availabilities: availabilities,
-            }),
+            method: 'GET'
           });
     
           if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to update competences');
+            throw new Error(errorData.message || 'Failed to update availability');
           }
     
           const res = await response.json();
           console.log(res.data.availabilities)
 
         if (res.data.availabilities) {
-          setAvailabilitiesAndCache(res.data.availabilities); // Load data into competences
+          setAvailabilitiesAndCache(res.data.availabilities); // Load data into availability
         }
       } catch (err) {
         console.error("Profile Fetch Error:", err);
@@ -99,9 +101,11 @@ export const useAvailability = () => {
 
   return { 
     availabilities, 
-    tempAvailabilities, // Expose tempCompetences so UI can show changes before saving
+    tempAvailabilities, // Expose tempavailability so UI can show changes before saving
     loading, 
-    error, 
+    error,
+    add,
+    addAvailability,
     saveAvailabilitiesChanges, // Call this to apply changes
     handleDeleteAvailability,
     discardChanges // Call this to discard changes

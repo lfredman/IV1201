@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the Availability type
 interface Availability {
-  availability_id?: number; // Optional if not needed initially
+  //availability_id: number; // Optional if not needed initially
   from_date: string;
   to_date: string;
 }
@@ -12,7 +12,7 @@ interface AvailabilityContextType {
   availabilities: Availability[];
   tempAvailabilities: Availability[];
   addAvailability: (newAvailability: Availability) => void;
-  deleteAvailability: (availability_id: number) => void;
+  deleteAvailability: (availability: Availability) => void;
   setAvailabilitiesAndCache: (newAvailabilities: Availability[]) => void;
   updateAvailability: (updatedAvailability: Availability) => void;  // New function
   setAvailabilities: (newAvailabilities: Availability[]) => void;
@@ -33,40 +33,31 @@ export const AvailabilityProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const addAvailability = (newAvailability: Availability) => {
-    setTempAvailabilities((prev) => {
-      if (prev.length === 0) {
-        console.log("Adding the first availability");
-        return [{ ...newAvailability, availability_id: Date.now() }];
-      }
-
-      const exists = prev.some(
-        (av) =>
-          av.from_date === newAvailability.from_date &&
-          av.to_date === newAvailability.to_date
-      );
-
-      if (exists) {
-        console.log("Availability already exists. Updating...");
-        return prev.map((av) =>
-          av.from_date === newAvailability.from_date && av.to_date === newAvailability.to_date
-            ? { ...newAvailability, availability_id: av.availability_id }
-            : av
+      setTempAvailabilities((prev) => {
+        const exists = prev.some(
+          (av) => av.from_date === newAvailability.from_date && av.to_date === newAvailability.to_date
         );
-      } else {
-        console.log("Adding a new availability");
-        return [...prev, { ...newAvailability, availability_id: Date.now() }];
-      }
-    });
-  };
+    
+        if (exists) {
+          return prev.map((av) =>
+            av.from_date === newAvailability.from_date && av.to_date === newAvailability.to_date
+              ? newAvailability
+              : av
+          );
+        } else {
+          return [...prev, newAvailability];
+        }
+      });
+    };
 
   const updateAvailability = () => {
     setAvailabilitiesAndCache(tempAvailabilities);
     console.log("Updated availability:", tempAvailabilities);
   };
 
-  const deleteAvailability = (availability_id: number) => {
-    setTempAvailabilities((prev) => prev.filter((av) => av.availability_id !== availability_id));
-    console.log("Deleted availability:", availability_id);
+  const deleteAvailability = (from_date: string, to_date: string) => {
+    setTempAvailabilities((prev) => prev.filter((av) => av.from_date !== from_date && av.to_date !== to_date));
+    console.log("Deleted availability:", from_date, " to ", to_date);
   };
 
   React.useEffect(() => {

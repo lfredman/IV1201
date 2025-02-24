@@ -3,24 +3,12 @@ import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Box from '@mui/material/Box';
-import { Button, Typography, IconButton, Tooltip } from '@mui/material';
+import { Box, Button, Typography, IconButton, Tooltip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Modal, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import Modal from '@mui/material/Modal';
-import { useAvailability } from '../context/AvailabilityContext';
-
-interface DateRangeSchedulerProps {
-    editable?: boolean;
-  }
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import { useAvailability } from '../hooks/useAvailiblity';
 
 const style = {
     position: 'absolute' as const,
@@ -35,110 +23,122 @@ const style = {
 };
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
+    fontSize: 14,
+    fontWeight: 'bold',
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
+interface AvailabilityFormProps {
+    editable?: boolean;
+}
 
-const DateRangeScheduler: React.FC = () => {
-    const [start, setStart] = React.useState<Dayjs | null>(dayjs());
-    const [end, setEnd] = React.useState<Dayjs | null>(dayjs());
+const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ editable = false }) => {
+    const { availabilities, tempAvailabilities, loading, error, saveAvailabilitiesChanges, discardChanges, add, handleDeleteAvailability, } = useAvailability();
+    const [isEditing, setIsEditing] = React.useState(editable);
     const [open, setOpen] = React.useState(false);
+    const [newAvailability, setNewAvailability] = React.useState<{ start: Dayjs | null; end: Dayjs | null }>({ start: dayjs(), end: dayjs() });
 
-    // Get availability and functions from context
-    const { availabilities, addAvailability, deleteAvailability } = useAvailability();
+    const displayedAvailabilities = isEditing ? tempAvailabilities : availabilities;
 
+    const handleEditToggle = () => setIsEditing((prev) => !prev);
+    const handleDiscard = () => {
+        discardChanges();
+        setIsEditing(false);
+    };
+    const handleSave = async () => {
+        await saveAvailabilitiesChanges();
+        setIsEditing(false);
+    };
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const handleAddAvailability = () => {
-        if (start && end) {
-            addAvailability({
-                availability_id: new Date().getTime(), // Temporary unique ID
-                from_date: start.format('YYYY-MM-DD'),
-                to_date: end.format('YYYY-MM-DD')
+    const handleAdd = () => {
+        if (newAvailability.start && newAvailability.end) {
+            add({
+                from_date: newAvailability.start.format('YYYY-MM-DD'),
+                to_date: newAvailability.end.format('YYYY-MM-DD'),
             });
-            setStart(dayjs());
-            setEnd(dayjs());
+            
+            setNewAvailability({ start: dayjs(), end: dayjs() });
             handleClose();
         }
     };
 
-    const handleDelete = (id: number) => {
-        deleteAvailability(id);
-    };
-
     return (
         <Box sx={{ mx: 'auto', mt: 5, p: 3, borderRadius: 2, boxShadow: 3, textAlign: 'center' }}>
-        {/* Add the following flex container */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h6">
-                Your Availability
-            </Typography>
-            <Tooltip title="Click to add availability">
-                <IconButton onClick={handleOpen} aria-label="Add Availability" color="primary">
-                    <AddIcon fontSize="large" />
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'center' }}>
+                <Typography variant="h6">Your Availability</Typography>
+                <IconButton aria-label="edit" size="small" onClick={handleEditToggle}>
+                    <EditNoteIcon fontSize="inherit" />
                 </IconButton>
-            </Tooltip>
-        </Box>
+            </Stack>
 
-            <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-                <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" mb={2}>
-                        Add Availability
-                    </Typography>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                            <DatePicker label="Start" value={start} onChange={setStart} minDate={dayjs()} />
-                            <DatePicker label="End" value={end} onChange={setEnd} minDate={start || dayjs()} />
-                        </Box>
-                    </LocalizationProvider>
-                    <Button variant="contained" size="medium" color="primary" onClick={handleAddAvailability} sx={{ mt: 2 }}>
-                        Add
-                    </Button>
-                </Box>
-            </Modal>
+            {loading && <Typography>Loading...</Typography>}
+            {error && <Typography color="error">{error}</Typography>}
 
-            {/* Availability Table */}
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 400 }} aria-label="availability table">
+            <TableContainer component={Paper} sx={{ mt: 2 }}>
+                <Table>
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell>From Date</StyledTableCell>
-                            <StyledTableCell>To Date</StyledTableCell>
-                            <StyledTableCell align="center">Actions</StyledTableCell>
+                            <StyledTableCell align="center">From Date</StyledTableCell>
+                            <StyledTableCell align="center">To Date</StyledTableCell>
+                            {isEditing && <StyledTableCell align="center">Actions</StyledTableCell>}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {availabilities.map((row) => (
-                            <StyledTableRow key={row.availability_id}>
-                                <StyledTableCell>{row.from_date}</StyledTableCell>
-                                <StyledTableCell>{row.to_date}</StyledTableCell>
-                                <StyledTableCell align="center">
-                                    <IconButton color="error" onClick={() => handleDelete(row.availability_id!)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </StyledTableCell>
-                            </StyledTableRow>
-                        ))}
+                        {displayedAvailabilities.length > 0 ? (
+                            displayedAvailabilities.map((row) => {
+                                console.log(row); // Logs the availability_id for debugging purposes
+                                return (
+                                    <TableRow key={row.availability_id}>
+                                        <TableCell align="center">{row.from_date}</TableCell>
+                                        <TableCell align="center">{row.to_date}</TableCell>
+                                        {isEditing && (
+                                            <TableCell align="center">
+                                                <IconButton color="error" onClick={() => handleDeleteAvailability(row?.availability_id)}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </TableCell>
+                                        )}
+                                    </TableRow>
+                                );
+                            })
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={isEditing ? 3 : 2} align="center">No availability found.</TableCell>
+                            </TableRow>
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            {isEditing && (
+                <>
+                    <Button variant="contained" color="primary" onClick={handleOpen} sx={{ mt: 2 }}>
+                        Add Availability
+                    </Button>
+                    <Modal open={open} onClose={handleClose}>
+                        <Box sx={style}>
+                            <Typography variant="h6" mb={2}>Add Availability</Typography>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                                    <DatePicker label="Start" value={newAvailability.start} onChange={(date) => setNewAvailability({ ...newAvailability, start: date })} minDate={dayjs()} />
+                                    <DatePicker label="End" value={newAvailability.end} onChange={(date) => setNewAvailability({ ...newAvailability, end: date })} minDate={newAvailability.start || dayjs()} />
+                                </Box>
+                            </LocalizationProvider>
+                            <Button variant="contained" color="primary" onClick={handleAdd} sx={{ mt: 2 }}>
+                                Add
+                            </Button>
+                        </Box>
+                    </Modal>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+                        <Button variant="contained" color="error" onClick={handleDiscard}>Discard Changes</Button>
+                        <Button variant="contained" color="primary" onClick={handleSave}>Save Changes</Button>
+                    </Box>
+                </>
+            )}
         </Box>
     );
 };
 
-export default DateRangeScheduler;
+export default AvailabilityForm;
