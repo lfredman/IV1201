@@ -43,7 +43,10 @@ const AddCompetence: React.FC = () => {
       setError("Years of experience must be a valid number");
       return;
     }
-
+    if (years >= 100) {
+      setError("Years of experience can not be this big. Should be less than 100");
+      return;
+    }
     // Simulate saving data
     setLoading(true);
     setTimeout(() => {
