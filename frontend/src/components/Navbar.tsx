@@ -42,9 +42,10 @@ const Navbar: React.FC = () => {
             <Button color="inherit" component={Link} to="/apply" sx={buttonStyle}>
               Apply for a Job
             </Button>
-            <Button color="inherit" component={Link} to="/applications" sx={buttonStyle}>
-              My Applications
-            </Button>
+            {user.role_id == 1 ? (<Button color="inherit" component={Link} to="/applications" sx={buttonStyle}>
+              Applications
+            </Button>): <div></div> }
+            
             <Button color="inherit" onClick={logoutUser} sx={buttonStyle}>
               Log out
             </Button>

@@ -8,3 +8,6 @@ CREATE TABLE applicant (
 
 ALTER TABLE competence_profile
 ADD CONSTRAINT unique_person_competence UNIQUE (person_id, competence_id);
+
+ALTER TABLE applicant
+ADD COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;

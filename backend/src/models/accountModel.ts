@@ -59,6 +59,26 @@ export const getUserById = async (id: string): Promise<Person | null> => {
   return result.length > 0 ? result[0] : null;
 };
 
+export const getUsersByIds = async (ids: number[]): Promise<Person[] | null> => {
+  // Sanitize and join IDs to use in SQL IN clause
+  const sanitizedIds = ids.map(id => `'${id}'`).join(", "); 
+
+  const queryString = `SELECT * FROM public.person WHERE person_id IN (${sanitizedIds})`;
+
+  try {
+      const result = await query(queryString);
+      return result.length > 0 ? result : null;
+  } catch (error) {
+      console.error("Error fetching users:", error);
+      throw new Error("Failed to retrieve users");
+  }
+};
+
+export const getUsersAll = async (): Promise<Person[] | null> => {
+  const result = await query(`SELECT * FROM public.person`);
+  return result.length > 0 ? result : null;
+};
+
 export const changePassword = async (
   person_id: number,
   newPassword: string

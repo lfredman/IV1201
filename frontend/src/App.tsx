@@ -15,6 +15,7 @@ import { UserProvider } from './context/UserContext';  // Import UserProvider
 import { ProfileProvider } from './context/ProfileContext';  // Import ProfileProvider
 import Userstatus from "./components/Userstatus";
 import Navbar from "./components/Navbar";
+import ApplicationsList from "./components/ApplicationsList";
 
 
 const App: React.FC = () => {
@@ -32,6 +33,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/editprofile" element={<EditProfile />} />
+        <Route path="/applications" element={<ApplicationsList />} />
       </Routes>
       </ProfileProvider>
     </UserProvider>
