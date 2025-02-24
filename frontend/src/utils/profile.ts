@@ -27,3 +27,31 @@ export async function getProfile(accessToken: string | null): Promise<null> {
     throw err; // Propagate error to be handled by the caller
   }
 }
+
+export async function getAvailability(accessToken: string | null): Promise<null> {
+  try {
+    if (!accessToken) {
+      throw new Error("No access token found. Please log in.");
+    }
+
+    const response = await fetch(`http://127.0.0.1:3000/profile/availability`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData?.message || 'Failed to fetch availability data');
+    }
+
+    const res = await response.json();
+    console.log(res);
+    return res?.data?.availability;
+  } catch (err) {
+    console.error('Error during fetching availability data:', err);
+    throw err;
+  }
+}

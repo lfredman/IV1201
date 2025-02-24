@@ -4,20 +4,35 @@ import { useUser } from "../context/UserContext";
 import UserSchedule from "../components/UserSchedule";
 import DateRangeScheduler from "../components/AvailabilityForm";
 import { Box, Typography, Container } from "@mui/material";
+import AddCompetence from "../components/AddCompetence";
+import UserCompetences from "../components/UserCompetences";
 
 const ApplyForJob: React.FC = () => {
   const { user } = useUser();
 
-  if (!user) {
-    return <h2>You need to be logged in to apply for a job</h2>;
-  }
-
   return (
     <Container>
-      <ApplyForAJob />
+      {user ? (
+        <Box>
+          <Typography variant="h4" align="center" gutterBottom>
+            Welcome to apply for a job {user.name}
+          </Typography>
+          <Typography variant="h6" align="center" gutterBottom>
+            Start fill your competence
+          </Typography>
+          <UserCompetences editable={false} />
 
-      {/* Main Content Section */}
-     
+          <Typography variant="h6" align="center" gutterBottom>
+            Add your availability
+          </Typography>
+          <DateRangeScheduler />
+        </Box>
+      ) : (
+        <Typography variant="h4" align="center" gutterBottom>
+          You must log in in first to apply for a job
+        </Typography>
+      )}
+
     </Container>
   );
 };

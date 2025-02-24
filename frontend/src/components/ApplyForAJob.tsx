@@ -54,7 +54,6 @@ const ApplyForAJob: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [showCompetenceForm, setShowCompetenceForm] = useState(false);
   const [showAvailabilityForm, setShowAvailabilityForm] = useState(false);
-  const {user} = useUser();
   
 
   // Use the useProfile hook to fetch competences
@@ -96,22 +95,23 @@ const ApplyForAJob: React.FC = () => {
           {showCompetenceForm && (
             <Box mt={2}>
               <AddCompetence />
+              {/* Add Close button */}
+              <Button variant="outlined" color="secondary" onClick={() => setShowCompetenceForm(false)}>
+                Close
+              </Button>
             </Box>
           )}
 
           {/* Show Availability Form when button is clicked */}
           {showAvailabilityForm && (
             <Box mt={2}>
-              <DateRangeScheduler onClose={() => setShowAvailabilityForm(false)} />
+              <DateRangeScheduler  />
             </Box>
           )}
 
           <Box mt={4} sx={{ display: "flex", justifyContent: "space-between" }}>
             <Button variant="text" onClick={handleClose}>
               Cancel
-            </Button>
-            <Button variant="contained" color="primary">
-              Apply For Job
             </Button>
           </Box>
         </Box>
