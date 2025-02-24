@@ -1,14 +1,28 @@
 import express, { Request, Response } from 'express';
 import profileRoutes from './routes/profileRoutes';
 import accountRoutes from './routes/accountRoutes';
+import adminRoutes from './routes/adminRoutes';
 
 import bodyParser from 'body-parser';
-const cors = require('cors');
+import cors, { CorsOptions } from "cors";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors());
+
+const allowedOrigins = ["http://localhost:5173", "http://127.0.0.1:5173"];
+
+const corsOptions: CorsOptions = {
+  origin: (origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) => {
+    if (origin && allowedOrigins.includes(origin)) {
+      callback(null, true); 
+    } else {
+      callback(null, false);
+    }
+  },
+};
+
+app.use(cors(corsOptions));
 
 app.get('/', (req: Request, res: Response) => {
     res.send(`<h1>Welcome to the API</h1>
@@ -26,6 +40,7 @@ app.use(bodyParser.json());
 //app.use('/', personRoutes);
 app.use('/account', accountRoutes);
 app.use('/profile', profileRoutes);
+app.use('/admin', adminRoutes);
 
 // Error handling
 app.use((req: Request, res: Response) => {
