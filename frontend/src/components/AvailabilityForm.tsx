@@ -18,6 +18,10 @@ import AddIcon from '@mui/icons-material/Add';
 import Modal from '@mui/material/Modal';
 import { useAvailability } from '../context/AvailabilityContext';
 
+interface DateRangeSchedulerProps {
+    editable?: boolean;
+  }
+
 const style = {
     position: 'absolute' as const,
     top: '50%',

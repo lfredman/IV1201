@@ -32,8 +32,6 @@ export const useProfile = () => {
 
       const res = await response.json();
       console.log(res.data.competences)
-
-      setCompetencesAndCache(res.data.competences)
       updateProfile(); // Apply tempCompetences to competence
       
       return res.data;
@@ -90,6 +88,7 @@ export const useProfile = () => {
     error, 
     saveProfileChanges, // Call this to apply changes
     handleDeleteCompetence,
+    addCompetence,
     resetChanges // Call this to discard changes
   };
 };
