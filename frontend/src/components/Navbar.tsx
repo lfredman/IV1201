@@ -39,9 +39,9 @@ const Navbar: React.FC = () => {
             <Button color="inherit" component={Link} to="/profile" sx={buttonStyle}>
               Profile
             </Button>
-            <Button color="inherit" component={Link} to="/apply" sx={buttonStyle}>
+            {user.role_id != 1 ? (<Button color="inherit" component={Link} to="/apply" sx={buttonStyle}>
               Apply for a Job
-            </Button>
+            </Button>): <div></div> }
             {user.role_id == 1 ? (<Button color="inherit" component={Link} to="/applications" sx={buttonStyle}>
               Applications
             </Button>): <div></div> }

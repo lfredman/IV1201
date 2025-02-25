@@ -27,9 +27,9 @@ const AccountInfoForm: React.FC = () => {
         <p> <strong> Personal number: </strong> {user?.pnr} </p>
         <p> <strong> Email: </strong> {user?.email} </p>
       </div>
-      <Button >
+      {/*<Button >
         Edit  
-      </Button>
+      </Button>*/}
     </Box>
   );
 };

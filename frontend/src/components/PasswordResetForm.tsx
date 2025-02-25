@@ -39,7 +39,7 @@ const PasswordResetForm: React.FC = () => {
       }}
     >
       <Typography variant="h5" gutterBottom>
-        Reset Password
+        Change Password
       </Typography>
 
       

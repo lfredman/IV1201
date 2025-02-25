@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import { useUser } from '../context/UserContext';  // Import the useUser hook
-import Navbar from '../components/Navbar';
 import AccountInfoForm from '../components/AccountInfoForm';
 import UserCompetences from '../components/UserCompetences'
 import PasswordResetForm from '../components/PasswordResetForm';
@@ -20,18 +19,15 @@ const Profile: React.FC = () => {
           height: '100vh',  // Full viewport height to vertically center content
         }}
       >
-        <div>
-          {user ?
-            <>
-            <Box sx={{mx: 'auto', display: 'flex', }}>
-              <AccountInfoForm />
-              <UserCompetences editable={false} />
-            </Box>
-            <PasswordResetForm/>
+        {user ? (
+          <>
+            <AccountInfoForm />
+            {user.role_id !== 1 && <UserCompetences editable={false} />}
+            <PasswordResetForm />
             </>
-            :
-            <p>You cant be here! log in </p>}
-        </div>
+        ) : (
+          <p>You can't be here! Please log in.</p>
+        )}
       </Box>
     </Box>
   );

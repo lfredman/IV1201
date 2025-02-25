@@ -126,12 +126,18 @@ const ApplicationsList: React.FC = () => {
   }
 
   return (
-    <Box sx={{ width: "100%", padding: 2 }}>
+    <Box  sx={{
+      width: "100%",
+      maxWidth: "100vw", // Ensures it does not exceed viewport width
+      padding: 1,
+      overflowX: "hidden", // Prevents horizontal overflow
+      boxSizing: "border-box", // Ensures padding is included in width calculations
+    }}>
       <TextField
         label="Search applications"
         variant="outlined"
         fullWidth
-        margin="normal"
+        margin="dense"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
@@ -221,7 +227,6 @@ const ApplicationsList: React.FC = () => {
         </Table>
       </TableContainer>
 
-      {/* Modal for User Details */}
       <Modal
         open={modalOpen}
         onClose={handleModalClose}

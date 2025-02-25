@@ -13,9 +13,6 @@ const ResetPasswordPage: React.FC = () => {
 
   return (
     <>
-      <h1>Dynamically rendered reset-page</h1>
-      <p>Depending on if the user has a token in localStorage or in the URL, or none</p>
-      <p>{tokenFromUrl}</p>
       {token ? <PasswordResetForm /> : <PasswordEmailResetForm /> }
     </>
   );
