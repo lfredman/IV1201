@@ -130,6 +130,7 @@ describe('User Registration, Login, and Token Refresh', () => {
             };
 
             const response = await request(app).post('/account/login').send(loginData);
+            console.log(response.body)
 
             expect(response.status).toBe(400);
             expect(response.body.message).toBe('Invalid credentials');

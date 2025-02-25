@@ -15,6 +15,7 @@
   "type": "commonjs",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.8",
@@ -40,5 +41,4 @@
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0"
   }
-
 }
