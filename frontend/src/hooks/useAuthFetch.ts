@@ -31,7 +31,7 @@ const useAuthFetch = () => {
 
           if (refreshResponse.ok) {
             const { data } = await refreshResponse.json();
-            console.log(data.accessToken);
+            console.log("NEW TOKEN", data.accessToken);
             updateAccessToken(data.accessToken);
 
             return fetch(backendURL + url, {

@@ -127,7 +127,6 @@ const ApplicationsList: React.FC = () => {
 
   return (
     <Box sx={{ width: "100%", padding: 2 }}>
-      {/* Search Input */}
       <TextField
         label="Search applications"
         variant="outlined"
@@ -137,7 +136,6 @@ const ApplicationsList: React.FC = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 
-      {/* Table */}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -215,7 +213,7 @@ const ApplicationsList: React.FC = () => {
                     })}
                   </TableCell>
                   <TableCell>{numCompetences}</TableCell>
-                  <TableCell>{totalYears}</TableCell>
+                  <TableCell>{totalYears.toFixed(2)}</TableCell>
                 </TableRow>
               );
             })}

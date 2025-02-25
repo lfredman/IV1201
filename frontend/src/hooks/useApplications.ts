@@ -19,28 +19,29 @@ const useApplications = () => {
   const [error, setError] = useState<string | null>(null);
   const authFetch = useAuthFetch(); // Assuming this fetch is stable and does not change on each render
 
-  useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const response = await authFetch(`/admin/applications`, {
-          method: "GET",
-        });
-        const res = await response.json();
+  const fetchApplications = async () => {
+    console.log("APA")
+    try {
+      const response = await authFetch(`/admin/applications`, {
+        method: "GET",
+      });
+      const res = await response.json();
 
-        if (res.data && Array.isArray(res.data)) {
-          setApplications(res.data);
-        } else {
-          setError("No applications found or invalid response format.");
-        }
-      } catch (err) {
-        setError("Error fetching applications.");
-      } finally {
-        setLoading(false);
+      if (res.data && Array.isArray(res.data)) {
+        setApplications(res.data);
+      } else {
+        setError("No applications found or invalid response format.");
       }
-    };
+    } catch (err) {
+      setError("Error fetching applications.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchApplications(); // Call the fetch function once when the component mounts
-  }, [authFetch]); // Ensure it only runs once or when `authFetch` changes
+  useEffect(() => {
+    fetchApplications();
+  }, []); 
 
   const updateApplication = async (user_id: number, action: string) => {
     setLoading(true); // Set loading to true while fetching
@@ -59,10 +60,6 @@ const useApplications = () => {
       const res = await response.json();
   
       if (res.data && Array.isArray(res.data)) {
-        // Assuming you have the current applications state in your component
-        // Let's assume you have a `setApplications` to update the applications state
-  
-        // Replace the old application object with the updated one
         setApplications(prevApplications => {
           return prevApplications.map(application => 
             application.person_id === user_id 

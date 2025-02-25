@@ -120,7 +120,7 @@ export const loginService = async (data: { loginField: string; password: string 
   const accessToken = jwt.sign(
     { userId: user.person_id, role_id: user.role_id, username: user.username },
     JWT_SECRET,
-    { expiresIn: '5m' }
+    { expiresIn: '1m' }
   );
 
   const refreshToken = jwt.sign(
