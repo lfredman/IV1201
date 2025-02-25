@@ -20,7 +20,6 @@ const useApplications = () => {
   const authFetch = useAuthFetch(); // Assuming this fetch is stable and does not change on each render
 
   const fetchApplications = async () => {
-    console.log("APA")
     try {
       const response = await authFetch(`/admin/applications`, {
         method: "GET",
@@ -32,8 +31,9 @@ const useApplications = () => {
       } else {
         setError("No applications found or invalid response format.");
       }
-    } catch (err) {
-      setError("Error fetching applications.");
+    } catch (err: any) {
+        const errMsg = `Application fetch failed! ${err?.message || "An unknown error occurred."}`;
+        setError(errMsg)
     } finally {
       setLoading(false);
     }
@@ -71,10 +71,11 @@ const useApplications = () => {
         setError("No applications found or invalid response format.");
       }
       return res.data[0];
-    } catch (err) {
-      setError("Error updating applications.");
+    } catch (err: any) {
+      const errMsg = `Application update failed! ${err?.message || "An unknown error occurred."}`;
+      setError(errMsg)
     } finally {
-      setLoading(false); // Set loading to false after the fetch is complete
+      setLoading(false);
     }
   };
   

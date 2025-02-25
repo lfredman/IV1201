@@ -66,7 +66,7 @@ describe('User Registration, Login, and Token Refresh', () => {
 
             const response = await request(app).post('/account/register').send(incompleteData);
             expect(response.status).toBe(400);
-            expect(response.body.message).toBe('Fields are missing');
+            expect(response.body.errors).toContain('Password must be at least 8 characters long and include uppercase, lowercase, number, and a special character.');
         });
 
         it('should return an error for invalid email format', async () => {
@@ -77,7 +77,7 @@ describe('User Registration, Login, and Token Refresh', () => {
 
             const response = await request(app).post('/account/register').send(invalidEmailUserData);
             expect(response.status).toBe(400);
-            expect(response.body.message).toBe('Invalid email');
+            expect(response.body.errors).toContain('A valid email is required.');
         });
 
         it('should return an error for invalid personal number (PNR)', async () => {
@@ -88,7 +88,7 @@ describe('User Registration, Login, and Token Refresh', () => {
 
             const response = await request(app).post('/account/register').send(invalidPnrUserData);
             expect(response.status).toBe(400);
-            expect(response.body.message).toBe('Invalid person number');
+            expect(response.body.errors).toContain('Provided Pnr is not valid.');
         });
 
         it('should return an error if password is too weak', async () => {
@@ -102,7 +102,7 @@ describe('User Registration, Login, and Token Refresh', () => {
 
             const response = await request(app).post('/account/register').send(modifiedUserData);
             expect(response.status).toBe(400);
-            expect(response.body.message).toBe('Password must contain at least 8 characters, one uppercase letter, one number, and one special character');
+            expect(response.body.errors).toContain('Password must be at least 8 characters long and include uppercase, lowercase, number, and a special character.');
         });
     });
 
@@ -114,8 +114,6 @@ describe('User Registration, Login, and Token Refresh', () => {
             };
 
             const response = await request(app).post('/account/login').send(loginData);
-
-            console.log(response.body.data)
 
             expect(response.status).toBe(200);
             expect(response.body.message).toBe('Login successful');
@@ -130,10 +128,9 @@ describe('User Registration, Login, and Token Refresh', () => {
             };
 
             const response = await request(app).post('/account/login').send(loginData);
-            console.log(response.body)
-
             expect(response.status).toBe(400);
-            expect(response.body.message).toBe('Invalid credentials');
+            
+            expect(response.body.errors).toContain('Password is required.');
         });
     });
 

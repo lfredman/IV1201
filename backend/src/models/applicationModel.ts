@@ -12,9 +12,6 @@ export interface Application {
   competences: { name: string; years: number }[];
 }
 
-/**
- * Get applications for specific person IDs
- */
 export const getApplicationsByIds = async (person_ids: number[]): Promise<Application[]> => {
   if (!person_ids || person_ids.length === 0) {
     throw new Error("No person IDs provided");
@@ -23,18 +20,13 @@ export const getApplicationsByIds = async (person_ids: number[]): Promise<Applic
   return await fetchApplications("WHERE p.person_id = ANY($1)", [person_ids]);
 };
 
-/**
- * Get all applications from the database
- */
 export const getAllApplications = async (): Promise<Application[]> => {
   return await fetchApplications("", []);
 };
 
-/**
- * Reusable function to fetch applications with an optional WHERE clause
- */
+
 const fetchApplications = async (whereClause: string, params: any[]): Promise<Application[]> => {
-  const client = await getClient(); // Acquire a client for transactions
+  const client = await getClient(); 
 
   try {
     await client.query("BEGIN"); // Start the transaction

@@ -1,4 +1,3 @@
-import { setDefaultAutoSelectFamilyAttemptTimeout } from "net";
 import { query, getClient, queryWithClient } from "../utils/db";
 import  {isCompetencesValid} from "../utils/validation"
 

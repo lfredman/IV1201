@@ -49,6 +49,13 @@ const useAuthFetch = () => {
 
         return response;
       } catch (error) {
+        // Check for network errors like net::ERR_CONNECTION_REFUSED
+        if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+          console.error('Network error or server unreachable:', error);
+          return Promise.reject(new Error('Unable to connect to the server. Please check your internet connection or try again later.'));
+        }
+
+        // Catch any other errors
         console.error('Request failed:', error);
         return Promise.reject(error);
       } finally {
