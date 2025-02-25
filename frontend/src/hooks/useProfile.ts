@@ -32,6 +32,7 @@ export const useProfile = () => {
 
       const res = await response.json();
       console.log(res.data.competences)
+      console.log(competences);
       updateProfile(); // Apply tempCompetences to competence
       
       return res.data;

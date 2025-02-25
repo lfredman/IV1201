@@ -94,7 +94,7 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ editable = false })
                                         <TableCell align="center">{row.to_date}</TableCell>
                                         {isEditing && (
                                             <TableCell align="center">
-                                                <IconButton color="error" onClick={() => handleDeleteAvailability(row?.availability_id)}>
+                                                <IconButton color="error" onClick={() => handleDeleteAvailability(row.from_date, row.to_date)}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </TableCell>

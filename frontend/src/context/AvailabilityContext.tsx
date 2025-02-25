@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the Availability type
 interface Availability {
-  //availability_id: number; // Optional if not needed initially
+  availability_id: number; // Optional if not needed initially
   from_date: string;
   to_date: string;
 }
@@ -12,7 +12,7 @@ interface AvailabilityContextType {
   availabilities: Availability[];
   tempAvailabilities: Availability[];
   addAvailability: (newAvailability: Availability) => void;
-  deleteAvailability: (availability: Availability) => void;
+  deleteAvailability: (from_date: string, to_date: string) => void;
   setAvailabilitiesAndCache: (newAvailabilities: Availability[]) => void;
   updateAvailability: (updatedAvailability: Availability) => void;  // New function
   setAvailabilities: (newAvailabilities: Availability[]) => void;
@@ -56,7 +56,7 @@ export const AvailabilityProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const deleteAvailability = (from_date: string, to_date: string) => {
-    setTempAvailabilities((prev) => prev.filter((av) => av.from_date !== from_date && av.to_date !== to_date));
+    setTempAvailabilities((prev) => prev.filter((av) => !(av.from_date === from_date && av.to_date === to_date)));
     console.log("Deleted availability:", from_date, " to ", to_date);
   };
 

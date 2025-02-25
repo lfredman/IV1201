@@ -47,8 +47,8 @@ export const useAvailability = () => {
   };
 
   
-  const handleDeleteAvailability = (availability: Availablity) => {
-    deleteAvailability(availability); 
+  const handleDeleteAvailability = (from_date: string, to_date: string) => {
+    deleteAvailability(from_date, to_date); 
     //   
     };
 
