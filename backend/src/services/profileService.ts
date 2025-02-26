@@ -73,7 +73,7 @@ export const updateAvailabilityService = async (user_id: string, availabilities:
         const result = await updateAvailabilityById(id, availabilities.availabilities);
         return result; // Return the result from the model
     } catch (error) {
-        console.error("Error updating competences:", error);
-        throw new Error("Failed to update competences");
+        console.error("Error updating availabilities:", error);
+        throw new Error("Failed to update availabilities");
     }
 };

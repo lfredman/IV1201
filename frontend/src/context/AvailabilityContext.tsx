@@ -14,7 +14,7 @@ interface AvailabilityContextType {
   addAvailability: (newAvailability: Availability) => void;
   deleteAvailability: (from_date: string, to_date: string) => void;
   setAvailabilitiesAndCache: (newAvailabilities: Availability[]) => void;
-  updateAvailability: (updatedAvailability: Availability) => void;  // New function
+  updateAvailability: () => void;  // New function
   setAvailabilities: (newAvailabilities: Availability[]) => void;
   saveAvailabilities: () => void;  // New function
   discardChanges: () => void;  // New function
@@ -32,23 +32,24 @@ export const AvailabilityProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("availabilities", JSON.stringify(newAvailabilities));
     }
 
-    const addAvailability = (newAvailability: Availability) => {
-      setTempAvailabilities((prev) => {
-        const exists = prev.some(
-          (av) => av.from_date === newAvailability.from_date && av.to_date === newAvailability.to_date
+  const addAvailability = (newAvailability: Availability) => {
+    newAvailability.availability_id = Date.now() //unique id for front end only
+    setTempAvailabilities((prev) => {
+      const exists = prev.some(
+        (av) => av.from_date === newAvailability.from_date && av.to_date === newAvailability.to_date
+      );
+  
+      if (exists) {
+        return prev.map((av) =>
+          av.from_date === newAvailability.from_date && av.to_date === newAvailability.to_date
+            ? newAvailability
+            : av
         );
-    
-        if (exists) {
-          return prev.map((av) =>
-            av.from_date === newAvailability.from_date && av.to_date === newAvailability.to_date
-              ? newAvailability
-              : av
-          );
-        } else {
-          return [...prev, newAvailability];
-        }
-      });
-    };
+      } else {
+        return [...prev, newAvailability];
+      }
+    });
+  };
 
   const updateAvailability = () => {
     setAvailabilitiesAndCache(tempAvailabilities);

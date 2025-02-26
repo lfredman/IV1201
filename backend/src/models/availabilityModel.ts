@@ -35,7 +35,7 @@ export const getAvailabilityById = async (person_id: number): Promise<Availabili
 
 export const updateAvailabilityById = async (person_id: number, availabilities: Availability[]): Promise<Availabilities | null> => {
   const client = await getClient(); // Acquire a client for transactions
-
+  console.log("BEGIN TRANSACTION AVAILABILITY");
   try {
     await client.query("BEGIN"); // Start the transaction
 
@@ -44,8 +44,10 @@ export const updateAvailabilityById = async (person_id: number, availabilities: 
     if (availabilities.length > 0) {
       await queryWithClient(
         client,
-        `DELETE FROM availability WHERE person_id = $1 AND availability_id NOT IN (${availabilities.map((_, i) => `$${i + 2}`).join(",")})`,
-        [person_id]
+        `DELETE FROM availability 
+        WHERE person_id = $1 
+        AND (from_date, to_date) NOT IN (${availabilities.map((_, i) => `($${i * 2 + 2}, $${i * 2 + 3})`).join(",")})`,
+        [person_id, ...availabilities.flatMap(a => [a.from_date, a.to_date])]
       );
     } else {
       // If no availabilities are provided, delete all for this person

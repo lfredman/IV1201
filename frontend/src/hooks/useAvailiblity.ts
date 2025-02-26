@@ -34,7 +34,7 @@ export const useAvailability = () => {
       console.log(res.data)
 
       //setAvailabilitiesAndCache(res.data.av)
-      //updateAvailability(); 
+      updateAvailability(); 
       
       return res.data;
     } catch (err: any) {
@@ -83,7 +83,7 @@ export const useAvailability = () => {
           }
     
           const res = await response.json();
-          console.log(res.data.availabilities)
+          console.log("AVAILABILITIES RESPONSE: ", res.data.availabilities)
 
         if (res.data.availabilities) {
           setAvailabilitiesAndCache(res.data.availabilities); // Load data into availability

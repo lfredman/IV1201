@@ -87,7 +87,6 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ editable = false })
                     <TableBody>
                         {displayedAvailabilities.length > 0 ? (
                             displayedAvailabilities.map((row) => {
-                                console.log(row); // Logs the availability_id for debugging purposes
                                 return (
                                     <TableRow key={row.availability_id}>
                                         <TableCell align="center">{row.from_date}</TableCell>

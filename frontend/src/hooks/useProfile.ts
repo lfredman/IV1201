@@ -66,10 +66,24 @@ export const useProfile = () => {
       setError(null);
 
       try {
-        const profileData = await getProfile(accessToken); // Fetch data from API
+        
+        const response = await authFetch(`/profile/competence`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          
+        });
 
-        if (profileData) {
-          setCompetencesAndCache(profileData); // Load data into competences
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to update competences');
+        }
+        const res = await response.json();
+        console.log("RESPONSE DATA: ", res);
+        if (res.data.competences) {
+
+          setCompetencesAndCache(res.data.competences); // Load data into competences
         }
       } catch (err) {
         console.error("Profile Fetch Error:", err);
