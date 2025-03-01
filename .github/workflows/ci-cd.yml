@@ -59,18 +59,17 @@ jobs:
         run: npm ci
         working-directory: backend
 
-      # Set environment variables using GitHub Secrets
       - name: Set Environment Variables
-        run: |
-          touch .env  # Create the .env file if it doesn't exist
-          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-          echo "GMAIL=${{ secrets.GMAIL }}" >> .env
-          echo "GMAIL_SECRET=${{ secrets.GMAIL_SECRET }}" >> .env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+        run: echo "Setting environment variables..."
+        env:
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USER: ${{ secrets.DB_USER }}
+          GMAIL: ${{ secrets.GMAIL }}
+          GMAIL_SECRET: ${{ secrets.GMAIL_SECRET }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         working-directory: backend
 
       - name: Run Backend Tests
