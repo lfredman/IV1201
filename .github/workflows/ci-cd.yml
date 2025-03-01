@@ -65,7 +65,7 @@ jobs:
           touch .env  # Create the .env file if it doesn't exist
           echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
           echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "DB_PASSWORD='${{ secrets.DB_PASSWORD }}'" >> .env
+          echo "DB_PASSWORD=$(echo ${{ secrets.DB_PASSWORD }} | base64 --decode)" >> .env  # Decode the base64 password
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
           echo "DB_USER=${{ secrets.DB_USER }}" >> .env
           echo "GMAIL=${{ secrets.GMAIL }}" >> .env
