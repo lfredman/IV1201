@@ -73,6 +73,10 @@ jobs:
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
         working-directory: backend
 
+      - name: Display .env file contents
+        run: cat .env
+        working-directory: backend
+
       - name: Run Backend Tests
         run: npm test
         working-directory: backend
