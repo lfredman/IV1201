@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 22
           cache: 'npm'
-          cache-dependency-path: 'frontend/package-lock.json'  # Correct path to package-lock.json
+          cache-dependency-path: 'frontend/package-lock.json'
 
       - name: Debug Show Directory Structure
         run: ls -la
@@ -47,7 +47,7 @@ jobs:
         with:
           node-version: 22
           cache: 'npm'
-          cache-dependency-path: 'backend/package-lock.json'  # Correct path to package-lock.json
+          cache-dependency-path: 'backend/package-lock.json'
 
       - name: Debug Show Directory Structure
         run: ls -la
@@ -59,7 +59,19 @@ jobs:
         run: npm ci
         working-directory: backend
 
-      # Run Tests (assuming you're using Jest or a similar testing framework)
+      # Set environment variables using GitHub Secrets
+      - name: Set Environment Variables
+        run: |
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> backend/.env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> backend/.env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> backend/.env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> backend/.env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> backend/.env
+          echo "GMAIL=${{ secrets.GMAIL }}" >> backend/.env
+          echo "GMAIL_SECRET=${{ secrets.GMAIL_SECRET }}" >> backend/.env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> backend/.env
+        working-directory: backend
+
       - name: Run Backend Tests
         run: npm test
         working-directory: backend
