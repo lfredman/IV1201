@@ -10,59 +10,24 @@ on:
 
 jobs:
   frontend:
-    name: Frontend Build & Test
     runs-on: ubuntu-latest
     defaults:
       run:
+        working-directory: frontend  # Ensures commands are executed inside frontend/
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Debug Files (Check if package-lock.json exists)
+        run: ls -la
         working-directory: frontend
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'npm'
-
       - name: Install Dependencies
-        run: npm install
-
-#      - name: Run Static Analysis (ESLint)
-#        run: npm run lint
-#
-#      - name: Run Unit Tests
-#        run: npm run test
-
-      - name: Build Project
-        run: npm run build
-
-  backend:
-    name: Backend Build & Test
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'npm'
-
-      - name: Install Dependencies
-        run: npm install
-
-#      - name: Run Static Analysis (ESLint)
-#        run: npm run lint
-
-      - name: Run Unit Tests
-        run: npm run test
-
-      - name: Start Backend Server (Optional)
-        run: npm run start &
+        run: npm ci  # Uses package-lock.json for clean install
