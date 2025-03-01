@@ -24,10 +24,10 @@ jobs:
           node-version: 22
           cache: 'npm'
 
-      - name: Debug: Show Directory Structure
+      - name: Debug Show Directory Structure
         run: ls -la
 
-      - name: Debug: Show Contents of Frontend Folder
+      - name: Debug Show Contents of Frontend Folder
         run: ls -la frontend
 
       - name: Install Dependencies
