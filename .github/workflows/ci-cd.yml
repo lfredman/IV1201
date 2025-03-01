@@ -34,3 +34,32 @@ jobs:
       - name: Install Dependencies
         run: npm ci
         working-directory: frontend
+
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: 'backend/package-lock.json'  # Correct path to package-lock.json
+
+      - name: Debug Show Directory Structure
+        run: ls -la
+
+      - name: Debug Show Contents of Backend Folder
+        run: ls -la backend
+
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: backend
+
+      # Run Tests (assuming you're using Jest or a similar testing framework)
+      - name: Run Backend Tests
+        run: npm test
+        working-directory: backend
