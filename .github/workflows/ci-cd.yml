@@ -62,15 +62,15 @@ jobs:
       # Set environment variables using GitHub Secrets
       - name: Set Environment Variables
         run: |
-          touch backend/.env  # Create the .env file if it doesn't exist
-          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> backend/.env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> backend/.env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> backend/.env
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> backend/.env
-          echo "DB_USER=${{ secrets.DB_USER }}" >> backend/.env
-          echo "GMAIL=${{ secrets.GMAIL }}" >> backend/.env
-          echo "GMAIL_SECRET=${{ secrets.GMAIL_SECRET }}" >> backend/.env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> backend/.env
+          touch .env  # Create the .env file if it doesn't exist
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "GMAIL=${{ secrets.GMAIL }}" >> .env
+          echo "GMAIL_SECRET=${{ secrets.GMAIL_SECRET }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
         working-directory: backend
 
       - name: Run Backend Tests
