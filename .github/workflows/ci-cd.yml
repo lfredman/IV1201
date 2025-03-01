@@ -25,10 +25,10 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'frontend/package-lock.json'  # Correct path to package-lock.json
 
-      - name: Debug: Show Directory Structure
+      - name: Debug Show Directory Structure
         run: ls -la
 
-      - name: Debug: Show Contents of Frontend Folder
+      - name: Debug Show Contents of Frontend Folder
         run: ls -la frontend
 
       - name: Install Dependencies
