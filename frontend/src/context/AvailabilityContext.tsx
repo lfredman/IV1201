@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the Availability type
 interface Availability {
-  availability_id: number; // Optional if not needed initially
+  availability_id: number | null; // Optional if not needed initially
   from_date: string;
   to_date: string;
 }
@@ -33,7 +33,8 @@ export const AvailabilityProvider = ({ children }: { children: ReactNode }) => {
     }
 
   const addAvailability = (newAvailability: Availability) => {
-    newAvailability.availability_id = Date.now() //unique id for front end only
+    newAvailability.availability_id = null;
+    console.log(newAvailability);
     setTempAvailabilities((prev) => {
       const exists = prev.some(
         (av) => av.from_date === newAvailability.from_date && av.to_date === newAvailability.to_date
@@ -62,7 +63,7 @@ export const AvailabilityProvider = ({ children }: { children: ReactNode }) => {
   };
 
   React.useEffect(() => {
-    console.log("Updated availabilities:", availabilities);
+    console.log("Updated availabilities react why:", availabilities);
   }, [availabilities]);
 
   const saveAvailabilities = () => {

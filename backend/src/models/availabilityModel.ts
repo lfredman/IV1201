@@ -1,6 +1,8 @@
 import { query, getClient, queryWithClient } from "../utils/db";
+import dayjs from "dayjs";
 
 export interface Availability {
+  availability_id: any;
   from_date: string;
   to_date: string;
 }
@@ -12,7 +14,7 @@ export interface Availabilities {
 
 export const getAvailabilityById = async (person_id: number): Promise<Availabilities | null> => {
   const result = await query(
-    `SELECT from_date, to_date FROM availability WHERE person_id = $1;`,
+    `SELECT availability_id, from_date, to_date FROM availability WHERE person_id = $1;`,
     [person_id]
   );
 
@@ -26,8 +28,9 @@ export const getAvailabilityById = async (person_id: number): Promise<Availabili
   return {
     person_id,
     availabilities: result.map(row => ({
-      from_date: row.from_date,
-      to_date: row.to_date
+      availability_id: row.availability_id,
+      from_date: dayjs(row.from_date).format('YYYY-MM-DD'),
+      to_date: dayjs(row.to_date).format('YYYY-MM-DD')
     }))
   };
 };
@@ -54,15 +57,17 @@ export const updateAvailabilityById = async (person_id: number, availabilities: 
       await queryWithClient(client, `DELETE FROM availability WHERE person_id = $1`, [person_id]);
     }
 
+    console.log(availabilities);
+    const newAvailabilities = availabilities.filter(av => !av.availability_id);
+    console.log(newAvailabilities);
     // Insert or update each availability
-    for (const availability of availabilities) {
+    for (const availability of newAvailabilities) {
       await queryWithClient(
         client,
         `INSERT INTO availability (person_id, from_date, to_date)
-          VALUES ($1, $2, $3)`,
+        VALUES ($1, $2, $3)`,
         [person_id, availability.from_date, availability.to_date]
       );
-      
     }
 
     await client.query("COMMIT"); // Commit the transaction

@@ -3,12 +3,13 @@ import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Box, Button, Typography, IconButton, Tooltip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Modal, Stack } from '@mui/material';
+import { Box, Button, Typography, IconButton, Tooltip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Modal, Stack, Alert } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { useAvailability } from '../hooks/useAvailiblity';
+import { nanoid } from 'nanoid';
 
 const style = {
     position: 'absolute' as const,
@@ -32,7 +33,7 @@ interface AvailabilityFormProps {
 }
 
 const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ editable = false }) => {
-    const { availabilities, tempAvailabilities, loading, error, saveAvailabilitiesChanges, discardChanges, add, handleDeleteAvailability, } = useAvailability();
+    const { availabilities, tempAvailabilities, loading, error, success, saveAvailabilitiesChanges, discardChanges, add, handleDeleteAvailability, } = useAvailability();
     const [isEditing, setIsEditing] = React.useState(editable);
     const [open, setOpen] = React.useState(false);
     const [newAvailability, setNewAvailability] = React.useState<{ start: Dayjs | null; end: Dayjs | null }>({ start: dayjs(), end: dayjs() });
@@ -73,8 +74,8 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ editable = false })
             </Stack>
 
             {loading && <Typography>Loading...</Typography>}
-            {error && <Typography color="error">{error}</Typography>}
-
+            {error && <Alert severity="error">{error}</Alert>}
+            {success && <Alert severity="success">Changes saved successfully!</Alert>}
             <TableContainer component={Paper} sx={{ mt: 2 }}>
                 <Table>
                     <TableHead>
@@ -88,7 +89,7 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ editable = false })
                         {displayedAvailabilities.length > 0 ? (
                             displayedAvailabilities.map((row) => {
                                 return (
-                                    <TableRow key={row.availability_id}>
+                                    <TableRow key={nanoid()}>
                                         <TableCell align="center">{row.from_date}</TableCell>
                                         <TableCell align="center">{row.to_date}</TableCell>
                                         {isEditing && (

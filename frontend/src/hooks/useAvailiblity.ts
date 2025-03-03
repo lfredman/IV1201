@@ -10,6 +10,13 @@ export const useAvailability = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const authFetch = useAuthFetch();
+  
+  const [success, setSuccess] = useState(false);
+
+  const triggerSuccess = (seconds = 5) => {
+    setSuccess(true);
+    setTimeout(() => setSuccess(false), seconds * 1000);
+  };
 
   // Update tempAvalilibty first, and only apply them when updateProfile is called
   const saveAvailabilitiesChanges = async () => {
@@ -29,7 +36,7 @@ export const useAvailability = () => {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to update availabilities');
       }
-
+      
       const res = await response.json();
       console.log(res.data)
 
@@ -41,6 +48,9 @@ export const useAvailability = () => {
       setError(err.message || 'An error occurred while updating availabilities');
       console.error(err);
       throw err;
+    } finally {
+      setLoading(false);
+      triggerSuccess();
     }
     
 
@@ -102,8 +112,9 @@ export const useAvailability = () => {
   return { 
     availabilities, 
     tempAvailabilities, // Expose tempavailability so UI can show changes before saving
-    loading, 
     error,
+    loading,
+    success,
     add,
     addAvailability,
     saveAvailabilitiesChanges, // Call this to apply changes

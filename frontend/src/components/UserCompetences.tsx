@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Stack, Button, InputLabel, FormControl, MenuItem, Select, TextField } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Stack, Button, InputLabel, FormControl, MenuItem, Select, TextField, Alert } from '@mui/material';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
@@ -17,7 +17,7 @@ const competenceOptions = [
 ];
 
 const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) => {
-  const { competences, tempCompetences, loading, error, addCompetence, resetChanges, saveProfileChanges, handleDeleteCompetence} = useProfile();
+  const { competences, tempCompetences, loading, error, success, addCompetence, resetChanges, saveProfileChanges, handleDeleteCompetence} = useProfile();
   const [isEditing, setIsEditing] = useState(editable);
   const [newCompetence, setNewCompetence] = useState({ competence: '', years_of_experience: '' });
   
@@ -46,7 +46,7 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
       addCompetence({
         competence_id: parseInt(newCompetence.competence, 10),
         competence_name: competenceOptions.find(c => c.id === parseInt(newCompetence.competence, 10))?.name || '',
-        years_of_experience: parseInt(newCompetence.years_of_experience, 10),
+        years_of_experience: parseFloat(newCompetence.years_of_experience),
       });
       setNewCompetence({ competence: '', years_of_experience: '' });
     }
@@ -69,7 +69,8 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
       </Stack>
 
       {loading && <Typography>Loading...</Typography>}
-      {error && <Typography color="error">{error}</Typography>}
+      {error && <Alert severity="error">{error}</Alert>}
+      {success && <Alert severity="success">Changes saved successfully!</Alert>}
 
       {!loading && !error && (
         <TableContainer component={Paper}>
