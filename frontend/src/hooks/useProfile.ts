@@ -35,7 +35,7 @@ export const useProfile = () => {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to update competences');
       }
-      
+      triggerSuccess();
       const res = await response.json();
       
       console.log(res.data.competences)
@@ -49,7 +49,7 @@ export const useProfile = () => {
       throw err;
     } finally {
       setLoading(false);
-      triggerSuccess();
+      
     }
     
 

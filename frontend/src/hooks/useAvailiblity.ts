@@ -36,7 +36,7 @@ export const useAvailability = () => {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to update availabilities');
       }
-      
+      triggerSuccess();
       const res = await response.json();
       console.log(res.data)
 
@@ -50,7 +50,6 @@ export const useAvailability = () => {
       throw err;
     } finally {
       setLoading(false);
-      triggerSuccess();
     }
     
 
