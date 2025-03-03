@@ -1,1 +1,1 @@
-web: npm --prefix backend start
+web: node dist/app.js
