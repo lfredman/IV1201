@@ -3,12 +3,12 @@ import { register, login, reset, resetByEmail, refreshToken } from '../controlle
 import { authenticateToken, authorizeRoleOrOwnership } from "../middleware/authMiddleware";
 import { validateRegister, validateLogin, validateEmail } from '../middleware/serverSideValidation';
 
-const router = Router();
+const accountRouter = Router();
 
-router.post('/register', validateRegister, register);
-router.post('/login', validateLogin, login);
-router.get('/refresh', refreshToken);
-router.post('/reset', authenticateToken, reset);
-router.post('/resetbyemail', validateEmail, resetByEmail);
+accountRouter.post('/register', validateRegister, register);
+accountRouter.post('/login', validateLogin, login);
+accountRouter.get('/refresh', refreshToken);
+accountRouter.post('/reset', authenticateToken, reset);
+accountRouter.post('/resetbyemail', validateEmail, resetByEmail);
 
-export default router;
+export default accountRouter;
