@@ -81,7 +81,6 @@ jobs:
         run: npm test
         working-directory: backend
 
-
       - name: Install Heroku CLI # <- IMPORTANT!!! Make sure the cli is installed before using the action
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
@@ -93,3 +92,12 @@ jobs:
           heroku_app_name: iv1201backend
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           appdir: "backend"
+        env:
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USER: ${{ secrets.DB_USER }}
+          GMAIL: ${{ secrets.GMAIL }}
+          GMAIL_SECRET: ${{ secrets.GMAIL_SECRET }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
