@@ -92,4 +92,4 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU }}
           heroku_app_name: iv1201backend
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
-          heroku_directory: backend
+          appdir: "backend"
