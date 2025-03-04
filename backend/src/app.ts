@@ -24,6 +24,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
+
+app.get('/', (req, res) => {
+  res.send('Welcome to the server!');
+});
+
 // Routes
 app.use('/account', accountRouter);
 app.use('/profile', profileRouter);
