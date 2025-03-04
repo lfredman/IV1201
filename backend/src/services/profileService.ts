@@ -1,5 +1,6 @@
 import { getCompetenceById, updateCompetenceById, Competences} from '../models/competenceModel';
-import { getAvailabilityById, updateAvailabilityById, Availabilities} from '../models/availabilityModel';
+import { getAvailabilityById, updateAvailabilityById, Availabilities } from '../models/availabilityModel';
+import {getApplicationById } from '../models/applicationModel'
 
 export const getCompetenceService = async (user_id: string) => {
     const id = Number(user_id);
@@ -77,3 +78,12 @@ export const updateAvailabilityService = async (user_id: string, availabilities:
         throw new Error("Failed to update availabilities");
     }
 };
+
+export const getApplicationService = async (user_id: string) => {
+    // Convert user_id to a number
+    const id = Number(user_id);
+    if (isNaN(id)) {
+        throw new Error("Invalid user_id");
+    }
+    return await getApplicationById(id);
+}
