@@ -82,7 +82,7 @@ jobs:
         working-directory: backend
 
       - name: Deploy to Heroku
-        uses: akshnz/heroku-deploy@v1.0.0
+        uses: heroku/actions/deploy@v2
         with:
           heroku_api_key: ${{ secrets.HEROKU }}
           heroku_app_name: iv1201backend
