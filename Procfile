@@ -1,1 +1,1 @@
-web: node dist/app.js
+web: cd backend && npm install && npm start
