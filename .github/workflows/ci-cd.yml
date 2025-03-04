@@ -65,7 +65,7 @@ jobs:
           touch .env  # Create the .env file if it doesn't exist
           echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
           echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "DB_PASSWORD=$(echo ${{ secrets.DB_PASSWORD }} | base64 --decode)" >> .env  # Decode the base64 password
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env  # Decode the base64 password
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
           echo "DB_USER=${{ secrets.DB_USER }}" >> .env
           echo "GMAIL=${{ secrets.GMAIL }}" >> .env
@@ -93,12 +93,12 @@ jobs:
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           appdir: "backend"
         env:
-          HD_RANDOM_DATA: "Hello"
-          DB_DATABASE: ${{ secrets.DB_DATABASE }}
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_USER: ${{ secrets.DB_USER }}
-          GMAIL: ${{ secrets.GMAIL }}
-          GMAIL_SECRET: ${{ secrets.GMAIL_SECRET }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          # Prefix with 'HD_' to ensure compatibility with the action
+          HD_DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          HD_DB_HOST: ${{ secrets.DB_HOST }}
+          HD_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          HD_DB_PORT: ${{ secrets.DB_PORT }}
+          HD_DB_USER: ${{ secrets.DB_USER }}
+          HD_GMAIL: ${{ secrets.GMAIL }}
+          HD_GMAIL_SECRET: ${{ secrets.GMAIL_SECRET }}
+          HD_JWT_SECRET: ${{ secrets.JWT_SECRET }}

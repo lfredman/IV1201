@@ -3,8 +3,8 @@ import { User } from "../context/UserContext"; // Import User type from context
 
 export async function loginUser(loginField: string, password: string): Promise<{ message: string; accessToken: string; refreshToken: string; userData: User }> {
   try {
-    //const response = await fetch(`http://127.0.0.1:3000/account/login`, {
-    const response = await fetch(`https://iv1201backend-aaa2e6c3c425.herokuapp.com/account/login`, {
+    const response = await fetch(`http://127.0.0.1:3000/account/login`, {
+    //const response = await fetch(`https://iv1201backend-aaa2e6c3c425.herokuapp.com/account/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
