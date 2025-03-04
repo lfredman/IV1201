@@ -93,6 +93,7 @@ jobs:
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           appdir: "backend"
         env:
+          HD_RANDOM_DATA: "Hello"
           DB_DATABASE: ${{ secrets.DB_DATABASE }}
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
