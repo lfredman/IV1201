@@ -80,3 +80,10 @@ jobs:
       - name: Run Backend Tests
         run: npm test
         working-directory: backend
+
+      - name: Deploy to Heroku
+        uses: akshnz/heroku-deploy@v1.0.0
+        with:
+          heroku_api_key: ${{ secrets.HEROKU }}
+          heroku_app_name: iv1201backend
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}

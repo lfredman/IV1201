@@ -4,7 +4,8 @@ export async function getProfile(accessToken: string | null): Promise<null> {
       throw new Error("No access token found. Please log in.");
     }
 
-    const response = await fetch(`http://127.0.0.1:3000/profile/competence`, {
+    //const response = await fetch(`http://127.0.0.1:3000/profile/competence`, {
+    const response = await fetch(`https://iv1201backend-aaa2e6c3c425.herokuapp.com/profile/competence`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${accessToken}`, // Include the token in the Authorization header

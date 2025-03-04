@@ -5,7 +5,8 @@ const useAuthFetch = () => {
   const { accessToken, refreshToken, updateAccessToken, logoutUser } = useUser();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const backendURL = 'http://localhost:3000';
+  //const backendURL = 'http://localhost:3000';
+  const backendURL = 'https://iv1201backend-aaa2e6c3c425.herokuapp.com/';
 
   // Memoizing authFetch to ensure it doesn't change on each render
   const authFetch = useCallback(
