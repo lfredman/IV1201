@@ -85,10 +85,14 @@ jobs:
       - name: Install Heroku CLI # <- IMPORTANT!!! Make sure the cli is installed before using the action
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
-          
+
+      - name: Set Heroku Buildpack for Backend
+        run: |
+          heroku buildpacks:set heroku/nodejs -a iv1201backend
+          echo "Heroku Buildpack set to Node.js"
+
+      # Force Push to Heroku
       - name: Deploy to Heroku
-        uses: AkhileshNS/heroku-deploy@v3.14.15
-        with:
-          heroku_api_key: ${{ secrets.HEROKU }}
-          heroku_app_name: iv1201backend
-          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+        run: |
+          git remote add heroku https://git.heroku.com/iv1201backend.git
+          git push heroku HEAD:main --force
