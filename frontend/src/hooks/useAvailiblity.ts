@@ -42,7 +42,7 @@ export const useAvailability = () => {
       }
       triggerSuccess();
       const res = await response.json();
-      setAvailabilitiesAndCache(res.data.av)
+      setAvailabilitiesAndCache(res.data.availabilities);
       
       return res.data;
     } catch (err: any) {
