@@ -63,7 +63,7 @@ const AddCompetence: React.FC = () => {
   };
 
   return (
-    <Box sx={{ width: 320, mx: "auto", mt: 5, p: 3, borderRadius: 2, boxShadow: 3, textAlign: "center" }}>
+    <Box sx={{ width: 400, mx: "auto", mt: 5, p: 3, borderRadius: 2, boxShadow: 3, textAlign: "center" }}>
       <Typography variant="h5" gutterBottom>Add Competence</Typography>
       {error && <Alert severity="error">{error}</Alert>}
       <form onSubmit={handleSubmit}>

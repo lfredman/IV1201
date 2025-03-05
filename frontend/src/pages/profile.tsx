@@ -17,7 +17,7 @@ const Profile: React.FC = () => {
           display: 'flex', 
           justifyContent: 'center', 
           alignItems: 'center', 
-          height: '100vh',  // Full viewport height to vertically center content
+          height: 'felx',  // Full viewport height to vertically center content
         }}
       >
         <div>

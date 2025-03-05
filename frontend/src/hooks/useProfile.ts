@@ -9,8 +9,14 @@ export const useProfile = () => {
   const { competences, tempCompetences, setCompetencesAndCache, addCompetence, deleteCompetence, updateProfile, resetChanges } = useProfileContext();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const authFetch = useAuthFetch();
 
+  const triggerSuccess = (seconds = 5) => {
+    setSuccess(true);
+    setTimeout(() => setSuccess(false), seconds * 1000);
+  };
+  
   // Update tempCompetences first, and only apply them when updateProfile is called
   const saveProfileChanges = async () => {
     console.log("TEMP", tempCompetences)
@@ -29,21 +35,24 @@ export const useProfile = () => {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to update competences');
       }
-
+      triggerSuccess();
       const res = await response.json();
+      
       console.log(res.data.competences)
-
-      setCompetencesAndCache(res.data.competences)
-
+      console.log(competences);
+      updateProfile(); // Apply tempCompetences to competence
+      
       return res.data;
     } catch (err: any) {
       setError(err.message || 'An error occurred while updating competences');
       console.error(err);
       throw err;
+    } finally {
+      setLoading(false);
+      
     }
     
 
-    updateProfile(); // Apply tempCompetences to competences
   };
 
   // Delete competence from temporary state
@@ -67,16 +76,31 @@ export const useProfile = () => {
       setError(null);
 
       try {
-        const profileData = await getProfile(accessToken); // Fetch data from API
+        
+        const response = await authFetch(`/profile/competence`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          
+        });
 
-        if (profileData) {
-          setCompetencesAndCache(profileData); // Load data into competences
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to update competences');
+        }
+        const res = await response.json();
+        console.log("RESPONSE DATA: ", res);
+        if (res.data.competences) {
+
+          setCompetencesAndCache(res.data.competences); // Load data into competences
         }
       } catch (err) {
         console.error("Profile Fetch Error:", err);
         setError("Failed to fetch profile data.");
       } finally {
         setLoading(false);
+        //setSuccess(true);
       }
     };
 
@@ -88,8 +112,10 @@ export const useProfile = () => {
     tempCompetences, // Expose tempCompetences so UI can show changes before saving
     loading, 
     error, 
+    success,
     saveProfileChanges, // Call this to apply changes
     handleDeleteCompetence,
+    addCompetence,
     resetChanges // Call this to discard changes
   };
 };
