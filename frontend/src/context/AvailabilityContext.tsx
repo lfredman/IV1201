@@ -30,7 +30,7 @@ export const AvailabilityProvider = ({ children }: { children: ReactNode }) => {
     setAvailabilities(newAvailabilities);
     setTempAvailabilities(newAvailabilities);
     localStorage.setItem("availabilities", JSON.stringify(newAvailabilities));
-    }
+  }
 
   const addAvailability = (newAvailability: Availability) => {
     newAvailability.availability_id = null;

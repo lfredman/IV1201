@@ -38,10 +38,7 @@ export const useAvailability = () => {
       }
       triggerSuccess();
       const res = await response.json();
-      console.log(res.data)
-
-      //setAvailabilitiesAndCache(res.data.av)
-      updateAvailability(); 
+      setAvailabilitiesAndCache(res.data.availabilities);
       
       return res.data;
     } catch (err: any) {
