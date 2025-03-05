@@ -5,11 +5,17 @@ export const useApplication = () => {
     const [application, setApplication] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
     const authFetch = useAuthFetch();
 
     const triggerError = (message: string, seconds = 5) => {
         setError(message);
         setTimeout(() => setError(null), seconds * 1000);
+    };
+
+    const triggerSuccess = (seconds = 5) => {
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), seconds * 1000);
     };
 
     const loadFromCache = () => {
@@ -25,7 +31,7 @@ export const useApplication = () => {
         localStorage.setItem("application", JSON.stringify(data));
         setApplication(data); // Also update the state
     };
-    
+
     useEffect(() => {
         const fetchApplication = async () => {
             
@@ -83,6 +89,7 @@ export const useApplication = () => {
             }
 
             const res = await response.json();
+            triggerSuccess();
             console.log("APPLICATION SUBMIT RESPONSE:", res);
 
             if (res.data) {
@@ -101,5 +108,5 @@ export const useApplication = () => {
         }
     };
 
-    return { application, submitApplication, loading, error };
+    return { application, submitApplication, loading, error, success };
 };
