@@ -12,6 +12,10 @@ export const useProfile = () => {
   const [success, setSuccess] = useState(false);
   const authFetch = useAuthFetch();
 
+  const triggerError = (message: string, seconds = 5) => {
+    setError(message);
+    setTimeout(() => setError(null), seconds * 1000);
+  };
   const triggerSuccess = (seconds = 5) => {
     setSuccess(true);
     setTimeout(() => setSuccess(false), seconds * 1000);
@@ -44,9 +48,13 @@ export const useProfile = () => {
       
       return res.data;
     } catch (err: any) {
-      setError(err.message || 'An error occurred while updating competences');
-      console.error(err);
-      throw err;
+      if (err instanceof Error) {
+          console.error('Caught error:', err.message);
+          triggerError(err.message);
+      } else {
+          console.error('Caught unknown error:', err);
+          triggerError('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
       
@@ -96,8 +104,13 @@ export const useProfile = () => {
           setCompetencesAndCache(res.data.competences); // Load data into competences
         }
       } catch (err) {
-        console.error("Profile Fetch Error:", err);
-        setError("Failed to fetch profile data.");
+        if (err instanceof Error) {
+            console.error('Caught error:', err.message);
+            triggerError(err.message);
+        } else {
+            console.error('Caught unknown error:', err);
+            triggerError('An unexpected error occurred');
+        }
       } finally {
         setLoading(false);
         //setSuccess(true);

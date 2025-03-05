@@ -4,7 +4,11 @@ import React from "react";
 import { useApplication } from '../hooks/useApply';
 
 const ApplicationForm: React.FC = () => {
-    const { application, loading, error } = useApplication();
+    const { application, loading, error, submitApplication } = useApplication();
+
+    const handleSubmit = async () => {
+        await submitApplication();
+    };
 
     return (
         <Box
@@ -21,7 +25,7 @@ const ApplicationForm: React.FC = () => {
                 maxWidth: 400
             }}
         >
-            <Typography variant="h6">Application Status</Typography>
+            <Typography variant="h6">Application</Typography>
 
             {loading && <Typography>Loading...</Typography>}
             {error && <Typography color="error">{error}</Typography>}
@@ -36,6 +40,7 @@ const ApplicationForm: React.FC = () => {
                 variant="contained"
                 endIcon={<SendIcon />}
                 disabled={loading}
+                onClick={handleSubmit}
             >
                 {application ? 'Update' : 'Send'}
             </Button>

@@ -1,6 +1,6 @@
-import { getCompetenceById, updateCompetenceById, Competences} from '../models/competenceModel';
-import { getAvailabilityById, updateAvailabilityById, Availabilities } from '../models/availabilityModel';
-import {getApplicationById } from '../models/applicationModel'
+import { getCompetenceById, updateCompetenceById, Competences, hasCompetence} from '../models/competenceModel';
+import { getAvailabilityById, updateAvailabilityById, Availabilities, hasAvailability } from '../models/availabilityModel';
+import {getApplicationById, upsertApplication } from '../models/applicationModel'
 
 export const getCompetenceService = async (user_id: string) => {
     const id = Number(user_id);
@@ -87,3 +87,26 @@ export const getApplicationService = async (user_id: string) => {
     }
     return await getApplicationById(id);
 }
+
+export const upsertApplicationService = async (user_id: string) => {
+    
+
+    const id = Number(user_id);
+    if (isNaN(id)) {
+        throw new Error("Invalid user_id");
+    }
+
+    const [hasComp, hasAvail] = await Promise.all([
+        hasCompetence(id),
+        hasAvailability(id)
+    ]);
+
+    if (!hasComp || !hasAvail) {
+        throw new Error(
+            `Missing ${!hasComp ? 'competence' : ''}${!hasComp && !hasAvail ? ' and ' : ''}${!hasAvail ? 'availability' : ''}`
+        );
+    }
+
+    const application = await upsertApplication(id, 'unhandled');
+    return application;
+};

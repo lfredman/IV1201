@@ -40,6 +40,37 @@ export const getApplicationById = async (person_id: number): Promise<SimpleAppli
   }
 };
 
+/*UPDATE APPLICATION IF IT EXISTS OR INSERT IF NOT*/
+export const upsertApplication = async (userId: number, action: string): Promise<SimpleApplication | null> => {
+  const client = await getClient();
+
+  try {
+    await client.query("BEGIN");
+
+    await client.query(
+      `
+      INSERT INTO applicant (person_id, status, created_at)
+      VALUES ($1, $2, NOW())
+      ON CONFLICT (person_id)
+      DO UPDATE SET 
+        status = EXCLUDED.status,
+        created_at = NOW();
+      `,
+      [userId, action]
+    );
+
+    await client.query("COMMIT");
+
+    return getApplicationById(userId);
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Error upserting application:", error);
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
 export const getApplicationsByIds = async (person_ids: number[]): Promise<Application[]> => {
   if (!person_ids || person_ids.length === 0) {
     throw new Error("No person IDs provided");
@@ -129,3 +160,4 @@ export const updateApplication = async (userId: number, action: string): Promise
     client.release(); // Release the client back to the pool
   }
 };
+

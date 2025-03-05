@@ -93,3 +93,12 @@ export const updateCompetenceById = async (person_id: number, competences: Compe
     client.release(); // Release the client back to the pool
   }
 };
+
+export const hasCompetence = async (person_id: number): Promise<boolean> => {
+  const result = await query(
+    `SELECT 1 FROM competence_profile WHERE person_id = $1 LIMIT 1;`,
+    [person_id]
+  );
+
+  return result.length > 0;
+};
