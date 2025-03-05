@@ -57,7 +57,7 @@ jobs:
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           appdir: "frontend"
         env:
-          VITE_BACKEND_URL: ${{ vars.VITE_BACKEND_URL }}
+          HD_VITE_BACKEND_URL: ${{ vars.VITE_BACKEND_URL }}
 
   backend:
     runs-on: ubuntu-latest
