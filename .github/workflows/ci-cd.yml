@@ -35,6 +35,18 @@ jobs:
         run: npm ci
         working-directory: frontend
 
+      - name: Install Heroku CLI # <- IMPORTANT!!! Make sure the cli is installed before using the action
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+          
+      - name: Deploy to Heroku
+        uses: AkhileshNS/heroku-deploy@v3.14.15
+        with:
+          heroku_api_key: ${{ secrets.HEROKU }}
+          heroku_app_name: iv1201frontend
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          appdir: "frontend"
+
   backend:
     runs-on: ubuntu-latest
 
