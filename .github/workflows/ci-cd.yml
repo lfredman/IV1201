@@ -31,14 +31,18 @@ jobs:
       - name: Debug Show Contents of Frontend Folder
         run: ls -la frontend
 
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: frontend
+        
       - name: Set Environment Variables
         run: |
           touch .env
           echo "VITE_BACKEND_URL=${{ vars.VITE_BACKEND_URL }}" >> .env
         working-directory: frontend
 
-      - name: Install Dependencies
-        run: npm ci
+      - name: Display .env file contents
+        run: cat .env
         working-directory: frontend
 
       - name: Install Heroku CLI # <- IMPORTANT!!! Make sure the cli is installed before using the action
