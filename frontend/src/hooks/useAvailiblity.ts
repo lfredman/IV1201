@@ -42,10 +42,7 @@ export const useAvailability = () => {
       }
       triggerSuccess();
       const res = await response.json();
-      console.log(res.data)
-
-      //setAvailabilitiesAndCache(res.data.av)
-      updateAvailability(); 
+      setAvailabilitiesAndCache(res.data.av)
       
       return res.data;
     } catch (err: any) {
@@ -66,8 +63,7 @@ export const useAvailability = () => {
   
   const handleDeleteAvailability = (from_date: string, to_date: string) => {
     deleteAvailability(from_date, to_date); 
-    //   
-    };
+  };
 
   const add = (availability: any) => {
     addAvailability(availability); 
