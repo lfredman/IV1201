@@ -34,7 +34,7 @@ jobs:
       - name: Set Environment Variables
         run: |
           touch .env
-          echo "VITE_BACKEND_URL=${{ env.VITE_BACKEND_URL }}" >> .env
+          echo "VITE_BACKEND_URL=${{ vars.VITE_BACKEND_URL }}" >> .env
         working-directory: frontend
 
       - name: Install Dependencies
