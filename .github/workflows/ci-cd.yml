@@ -34,7 +34,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
         working-directory: frontend
-        
+
       - name: Set Environment Variables
         run: |
           touch .env
@@ -56,6 +56,8 @@ jobs:
           heroku_app_name: iv1201frontend
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           appdir: "frontend"
+        env:
+          VITE_BACKEND_URL: ${{ vars.VITE_BACKEND_URL }}
 
   backend:
     runs-on: ubuntu-latest

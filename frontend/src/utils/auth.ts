@@ -5,7 +5,7 @@ export async function loginUser(loginField: string, password: string): Promise<{
   try {
 
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-    console.log("API URL:", BACKEND_URL);
+    console.log("API URL:", import.meta.env.VITE_BACKEND_URL);
 
   
 
