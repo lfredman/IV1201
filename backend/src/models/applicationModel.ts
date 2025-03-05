@@ -10,6 +10,8 @@ export interface Application {
   application_status: string;
   created_at: string;
   competences: { name: string; years: number }[];
+  availability: { to_date: string; from_date: string }[];
+
 }
 
 /**
@@ -42,31 +44,45 @@ const fetchApplications = async (whereClause: string, params: any[]): Promise<Ap
     const result: Application[] = await queryWithClient(
       client,
       `
-      SELECT 
-          p.person_id,
-          p.username,
-          p.name,
-          p.surname,
-          p.email,
-          p.pnr,
-          a.status AS application_status,
-          a.created_at,
-          
-          COALESCE(
-              JSONB_AGG(
-                  DISTINCT JSONB_BUILD_OBJECT(
-                      'name', c.name,
-                      'years', cp.years_of_experience
-                  )
-              ) FILTER (WHERE c.name IS NOT NULL),
-              '[]'::JSONB
-          ) AS competences
-      FROM person p
-      JOIN applicant a ON p.person_id = a.person_id
-      LEFT JOIN competence_profile cp ON p.person_id = cp.person_id
-      LEFT JOIN competence c ON cp.competence_id = c.competence_id
-      ${whereClause}
-      GROUP BY p.person_id, p.username, p.name, p.surname, p.email, p.pnr, a.status, a.created_at;
+        SELECT 
+        p.person_id,
+        p.username,
+        p.name,
+        p.surname,
+        p.email,
+        p.pnr,
+        a.status AS application_status,
+        a.created_at,
+        
+        -- Gather competences
+        COALESCE(
+            JSONB_AGG(
+                DISTINCT JSONB_BUILD_OBJECT(
+                    'name', c.name,
+                    'years', cp.years_of_experience
+                )
+            ) FILTER (WHERE c.name IS NOT NULL),
+            '[]'::JSONB
+        ) AS competences,
+
+        -- Gather availabilities
+        COALESCE(
+            JSONB_AGG(
+                DISTINCT JSONB_BUILD_OBJECT(
+                    'from_date', av.from_date,
+                    'to_date', av.to_date
+                )
+            ) FILTER (WHERE av.from_date IS NOT NULL),
+            '[]'::JSONB
+        ) AS availability
+
+        FROM person p
+        JOIN applicant a ON p.person_id = a.person_id
+        LEFT JOIN competence_profile cp ON p.person_id = cp.person_id
+        LEFT JOIN competence c ON cp.competence_id = c.competence_id
+        LEFT JOIN availability av ON p.person_id = av.person_id
+        ${whereClause}
+        GROUP BY p.person_id, p.username, p.name, p.surname, p.email, p.pnr, a.status, a.created_at;
       `,
       params
     );
