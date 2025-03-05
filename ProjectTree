@@ -1,0 +1,102 @@
+```
+IV1201
+├─ backend
+│  ├─ jest.config.js
+│  ├─ package-lock.json
+│  ├─ package.json
+│  ├─ src
+│  │  ├─ app.ts
+│  │  ├─ controllers
+│  │  │  ├─ accountController.ts
+│  │  │  ├─ adminController.ts
+│  │  │  └─ profileController.ts
+│  │  ├─ middleware
+│  │  │  ├─ authMiddleware.ts
+│  │  │  └─ serverSideValidation.ts
+│  │  ├─ models
+│  │  │  ├─ accountModel.ts
+│  │  │  ├─ applicationModel.ts
+│  │  │  └─ competenceModel.ts
+│  │  ├─ routes
+│  │  │  ├─ accountRoutes.test.ts
+│  │  │  ├─ accountRoutes.ts
+│  │  │  ├─ adminRoutes.ts
+│  │  │  └─ profileRoutes.ts
+│  │  ├─ services
+│  │  │  ├─ accountService.ts
+│  │  │  ├─ adminService.ts
+│  │  │  └─ profileService.ts
+│  │  └─ utils
+│  │     ├─ db.ts
+│  │     ├─ email.ts
+│  │     ├─ logger.ts
+│  │     └─ validation.ts
+│  └─ tsconfig.json
+├─ db.txt
+├─ Diagrams
+│  └─ readme.txt
+├─ frontend
+│  ├─ eslint.config.js
+│  ├─ index.html
+│  ├─ package-lock.json
+│  ├─ package.json
+│  ├─ public
+│  │  └─ vite.svg
+│  ├─ README.md
+│  ├─ src
+│  │  ├─ App.tsx
+│  │  ├─ assets
+│  │  │  ├─ 125183-732837197_small.mp4
+│  │  │  ├─ ferriswheel.mp4
+│  │  │  ├─ react.svg
+│  │  │  └─ rollercoaster.mp4
+│  │  ├─ components
+│  │  │  ├─ AccountInfoForm.tsx
+│  │  │  ├─ AddCompetence.tsx
+│  │  │  ├─ ApplicationsList.tsx
+│  │  │  ├─ ApplyForAJob.tsx
+│  │  │  ├─ LoginForm.tsx
+│  │  │  ├─ Navbar.tsx
+│  │  │  ├─ PasswordEmailResetForm.tsx
+│  │  │  ├─ PasswordResetForm.tsx
+│  │  │  ├─ SignupForm.tsx
+│  │  │  ├─ Test.tsx
+│  │  │  └─ UserCompetences.tsx
+│  │  ├─ context
+│  │  │  ├─ ProfileContext.tsx
+│  │  │  └─ UserContext.tsx
+│  │  ├─ hooks
+│  │  │  ├─ useApplications.ts
+│  │  │  ├─ useAuthFetch.ts
+│  │  │  ├─ useLogin.ts
+│  │  │  ├─ usePasswordReset.ts
+│  │  │  ├─ useProfile.ts
+│  │  │  ├─ useSignup.ts
+│  │  │  └─ useValidation.ts
+│  │  ├─ main.tsx
+│  │  ├─ pages
+│  │  │  ├─ ApplyForJob.tsx
+│  │  │  ├─ EditProfile.tsx
+│  │  │  ├─ Home.tsx
+│  │  │  ├─ Login.tsx
+│  │  │  ├─ NotFound.tsx
+│  │  │  ├─ profile.tsx
+│  │  │  ├─ ResetPassword.tsx
+│  │  │  └─ Signup.tsx
+│  │  ├─ styles
+│  │  │  ├─ App.css
+│  │  │  └─ video.css
+│  │  ├─ utils
+│  │  │  ├─ api.ts
+│  │  │  ├─ auth.ts
+│  │  │  ├─ profile.ts
+│  │  │  └─ signup.ts
+│  │  └─ vite-env.d.ts
+│  ├─ tsconfig.app.json
+│  ├─ tsconfig.json
+│  ├─ tsconfig.node.json
+│  └─ vite.config.ts
+├─ mod.sql
+└─ README.md
+
+```
