@@ -31,6 +31,12 @@ jobs:
       - name: Debug Show Contents of Frontend Folder
         run: ls -la frontend
 
+      - name: Set Environment Variables
+        run: |
+          touch .env
+          echo "VITE_BACKEND_URL=${{ env.VITE_BACKEND_URL }}" >> .env
+        working-directory: frontend
+
       - name: Install Dependencies
         run: npm ci
         working-directory: frontend
