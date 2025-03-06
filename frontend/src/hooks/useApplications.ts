@@ -27,6 +27,7 @@ export interface Application {
   application_status: string;
   created_at: string;
   competences: { name: string; years: number }[];
+  availability: { to_date: string; from_date: string }[];
 }
 
 

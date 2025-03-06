@@ -31,9 +31,15 @@ export const useProfile = () => {
   const { competences, tempCompetences, setCompetencesAndCache, addCompetence, deleteCompetence, updateProfile, resetChanges } = useProfileContext();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const authFetch = useAuthFetch();
   const { validateCompetences} = useValidation();
 
+  const triggerSuccess = (seconds = 5) => {
+    setSuccess(true);
+    setTimeout(() => setSuccess(false), seconds * 1000);
+  };
+  
   // Update tempCompetences first, and only apply them when updateProfile is called
   const saveProfileChanges = async () => {
     console.log("TEMP", tempCompetences)
@@ -58,21 +64,24 @@ export const useProfile = () => {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to update competences');
       }
-
+      triggerSuccess();
       const res = await response.json();
+      
       console.log(res.data.competences)
-
-      setCompetencesAndCache(res.data.competences)
-
+      console.log(competences);
+      updateProfile(); // Apply tempCompetences to competence
+      
       return res.data;
     } catch (err: any) {
       setError(err.message || 'An error occurred while updating competences');
       console.error(err);
       throw err;
+    } finally {
+      setLoading(false);
+      
     }
     
 
-    updateProfile(); // Apply tempCompetences to competences
   };
 
   // Delete competence from temporary state
@@ -95,9 +104,6 @@ export const useProfile = () => {
       setLoading(true);
       setError(null);
 
-
-      console.log("APAPAPP")
-
       try {
         const profileData = await authFetch(`/profile/competence`, {
         method: "GET",
@@ -113,6 +119,7 @@ export const useProfile = () => {
         setError("Failed to fetch profile data.");
       } finally {
         setLoading(false);
+        //setSuccess(true);
       }
     };
 
@@ -124,8 +131,10 @@ export const useProfile = () => {
     tempCompetences, // Expose tempCompetences so UI can show changes before saving
     loading, 
     error, 
+    success,
     saveProfileChanges, // Call this to apply changes
     handleDeleteCompetence,
+    addCompetence,
     resetChanges // Call this to discard changes
   };
 };

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticateToken, authorizeRoleOrOwnership } from "../middleware/authMiddleware";
-import { getCompetence, updateCompetence } from '../controllers/profileController';
+import { getCompetence, updateCompetence, getAvailability, updateAvailability } from '../controllers/profileController';
 
 /**
  * This router handles competence-related endpoints.
@@ -15,5 +15,8 @@ const profileRouter = Router();
 profileRouter.get('/competence/:id', authenticateToken, authorizeRoleOrOwnership, getCompetence);
 profileRouter.get('/competence/', authenticateToken, getCompetence);
 profileRouter.post('/competence/', authenticateToken, updateCompetence);
+profileRouter.get('/availability/', authenticateToken, getAvailability);
+profileRouter.post('/availability/', authenticateToken, updateAvailability);
+
 
 export default profileRouter; 

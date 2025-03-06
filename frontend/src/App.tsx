@@ -8,6 +8,7 @@ import EditProfile from "./pages/EditProfile"
 import ApplyForJob from "./pages/ApplyForJob";
 import ResetPassword from "./pages/ResetPassword"
 import "./styles/App.css"; // Import global styles here
+import { AvailabilityProvider } from "./context/AvailabilityContext";
 
 
 import { UserProvider } from './context/UserContext';  // Import UserProvider
@@ -43,6 +44,7 @@ const App: React.FC = () => {
     <UserProvider>
       <ProfileProvider>
       <Navbar></Navbar>
+      <AvailabilityProvider>
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
@@ -54,6 +56,7 @@ const App: React.FC = () => {
         <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/applications" element={<ApplicationsList />} />
       </Routes>
+      </AvailabilityProvider>
       </ProfileProvider>
     </UserProvider>
   );

@@ -20,7 +20,7 @@ import {
 import { useUser } from '../context/UserContext';
 
 interface SortConfig {
-  key: keyof Application | "totalCompetences" | "totalYears" | null;
+  key: keyof Application | "totalCompetences" | "totalYears" | "totalAvailability" | null;
   direction: "asc" | "desc";
 }
 
@@ -53,30 +53,44 @@ const ApplicationsList: React.FC = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const user = useUser()
 
-  // Sorting function
   const sortedApplications = [...applications].sort((a, b) => {
     if (!sortConfig.key) return 0;
-
+  
     // Determine the value to sort based on the key
-    const aValue = sortConfig.key === "totalCompetences"
-      ? a.competences.length
-      : sortConfig.key === "totalYears"
-      ? a.competences.reduce((sum, comp) => sum + comp.years, 0)
-      : a[sortConfig.key];
-
-    const bValue = sortConfig.key === "totalCompetences"
-      ? b.competences.length
-      : sortConfig.key === "totalYears"
-      ? b.competences.reduce((sum, comp) => sum + comp.years, 0)
-      : b[sortConfig.key];
-
+    const getTotalAvailability = (app: Application): number => {
+      return app.availability.reduce((sum, comp) => {
+        const fromDate = new Date(comp.from_date);
+        const toDate = new Date(comp.to_date);
+        return sum + (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
+      }, 0);
+    };
+  
+    const aValue =
+      sortConfig.key === "totalCompetences"
+        ? a.competences.length
+        : sortConfig.key === "totalYears"
+        ? a.competences.reduce((sum, comp) => sum + comp.years, 0)
+        : sortConfig.key === "totalAvailability"
+        ? getTotalAvailability(a)
+        : a[sortConfig.key];
+  
+    const bValue =
+      sortConfig.key === "totalCompetences"
+        ? b.competences.length
+        : sortConfig.key === "totalYears"
+        ? b.competences.reduce((sum, comp) => sum + comp.years, 0)
+        : sortConfig.key === "totalAvailability"
+        ? getTotalAvailability(b)
+        : b[sortConfig.key];
+  
     if (aValue === null || aValue === undefined) return -1;
     if (bValue === null || bValue === undefined) return 1;
-
+  
     if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
     if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
     return 0;
   });
+  
 
   // Search filter
   const filteredApplications = sortedApplications.filter(app =>
@@ -87,7 +101,7 @@ const ApplicationsList: React.FC = () => {
   );
 
   // Handle sorting change
-  const handleSort = (key: keyof Application | "totalCompetences" | "totalYears") => {
+  const handleSort = (key: keyof Application | "totalCompetences" | "totalYears" | "totalAvailability" ) => {
     setSortConfig(prev => ({
       key,
       direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
@@ -196,6 +210,15 @@ const ApplicationsList: React.FC = () => {
                   Total Years of Experience
                 </TableSortLabel>
               </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortConfig.key === "totalAvailability"}
+                  direction={sortConfig.key === "totalAvailability" ? sortConfig.direction : "asc"}
+                  onClick={() => handleSort("totalAvailability")}
+                >
+                  Total available dates
+                </TableSortLabel>
+              </TableCell>
             </TableRow>
           </TableHead>
 
@@ -203,6 +226,12 @@ const ApplicationsList: React.FC = () => {
             {filteredApplications.map(app => {
               const numCompetences = app.competences.length;
               const totalYears = app.competences.reduce((sum, comp) => sum + comp.years, 0);
+              const totalAvailability: number = app.availability.reduce((sum, comp) => {
+                const fromDate: Date = new Date(comp.from_date);
+                const toDate: Date = new Date(comp.to_date);
+                const differenceInDays: number = (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24);
+                return sum + differenceInDays;
+            }, 0);            
 
               return (
                 <TableRow key={app.person_id} onClick={() => handleProfileClick(app)} style={{ cursor: "pointer" }}>
@@ -241,7 +270,8 @@ const ApplicationsList: React.FC = () => {
                   </TableCell>
                   <TableCell>{numCompetences}</TableCell>
                   <TableCell>{totalYears.toFixed(2)}</TableCell>
-                </TableRow>
+                  <TableCell>{totalAvailability}</TableCell>
+                  </TableRow>
               );
             })}
           </TableBody>
@@ -319,6 +349,29 @@ const ApplicationsList: React.FC = () => {
                 </TableContainer>
               ) : (
                 <Typography variant="h6" sx={{ mt: 2, mb: 2 }}>No competences</Typography>
+              )}
+
+              {selectedApplication && selectedApplication.availability.length > 0 ? (
+                <TableContainer component={Paper} sx={{ mt: 2, mb: 2 }}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>From date</TableCell>
+                        <TableCell>To date</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {selectedApplication.availability.map((availability, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{availability.from_date}</TableCell>
+                          <TableCell>{availability.to_date}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              ) : (
+                <Typography variant="h6" sx={{ mt: 2, mb: 2 }}>No available dates</Typography>
               )}
 
               <Box sx={{ mt: 2 }}>

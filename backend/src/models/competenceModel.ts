@@ -39,16 +39,24 @@ export const getCompetenceById = async (person_id: number): Promise<Competences 
   `);
 
   // If result is an array directly, you can return it as is
+  console.log(result);
   if (result && Array.isArray(result)) {
     return {
-      person_id,  // Include the person_id
-      competences: result.map((competence) => ({
-        competence_id: competence.competence_id,
-        competence_name: competence.competence_name,
-        years_of_experience: parseFloat(competence.years_of_experience),  // Convert string to number
-      }))
+      person_id,
+      competences: result
+        .filter(competence => 
+          competence.competence_id !== null && 
+          competence.competence_name !== null && 
+          competence.years_of_experience !== null
+        )
+        .map(competence => ({
+          competence_id: competence.competence_id,
+          competence_name: competence.competence_name,
+          years_of_experience: parseFloat(competence.years_of_experience),
+        }))
     };
-  } else {
+  }
+  else {
     return null;  // In case no results were found
   }
 };
