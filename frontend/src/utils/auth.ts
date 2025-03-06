@@ -5,9 +5,10 @@ export async function loginUser(loginField: string, password: string): Promise<{
   try {
 
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-    console.log("API URL:", import.meta.env.VITE_BACKEND_URL);
-
-    //const response = await fetch(`http://127.0.0.1:3000/account/login`, {
+    if (!BACKEND_URL){
+      throw new Error('Could not find backend server!');
+    }
+    
     const response = await fetch(`${BACKEND_URL}/account/login`, {
       method: 'POST',
       headers: {

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getProfile } from "../utils/profile"; // API call function
 import { useUser } from "../context/UserContext"; // User context for tokens
 import { useProfile as useProfileContext } from "../context/ProfileContext"; // Profile context
 import useAuthFetch  from "./useAuthFetch";
@@ -74,11 +73,18 @@ export const useProfile = () => {
       setLoading(true);
       setError(null);
 
-      try {
-        const profileData = await getProfile(accessToken); // Fetch data from API
 
-        if (profileData) {
-          setCompetencesAndCache(profileData); // Load data into competences
+      console.log("APAPAPP")
+
+      try {
+        const profileData = await authFetch(`/profile/competence`, {
+        method: "GET",
+      })
+      const res = await profileData.json();
+      console.log("RES", res)
+
+      if (res.data.competences && Array.isArray(res.data.competences)) {
+          setCompetencesAndCache(res.data.competences); // Load data into competences
         }
       } catch (err) {
         console.error("Profile Fetch Error:", err);
@@ -89,7 +95,7 @@ export const useProfile = () => {
     };
 
     fetchProfile();
-  }, [accessToken]); // ✅ Only re-fetch when token changes
+  }, []); // ✅ Only re-fetch when token changes
 
   return { 
     competences, 

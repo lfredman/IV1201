@@ -5,8 +5,10 @@ const useAuthFetch = () => {
   const { accessToken, refreshToken, updateAccessToken, logoutUser } = useUser();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const backendURL = 'http://localhost:3000';
-  //const backendURL = 'https://iv1201backend-aaa2e6c3c425.herokuapp.com/';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  if (!BACKEND_URL){
+    throw new Error('Could not find backend server!');
+  }
 
   // Memoizing authFetch to ensure it doesn't change on each render
   const authFetch = useCallback(
@@ -19,13 +21,13 @@ const useAuthFetch = () => {
       };
 
       try {
-        const response = await fetch(backendURL + url, { ...options, headers });
+        const response = await fetch(BACKEND_URL + url, { ...options, headers });
 
         if (response.status === 401 && refreshToken && !isRefreshing) {
           setIsRefreshing(true);
           console.log("REFRESHING TOKEN");
 
-          const refreshResponse = await fetch(`${backendURL}/account/refresh?refreshToken=${refreshToken}`, {
+          const refreshResponse = await fetch(`${BACKEND_URL}/account/refresh?refreshToken=${refreshToken}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
           });
@@ -35,7 +37,7 @@ const useAuthFetch = () => {
             console.log("NEW TOKEN", data.accessToken);
             updateAccessToken(data.accessToken);
 
-            return fetch(backendURL + url, {
+            return fetch(BACKEND_URL + url, {
               ...options,
               headers: {
                 ...options.headers,
@@ -63,7 +65,7 @@ const useAuthFetch = () => {
         setIsRefreshing(false);
       }
     },
-    [accessToken, refreshToken, isRefreshing, updateAccessToken, logoutUser, backendURL] // Add dependencies to ensure stable function
+    [accessToken, refreshToken, isRefreshing, updateAccessToken, logoutUser, BACKEND_URL] // Add dependencies to ensure stable function
   );
 
   return authFetch;

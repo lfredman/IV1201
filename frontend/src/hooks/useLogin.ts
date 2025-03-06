@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { useUser } from '../context/UserContext'; // Import the context
 import { loginUser } from '../utils/auth'; // Import model function (API call)
-import { getProfile } from '../utils/profile'; // Import model function (API call)
 import { useValidation } from './useValidation';
 
 // Custom hook for login
