@@ -1,5 +1,8 @@
 import { query, getClient, queryWithClient } from "../utils/db";
 
+/**
+ * Interface representing an Application object.
+ */
 export interface Application {
   person_id: number;
   username: string;
@@ -12,6 +15,15 @@ export interface Application {
   competences: { name: string; years: number }[];
 }
 
+/**
+ * Fetches applications based on provided person IDs.
+ * 
+ * This function will query the database for applications of the specified persons.
+ * 
+ * @param {number[]} person_ids - An array of person IDs for which applications are to be fetched.
+ * @returns {Promise<Application[]>} - A promise that resolves to an array of Application objects.
+ * @throws {Error} - Throws an error if no person IDs are provided.
+ */
 export const getApplicationsByIds = async (person_ids: number[]): Promise<Application[]> => {
   if (!person_ids || person_ids.length === 0) {
     throw new Error("No person IDs provided");
@@ -20,11 +32,26 @@ export const getApplicationsByIds = async (person_ids: number[]): Promise<Applic
   return await fetchApplications("WHERE p.person_id = ANY($1)", [person_ids]);
 };
 
+/**
+ * Fetches all applications from the database.
+ * 
+ * @returns {Promise<Application[]>} - A promise that resolves to an array of all Application objects.
+ */
 export const getAllApplications = async (): Promise<Application[]> => {
   return await fetchApplications("", []);
 };
 
-
+/**
+ * Helper function to fetch applications with a given SQL `WHERE` clause.
+ * 
+ * This function builds and executes a database query to fetch application details.
+ * It uses the provided `whereClause` to filter the results and the `params` array
+ * for parameterized query binding.
+ * 
+ * @param {string} whereClause - The `WHERE` SQL clause to filter the results.
+ * @param {any[]} params - An array of parameters to be used in the query.
+ * @returns {Promise<Application[]>} - A promise that resolves to an array of Application objects.
+ */
 const fetchApplications = async (whereClause: string, params: any[]): Promise<Application[]> => {
   const client = await getClient(); 
 
@@ -75,6 +102,15 @@ const fetchApplications = async (whereClause: string, params: any[]): Promise<Ap
   }
 };
 
+/**
+ * Updates the status of an application based on user ID.
+ * 
+ * This function updates the status of an application for a given user (person_id).
+ * 
+ * @param {number} userId - The ID of the user whose application status is to be updated.
+ * @param {string} action - The new status to set for the user's application.
+ * @returns {Promise<Application[]>} - A promise that resolves to the updated application information for the user.
+ */
 export const updateApplication = async (userId: number, action: string): Promise<Application[]> => {
   const client = await getClient(); // Acquire a client for transactions
 

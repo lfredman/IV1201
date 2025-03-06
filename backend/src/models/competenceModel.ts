@@ -1,17 +1,31 @@
 import { query, getClient, queryWithClient } from "../utils/db";
 import  {isCompetencesValid} from "../utils/validation"
 
+/**
+ * Interface representing a single Competence object.
+ */
 export interface Competence {
   competence_id: number;
   competence_name: string;
   years_of_experience: number;
 }
 
+/**
+ * Interface representing a collection of competences for a specific person.
+ */
 export interface Competences {
   person_id: number;
   competences: Competence[];
 }
 
+/**
+ * Fetches the competences of a specific person by their ID.
+ * 
+ * This function will query the database to retrieve all competences related to the given `person_id`.
+ * 
+ * @param {number} person_id - The ID of the person whose competences are being fetched.
+ * @returns {Promise<Competences | null>} - A promise that resolves to the person's competences or null if no competences are found.
+ */
 export const getCompetenceById = async (person_id: number): Promise<Competences | null> => {
   const result = await query(`
     SELECT 
@@ -39,6 +53,17 @@ export const getCompetenceById = async (person_id: number): Promise<Competences 
   }
 };
 
+/**
+ * Updates the competences of a specific person.
+ * 
+ * This function will delete old competences that are not in the new list and insert or update the competences.
+ * It ensures that the competences are valid before proceeding.
+ * 
+ * @param {number} person_id - The ID of the person whose competences are being updated.
+ * @param {Competences} competences - The new competences for the person, including their years of experience.
+ * @returns {Promise<Competences | null>} - A promise that resolves to the updated competences of the person or null if no competences are found.
+ * @throws {Error} - Throws an error if the competences are invalid or there is a database operation failure.
+ */
 export const updateCompetenceById = async (person_id: number, competences: Competences): Promise<Competences | null> => {
   const client = await getClient(); // Acquire a client for transactions
 

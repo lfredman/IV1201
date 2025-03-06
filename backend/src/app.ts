@@ -6,9 +6,13 @@ import adminRoutes from './routes/adminRoutes';
 import bodyParser from 'body-parser';
 import cors, { CorsOptions } from "cors";
 
+/**
+ * Sets up an Express.js server with specific CORS configuration, middleware, and routes for handling API requests.
+ * The server listens on a specified port (default 3000) and includes routes for account, profile, and admin functionalities.
+ * Error handling is included for undefined routes, returning a 404 status. The server runs in production mode unless the environment is set to 'test'.
+ */
 const app = express();
 const port = process.env.PORT || 3000;
-
 
 const allowedOrigins = ["http://localhost:5173", "http://127.0.0.1:5173"];
 

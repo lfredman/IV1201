@@ -10,11 +10,24 @@ if (!JWT_SECRET) {
   throw new Error('JWT_SECRET is not defined in environment variables');
 }
 
+/**
+ * Interface that extends the Request object to include the user object attached after token verification.
+ */
 export interface AuthRequest extends Request {
   user?: any;
 }
 
-// Middleware to authenticate token
+/**
+ * Middleware function to authenticate the JWT token in the request.
+ * It checks for the 'Authorization' header, extracts the token, verifies it, and decodes it.
+ * If the token is valid, the decoded user information is added to the request object.
+ * If the token is missing or invalid, an error response is returned.
+ * 
+ * @param {AuthRequest} req - The request object, which may contain a JWT token in the 'Authorization' header.
+ * @param {Response} res - The response object used to send error messages or proceed with the request.
+ * @param {NextFunction} next - The next middleware or route handler to be called if authentication succeeds.
+ * @returns {void} - The function either proceeds to the next middleware or returns an error response.
+ */
 export const authenticateToken = (req: AuthRequest, res: Response, next: NextFunction): void => {
   const token = req.header('Authorization')?.split(' ')[1];
   
@@ -40,7 +53,18 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
   }
 };
 
-// Middleware to authorize based on user role and ownership
+/**
+ * Middleware function to authorize access based on the user's role and ownership of the resource.
+ * Admin users (role_id === 1) have full access to all resources.
+ * For non-admin users, it checks whether the user is trying to access their own resource 
+ * (identified by user ID in either the URL params or request body).
+ * If the user is unauthorized, a 403 error is returned.
+ * 
+ * @param {AuthRequest} req - The request object containing user information (role_id, userId) and the resource to access.
+ * @param {Response} res - The response object used to send error messages or proceed with the request.
+ * @param {NextFunction} next - The next middleware or route handler to be called if authorization succeeds.
+ * @returns {void} - The function either proceeds to the next middleware or returns an error response.
+ */
 export const authorizeRoleOrOwnership = (
   req: AuthRequest, 
   res: Response, 

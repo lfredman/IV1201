@@ -2,7 +2,17 @@ import { Request, Response } from "express";
 import { getCompetenceService, updateCompetenceService } from "../services/profileService";
 import { AuthRequest } from "../middleware/authMiddleware";  // Import the AuthRequest type
 
-
+/**
+ * Retrieves the competence data for a user. 
+ * By default, it fetches the logged-in user's competence data, 
+ * but if a specific user ID is provided in the route parameters, 
+ * it fetches the competence data for that user.
+ * Sends a success message along with the competence data, or an error message if an error occurs.
+ *
+ * @param {AuthRequest} req - The request object containing user information and route parameters.
+ * @param {Response} res - The response object used to send back the competence data or an error message.
+ * @returns {Promise<void>} - A promise that resolves when the response is sent to the client.
+ */
 export const getCompetence = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
       let id = req.user.userId; // Use the token userid by default
@@ -21,7 +31,18 @@ export const getCompetence = async (req: AuthRequest, res: Response): Promise<vo
       }
     }
   };
-
+  
+/**
+ * Updates the competence data for a user.
+ * By default, it updates the logged-in user's competence data, 
+ * but if a specific user ID is provided in the route parameters, 
+ * it updates the competence data for that user.
+ * Sends a success message along with the updated competence data, or an error message if an error occurs.
+ *
+ * @param {AuthRequest} req - The request object containing user information and the data to be updated.
+ * @param {Response} res - The response object used to send back the updated competence data or an error message.
+ * @returns {Promise<void>} - A promise that resolves when the response is sent to the client.
+ */
 export const updateCompetence = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
       let id = req.user.userId; // Use the token userid by default

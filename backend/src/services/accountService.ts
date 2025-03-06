@@ -9,6 +9,20 @@ import { isEmailValid, isPasswordValid, isPnrValid } from '../utils/validation';
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
+/**
+ * Handles user registration by validating the input fields and checking for existing usernames, emails, 
+ * and personal numbers. Hashes the password before storing and returns the login tokens after successful registration.
+ * In case of any errors, sends an appropriate error message and status.
+ *
+ * @param {Object} data - The data object containing user details for registration.
+ * @param {string} data.name - The user's first name.
+ * @param {string} data.surname - The user's surname.
+ * @param {string} data.pnr - The user's personal number.
+ * @param {string} data.username - The desired username.
+ * @param {string} data.email - The user's email address.
+ * @param {string} data.password - The user's chosen password.
+ * @returns {Promise<Object>} - A promise that resolves with the login tokens and user details after successful registration.
+ */
 export const registerService = async (data: { 
   name: string; 
   surname: string; 
@@ -86,7 +100,16 @@ export const registerService = async (data: {
   }
 };
 
-// USER LOGIN
+/**
+ * Handles user login by validating the provided credentials. Checks if the loginField matches a username, 
+ * email, or personal number, and if the password is correct. Generates access and refresh tokens if login is successful.
+ * Sends an error message if credentials are invalid.
+ *
+ * @param {Object} data - The data object containing login credentials.
+ * @param {string} data.loginField - The username, email, or personal number used for login.
+ * @param {string} data.password - The password entered by the user.
+ * @returns {Promise<Object>} - A promise that resolves with the login tokens and user details after successful login.
+ */
 export const loginService = async (data: { loginField: string; password: string }) => {
   const { loginField, password } = data;
 
@@ -140,7 +163,13 @@ export const loginService = async (data: { loginField: string; password: string 
   };
 };
 
-// TOKEN REFRESH
+/**
+ * Handles token refresh requests by verifying the provided refresh token and generating a new access token.
+ * Sends an error message if the refresh token is invalid or expired.
+ *
+ * @param {string} refreshToken - The refresh token used to generate a new access token.
+ * @returns {Promise<Object>} - A promise that resolves with the new access token.
+ */
 export const tokenRefreshService = async (refreshToken: string) => {
   let accessToken = {};
 
@@ -166,6 +195,16 @@ export const tokenRefreshService = async (refreshToken: string) => {
   };
 };
 
+/**
+ * Handles password reset requests by updating the password of a user identified by the given ID.
+ * The new password is validated for strength and hashed before being stored.
+ * Sends an error message if the parameters are missing or invalid.
+ *
+ * @param {string} id - The user ID for the account whose password needs to be reset.
+ * @param {Object} data - The data object containing the new password.
+ * @param {string} data.password - The new password to be set.
+ * @returns {Promise<Object>} - A promise that resolves with the result of the password change operation.
+ */
 export const pwdResetService = async (id: string, data: { password: string }) => {
   const { password } = data;
     
@@ -195,7 +234,15 @@ export const pwdResetService = async (id: string, data: { password: string }) =>
   return changePassword(user.person_id, hashedPassword);
 };
 
-
+/**
+ * Handles password reset requests by email. Validates the email format, generates a password reset token, 
+ * and sends a password reset email to the user with a link to reset their password.
+ * Sends an error message if the email is missing or invalid, or if no user is found.
+ *
+ * @param {Object} data - The data object containing the user's email address.
+ * @param {string} data.email - The email address of the user requesting the password reset.
+ * @returns {Promise<Object>} - A promise that resolves with a success message after sending the password reset email.
+ */
 export const pwdResetByEmailService = async (data: { email: string }) => {
   const { email } = data;
 

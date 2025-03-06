@@ -1,5 +1,13 @@
 import { getCompetenceById, updateCompetenceById, Competences} from '../models/competenceModel';
 
+/**
+ * Retrieves the competence data for a user based on the provided user ID.
+ * If the user ID is invalid (not a number), throws an error.
+ * In case of an error while retrieving the data, sends a 500 status.
+ *
+ * @param {string} user_id - The ID of the user whose competence data is to be fetched.
+ * @returns {Promise<Object>} - A promise that resolves with the user's competence data.
+ */
 export const getCompetenceService = async (user_id: string) => {
     const id = Number(user_id);
 
@@ -10,7 +18,16 @@ export const getCompetenceService = async (user_id: string) => {
     return await getCompetenceById(id);
 };
 
-
+/**
+ * Updates the competence data for a specific user based on the provided user ID and competence details.
+ * If the user ID or competence data is invalid, throws an error.
+ * Logs the competences object for debugging purposes before calling the model function to update the data.
+ * In case of an error while updating, throws a generic error message.
+ *
+ * @param {string} user_id - The ID of the user whose competence data is to be updated.
+ * @param {Competences} competences - The competence data to update, including the user's competences.
+ * @returns {Promise<Object>} - A promise that resolves with the updated competence data.
+ */
 export const updateCompetenceService = async (user_id: string, competences: Competences) => {
     // Convert user_id to a number
     const id = Number(user_id);

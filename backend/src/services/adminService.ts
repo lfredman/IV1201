@@ -1,6 +1,16 @@
 import { getApplicationsByIds, getAllApplications, updateApplication } from '../models/applicationModel'
 import { logger } from '../utils/logger';
 
+/**
+ * Retrieves applications based on the provided query parameters.
+ * If specific IDs are provided, it fetches applications for those IDs.
+ * Otherwise, it fetches all applications. Filters out invalid IDs and logs any issues.
+ * In case of an error, sends a 400 status for invalid query parameters, or a 500 status for server-related errors.
+ *
+ * @param {Object} data - The data object containing query parameters for fetching applications.
+ * @param {string} [data.ids] - A comma-separated list of application IDs to fetch. Optional.
+ * @returns {Promise<Array>} - A promise that resolves with an array of applications.
+ */
 export const getApplicationService = async (data: { ids?: string }) => {
     if (data.ids && typeof data.ids !== "string") {
         logger.error('Invalid ids query parameter', { data });
@@ -42,7 +52,17 @@ export const getApplicationService = async (data: { ids?: string }) => {
     }
 };
 
-
+/**
+ * Updates the status of a specific application based on the provided action.
+ * Valid actions are 'unhandled', 'accepted', and 'rejected'.
+ * Logs the action and updates the application accordingly.
+ * In case of an error, sends a 400 status if the parameters are invalid, or a 500 status for server-related errors.
+ *
+ * @param {Object} data - The data object containing the application ID and the action to be performed.
+ * @param {number} data.id - The ID of the application to update.
+ * @param {string} data.action - The action to perform on the application ('unhandled', 'accepted', or 'rejected').
+ * @returns {Promise<Object>} - A promise that resolves with the updated application details.
+ */
 export const updateApplicationService = async (data: { id: number, action: string }) => {
     if (typeof data.id !== "number" || data.id <= 0) {
         logger.error('Invalid id query parameter', { data });

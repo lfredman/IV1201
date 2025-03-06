@@ -3,6 +3,16 @@ import app from '../app'; // Import your Express app
 import { closeDB } from '../utils/db';
 import { deleteUserByUsername } from '../models/accountModel';
 
+/**
+ * This test suite covers the functionality related to user registration, login, and token refresh. 
+ * It tests various endpoints of the '/account' route:
+ * - **POST /account/register**: Verifies user registration, including success, existing username/email/PNR checks, 
+ *   password strength validation, and proper error handling for missing or invalid fields.
+ * - **POST /account/login**: Ensures that valid credentials allow login, and invalid credentials return proper error messages.
+ * - **GET /account/refresh**: Tests the refresh token functionality, including successful token refresh and handling of expired or invalid refresh tokens.
+ * 
+ * Each test ensures that the API behaves as expected under different conditions.
+ */
 describe('User Registration, Login, and Token Refresh', () => {
     
     afterAll(async () => {

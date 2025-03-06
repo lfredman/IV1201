@@ -3,6 +3,16 @@ import { registerService, loginService, pwdResetService, pwdResetByEmailService,
 import { AuthRequest } from "../middleware/authMiddleware";  // Import the AuthRequest type
 
 
+/**
+ * Registers a new user by invoking the registerService with the request body data.
+ * If successful, returns a 201 status with a success message and user data.
+ * In case of an error, it sends a 400 status with the error message or a 500 status 
+ * for an unknown error.
+ *
+ * @param {Request} req - The request object containing the user registration details in the body.
+ * @param {Response} res - The response object used to send back the status and data to the client.
+ * @returns {Promise<void>} - A promise that resolves when the response is sent to the client.
+ */
 export const register = async (req: Request, res: Response): Promise<void> => {
     try {
       const data = await registerService(req.body);
@@ -16,6 +26,16 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     }
   };
 
+
+/**
+ * Handles user login by invoking the loginService with the provided login credentials from the request body.
+ * If successful, returns a success message along with the user data.
+ * In case of an error, sends a 400 status with the error message or a 500 status for an unknown error.
+ *
+ * @param {Request} req - The request object containing the login credentials (username/email and password) in the body.
+ * @param {Response} res - The response object used to send back the status and data to the client.
+ * @returns {Promise<void>} - A promise that resolves when the response is sent to the client.
+ */
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const data = await loginService(req.body);
@@ -29,6 +49,17 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+/**
+ * Handles the password reset request by extracting the user ID from the token in the request and passing it 
+ * along with the request body to the password reset service.
+ * If successful, returns a success message along with the reset data.
+ * In case of an error, sends a 400 status with the error message or a 500 status for an unknown error.
+ *
+ * @param {AuthRequest} req - The request object containing the authenticated user information (user ID from token) 
+ *                             and the request body with new password details.
+ * @param {Response} res - The response object used to send back the status and data to the client.
+ * @returns {Promise<void>} - A promise that resolves when the response is sent to the client.
+ */
 export const reset = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
 
@@ -45,6 +76,15 @@ export const reset = async (req: AuthRequest, res: Response): Promise<void> => {
   }
 };
 
+/**
+ * Handles password reset request by sending a reset link to the user's registered email address.
+ * If successful, sends a success message along with any related data.
+ * In case of an error, sends a 400 status with the error message or a 500 status for an unknown error.
+ *
+ * @param {Request} req - The request object containing the email and necessary data to trigger the password reset.
+ * @param {Response} res - The response object used to send back the status and data to the client.
+ * @returns {Promise<void>} - A promise that resolves when the response is sent to the client.
+ */
 export const resetByEmail = async (req: Request, res: Response): Promise<void> => {
   try {
     const data = await pwdResetByEmailService(req.body);
@@ -58,6 +98,16 @@ export const resetByEmail = async (req: Request, res: Response): Promise<void> =
   }
 };
 
+/**
+ * Handles refresh token request to generate a new access token using the provided refresh token.
+ * If successful, returns a new token along with a success message.
+ * In case of an error, sends a 400 status if the refresh token is missing or invalid, 
+ * or a 500 status for server-related errors.
+ *
+ * @param {Request} req - The request object containing the refresh token in the query parameters.
+ * @param {Response} res - The response object used to send back the refreshed token or error message.
+ * @returns {Promise<void>} - A promise that resolves when the response is sent to the client.
+ */
 export const refreshToken = async (req: Request, res: Response): Promise<void> => {
   try {
     // Extract refreshToken from query parameters
