@@ -72,8 +72,11 @@ export const useSignup = () => {
       navigate("/");
       return userData; // Return user or token if needed elsewhere
     } catch (err) {
-      const errMsg: string = "Sign up failed! " + err.message;
-      setError(errMsg);
+      if (err instanceof Error) {
+        const errMsg: string = "Sign up failed! " + err.message;
+      } else {
+        const errMsg: string = "Sign up failed!";
+      }      
     } finally {
       
       setLoading(false);

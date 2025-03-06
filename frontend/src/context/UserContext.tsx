@@ -82,6 +82,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem("user"); // Remove user data
     localStorage.removeItem("accessToken"); // Remove access token
     localStorage.removeItem("refreshToken"); // Remove refresh token
+    localStorage.removeItem("competences");
+    localStorage.removeItem("availabilities");
     sessionStorage.clear(); // Optionally clear session storage
     navigate("/"); // Redirect if needed
   };

@@ -27,7 +27,7 @@ dist-ssr
 .env
 *.env
 backend/.env
-backend/.env
+frontend/.env
 backend/logs/*
 logs/
 *.log

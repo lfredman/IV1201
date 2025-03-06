@@ -16,7 +16,13 @@ import { User } from "../context/UserContext"; // Import User type from context
  */
 export async function loginUser(loginField: string, password: string): Promise<{ message: string; accessToken: string; refreshToken: string; userData: User }> {
   try {
-    const response = await fetch(`http://127.0.0.1:3000/account/login`, {
+
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    if (!BACKEND_URL){
+      throw new Error('Could not find backend server!');
+    }
+    
+    const response = await fetch(`${BACKEND_URL}/account/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

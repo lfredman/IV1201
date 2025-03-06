@@ -9,8 +9,8 @@ import { getApplications, updateApplication } from '../controllers/adminControll
  * 
  * The router ensures that only authorized users can access and modify application-related data, enforcing proper authentication and authorization checks.
  */
-const router = Router();
-router.get('/applications', authenticateToken, authorizeRoleOrOwnership, getApplications);
-router.post('/applications', authenticateToken, authorizeRoleOrOwnership, updateApplication);
+const adminRouter = Router();
+adminRouter.get('/applications', authenticateToken, authorizeRoleOrOwnership, getApplications);
+adminRouter.post('/applications', authenticateToken, authorizeRoleOrOwnership, updateApplication);
 
-export default router;
+export default adminRouter;

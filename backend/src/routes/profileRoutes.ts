@@ -10,10 +10,10 @@ import { getCompetence, updateCompetence } from '../controllers/profileControlle
  * 
  * The router ensures that only authorized users can access and modify competence-related data, enforcing proper authentication and authorization checks.
  */
-const router = Router();
+const profileRouter = Router();
 
-router.get('/competence/:id', authenticateToken, authorizeRoleOrOwnership, getCompetence);
-router.get('/competence/', authenticateToken, getCompetence);
-router.post('/competence/', authenticateToken, updateCompetence);
+profileRouter.get('/competence/:id', authenticateToken, authorizeRoleOrOwnership, getCompetence);
+profileRouter.get('/competence/', authenticateToken, getCompetence);
+profileRouter.post('/competence/', authenticateToken, updateCompetence);
 
-export default router; 
+export default profileRouter; 

@@ -4,46 +4,64 @@ on:
   push:
     branches:
       - main
+      - pipeline
   pull_request:
     branches:
       - main
+      - pipeline
 
 jobs:
   frontend:
-    name: Frontend Build & Test
     runs-on: ubuntu-latest
-    defaults:
-      run:
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: 'frontend/package-lock.json'
+
+      - name: Debug Show Directory Structure
+        run: ls -la
+
+      - name: Debug Show Contents of Frontend Folder
+        run: ls -la frontend
+
+      - name: Install Dependencies
+        run: npm ci
         working-directory: frontend
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - name: Set Environment Variables
+        run: |
+          touch .env
+          echo "VITE_BACKEND_URL=${{ vars.VITE_BACKEND_URL }}" >> .env
+        working-directory: frontend
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Display .env file contents
+        run: cat .env
+        working-directory: frontend
+
+      - name: Install Heroku CLI # <- IMPORTANT!!! Make sure the cli is installed before using the action
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+          
+      - name: Deploy to Heroku
+        uses: AkhileshNS/heroku-deploy@v3.14.15
         with:
-          node-version: 18
-          cache: 'npm'
+          heroku_api_key: ${{ secrets.HEROKU }}
+          heroku_app_name: iv1201frontend
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          appdir: "frontend"
+        env:
+          HD_VITE_BACKEND_URL: ${{ vars.VITE_BACKEND_URL }}
 
-      - name: Install Dependencies
-        run: npm install
-
-#      - name: Run Static Analysis (ESLint)
-#        run: npm run lint
-#
-#      - name: Run Unit Tests
-#        run: npm run test
-
-      - name: Build Project
-        run: npm run build
 
   backend:
-    name: Backend Build & Test
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
 
     steps:
       - name: Checkout Code
@@ -52,17 +70,60 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
           cache: 'npm'
+          cache-dependency-path: 'backend/package-lock.json'
+
+      - name: Debug Show Directory Structure
+        run: ls -la
+
+      - name: Debug Show Contents of Backend Folder
+        run: ls -la backend
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
+        working-directory: backend
 
-#      - name: Run Static Analysis (ESLint)
-#        run: npm run lint
+      # Set environment variables using GitHub Secrets
+      - name: Set Environment Variables
+        run: |
+          touch .env  # Create the .env file if it doesn't exist
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env  # Decode the base64 password
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "GMAIL=${{ secrets.GMAIL }}" >> .env
+          echo "GMAIL_SECRET=${{ secrets.GMAIL_SECRET }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+        working-directory: backend
 
-      - name: Run Unit Tests
-        run: npm run test
+      - name: Display .env file contents
+        run: cat .env
+        working-directory: backend
 
-      - name: Start Backend Server (Optional)
-        run: npm run start &
+      - name: Run Backend Tests
+        run: npm test
+        working-directory: backend
+
+      - name: Install Heroku CLI # <- IMPORTANT!!! Make sure the cli is installed before using the action
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+          
+      - name: Deploy to Heroku
+        uses: AkhileshNS/heroku-deploy@v3.14.15
+        with:
+          heroku_api_key: ${{ secrets.HEROKU }}
+          heroku_app_name: iv1201backend
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          appdir: "backend"
+        env:
+          # Prefix with 'HD_' to ensure compatibility with the action
+          HD_DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          HD_DB_HOST: ${{ secrets.DB_HOST }}
+          HD_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          HD_DB_PORT: ${{ secrets.DB_PORT }}
+          HD_DB_USER: ${{ secrets.DB_USER }}
+          HD_GMAIL: ${{ secrets.GMAIL }}
+          HD_GMAIL_SECRET: ${{ secrets.GMAIL_SECRET }}
+          HD_JWT_SECRET: ${{ secrets.JWT_SECRET }}

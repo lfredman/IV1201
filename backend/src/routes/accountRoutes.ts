@@ -13,12 +13,12 @@ import { validateRegister, validateLogin, validateEmail } from '../middleware/se
  * 
  * The router organizes all authentication-related routes into a single API endpoint for easier management and routing.
  */
-const router = Router();
+const accountRouter = Router();
 
-router.post('/register', validateRegister, register);
-router.post('/login', validateLogin, login);
-router.get('/refresh', refreshToken);
-router.post('/reset', authenticateToken, reset);
-router.post('/resetbyemail', validateEmail, resetByEmail);
+accountRouter.post('/register', validateRegister, register);
+accountRouter.post('/login', validateLogin, login);
+accountRouter.get('/refresh', refreshToken);
+accountRouter.post('/reset', authenticateToken, reset);
+accountRouter.post('/resetbyemail', validateEmail, resetByEmail);
 
-export default router;
+export default accountRouter;
