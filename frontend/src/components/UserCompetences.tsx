@@ -9,6 +9,23 @@ interface UserCompetencesProps {
   editable?: boolean;
 }
 
+/**
+ * UserCompetences Component
+ * 
+ * This component displays a list of competences for the user. The competences are either displayed as 
+ * read-only or in an editable form, depending on the `editable` prop. 
+ * If editable, the user can add, delete, and save changes to their competences.
+ * 
+ * Features:
+ * - Displays competences in a table format.
+ * - Provides options to edit, save, discard changes, and delete competences when `editable` is `true`.
+ * - Handles loading and error states during the API call for fetching competences.
+ * 
+ * @param {Object} props - Component properties
+ * @param {boolean} [props.editable=false] - Whether the competences are displayed in an editable state (default is false).
+ * 
+ * @returns {JSX.Element} The rendered component.
+ */
 const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) => {
   const navigate = useNavigate();
   const { competences, tempCompetences, loading, error, resetChanges,saveProfileChanges, handleDeleteCompetence } = useProfile();

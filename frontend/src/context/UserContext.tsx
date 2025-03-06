@@ -1,7 +1,20 @@
 import React, { createContext, useState, useEffect, ReactNode, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-// User type definition (without the tokens)
+/**
+ * User interface
+ * 
+ * This interface defines the structure of the user object. It contains the following properties:
+ * - username: The username of the user.
+ * - person_id: A unique identifier for the user.
+ * - role_id: The role identifier, indicating the user's role.
+ * - name: The user's first name.
+ * - surname: The user's last name.
+ * - email: The user's email address.
+ * - pnr: A unique personal number for the user.
+ * 
+ * @interface User
+ */
 export interface User {
   username: string;
   person_id: number;
@@ -23,6 +36,20 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
+/**
+ * UserProvider component
+ * 
+ * This provider component manages user authentication state and provides the functionality 
+ * to log in, log out, and update the access token. It stores user data and tokens in localStorage 
+ * and ensures they are available across sessions. It also loads the user data from localStorage
+ * when the app is initialized.
+ * 
+ * @component
+ * @param {Object} props - The component's props.
+ * @param {ReactNode} props.children - The children components to be wrapped by this provider.
+ * 
+ * @returns {JSX.Element} The wrapped children components with user context provided.
+ */
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(localStorage.getItem("accessToken"));
@@ -72,7 +99,18 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Custom hook to use the UserContext
+/**
+ * useUser hook
+ * 
+ * This custom hook allows any component to easily access the user context. It provides 
+ * a convenient way to use the context's state (user, accessToken, refreshToken) and functions 
+ * (loginUser, logoutUser, updateAccessToken).
+ * 
+ * @hook
+ * @returns {UserContextType} The context value with user data and functions.
+ * 
+ * @throws {Error} If used outside of the UserProvider component.
+ */
 export const useUser = () => {
   const context = useContext(UserContext);
   if (!context) {

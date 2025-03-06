@@ -2,6 +2,10 @@ import React from "react";
 import ApplyForAJob from "../components/ApplyForAJob"; // Import the form
 import { useUser } from "../context/UserContext";
 
+/**
+ * `ApplyForJob` Component
+ *  Not done yet
+ */
 const ApplyForJob: React.FC = () => {
   const {user}= useUser();
 

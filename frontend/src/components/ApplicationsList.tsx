@@ -24,6 +24,27 @@ interface SortConfig {
   direction: "asc" | "desc";
 }
 
+
+
+/**
+ * ApplicationsList Component
+ *
+ * This component displays a list of job applications, allowing an admin user to:
+ * - View applicant details
+ * - Search applications
+ * - Sort applications by different criteria (name, email, status, competences, etc.)
+ * - Open a modal with full application details
+ * - Update the application status (Accept, Reject, Unhandled)
+ *
+ * Role-based access control:
+ * - Only users with `role_id = 1` (admin) can access this page.
+ *
+ * Uses:
+ * - `useApplications` hook to fetch and manage application data.
+ * - `useUser` hook to get the logged-in user's role.
+ *
+ * @returns {JSX.Element} The rendered list of applications with sorting, filtering, and status update functionality.
+ */
 const ApplicationsList: React.FC = () => {
   const { applications, loading, error, updateApplication } = useApplications();
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, direction: "asc" });

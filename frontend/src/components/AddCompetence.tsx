@@ -9,6 +9,17 @@ const competenceOptions = [
   { id: 3, name: "roller coaster operation" },
 ];
 
+
+/**
+ * A form component for adding a competence with years of experience.
+ * 
+ * This component allows users to select a competence from a dropdown 
+ * and input the number of years of experience. It validates inputs 
+ * before submitting data to the `useProfile` context.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered form for adding competence.
+ */
 const AddCompetence: React.FC = () => {
   const { addCompetence } = useProfile(); 
 

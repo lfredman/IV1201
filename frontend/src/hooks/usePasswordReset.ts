@@ -4,6 +4,31 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { useValidation } from "./useValidation";
 
+
+/**
+ * Custom hook for handling password reset functionality.
+ * 
+ * This hook provides two methods for resetting a user's password:
+ * 1. **passwordReset**: Resets the password using a token retrieved from the URL.
+ * 2. **passwordResetByEmail**: Sends a password reset request via email, with the token passed from the URL if available.
+ * 
+ * It includes client-side validation for passwords and emails, shows loading and error states, 
+ * and manages success feedback by logging out the user after a successful reset. After logging out, 
+ * the user is optionally redirected to the login page after a short delay.
+ * 
+ * The hook also provides an `error` state for handling and displaying any errors during the process,
+ * a `loading` state for showing a loading spinner, and a `success` state to indicate successful reset.
+ * 
+ * @returns {Object} - An object containing:
+ *   - `passwordReset`: Function to reset the password using the token from the URL.
+ *   - `passwordResetByEmail`: Function to initiate a password reset via email.
+ *   - `error`: The error message if an error occurs during password reset.
+ *   - `loading`: Boolean indicating if the password reset process is in progress.
+ *   - `success`: Boolean indicating if the password reset was successful.
+ *   - `setError`: Function to manually set the error state.
+ *   - `tokenFromUrl`: The token extracted from the URL (if available).
+ * 
+ */
 export const usePasswordReset = () => {
   const { logoutUser } = useUser();
   const [error, setError] = useState<string | null>(null);

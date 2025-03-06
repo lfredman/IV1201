@@ -1,6 +1,19 @@
 // src/utils/auth.ts
 import { User } from "../context/UserContext"; // Import User type from context
 
+
+/**
+ * Logs a user in by sending login credentials to the server and retrieves user data along with access and refresh tokens.
+ * 
+ * @param loginField - The username or email of the user.
+ * @param password - The user's password.
+ * @returns A promise that resolves to an object containing:
+ *   - message: A string message indicating the result of the login attempt.
+ *   - accessToken: The JWT access token for authenticating future requests.
+ *   - refreshToken: The JWT refresh token used to renew the access token.
+ *   - userData: The user's data (username, role, email, etc.).
+ * @throws Will throw an error if the login request fails or the response structure is invalid.
+ */
 export async function loginUser(loginField: string, password: string): Promise<{ message: string; accessToken: string; refreshToken: string; userData: User }> {
   try {
     const response = await fetch(`http://127.0.0.1:3000/account/login`, {

@@ -1,3 +1,11 @@
+
+/**
+ * Fetches the profile data for the logged-in user, specifically their competencies.
+ * 
+ * @param accessToken - The access token to authenticate the request. This must not be null.
+ * @returns A promise that resolves to the user's competencies or `null` if no data is found.
+ * @throws Will throw an error if the access token is missing, the request fails, or the response data is invalid.
+ */
 export async function getProfile(accessToken: string | null): Promise<null> {
   try {
     if (!accessToken) {

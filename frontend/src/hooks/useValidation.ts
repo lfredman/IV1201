@@ -1,5 +1,24 @@
 import {Competence} from "../context/ProfileContext"
 
+/**
+ * Custom hook for validating user input data.
+ *
+ * This hook provides utility functions to validate common user input fields such as:
+ * - Email addresses
+ * - Passwords (with strength validation)
+ * - Person numbers (PNR) commonly used in Swedish identification systems
+ * - Competence objects (checking years of experience)
+ *
+ * The functions use regular expressions or simple validation checks to ensure that the data adheres to the expected formats.
+ * The hook returns these validation functions, making it easy to apply them across the application.
+ *
+ * @returns {Object} An object containing validation functions:
+ * - `validateEmail(input: string): boolean` - Validates an email format.
+ * - `validatePassword(password: string): boolean` - Validates password strength.
+ * - `validatePnr(input: string): boolean` - Validates Swedish person number (PNR) format.
+ * - `validateCompetence(competence: Competence): boolean` - Validates a single competence object.
+ * - `validateCompetences(competences: Competence[]): boolean` - Validates an array of competence objects.
+ */
 export const useValidation = () => {
 
     // Utility function to validate email

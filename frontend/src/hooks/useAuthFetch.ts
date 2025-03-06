@@ -1,6 +1,23 @@
 import { useUser } from '../context/UserContext'; // Import your custom hook
 import { useState, useCallback } from 'react';
 
+/**
+ * useAuthFetch custom hook
+ * 
+ * This custom hook provides a fetch function (`authFetch`) that automatically includes an Authorization
+ * header with the access token for authenticated API requests. It handles token refreshing when the 
+ * current access token expires (HTTP 401 status), and retries the failed request with the new token.
+ * 
+ * - It handles authentication and refresh token logic for the request.
+ * - If a request returns a 401 error, it attempts to refresh the access token using the refresh token.
+ * - The token is updated automatically without the user needing to manually log in again.
+ * 
+ * @returns {Function} The `authFetch` function that can be used for making authenticated API requests.
+ * 
+ * @example
+ * const authFetch = useAuthFetch();
+ * const response = await authFetch('/api/data');
+ */
 const useAuthFetch = () => {
   const { accessToken, refreshToken, updateAccessToken, logoutUser } = useUser();
   const [isRefreshing, setIsRefreshing] = useState(false);

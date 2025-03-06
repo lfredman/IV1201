@@ -4,6 +4,20 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from '../context/UserContext'; // Import the context
 import { useValidation } from "../hooks/useValidation";
 
+/**
+ * Custom hook for managing the user signup process.
+ * 
+ * This hook handles the user registration, performs client-side validation for fields (like name, surname, PNR, email, and password), 
+ * and interacts with the backend to create a new user. It provides loading and error states to track the signup process.
+ * 
+ * On successful signup, the hook stores the access and refresh tokens in localStorage, updates the global user context, 
+ * and navigates the user to the home screen.
+ * 
+ * @returns {Object} - An object containing:
+ *   - `signup`: Function to handle the signup process. Takes a `formData` object with the user's details (name, surname, pnr, username, email, password).
+ *   - `error`: The error message, if any, that occurred during the signup process.
+ *   - `loading`: Boolean indicating if the signup process is ongoing.
+ */
 export const useSignup = () => {
   const { loginUser: updateUserContext } = useUser(); // Renamed for clarity
   const [error, setError] = useState<string | null>(null);

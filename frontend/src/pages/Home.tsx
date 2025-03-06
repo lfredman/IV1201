@@ -6,6 +6,27 @@ import { Button } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
 
+/**
+ * `Home` Component
+ * 
+ * The `Home` component represents the landing page of the application. It displays a video background and a dynamic welcome message 
+ * based on whether the user is logged in or not.
+ * 
+ * The component checks if the user is logged in through the `useUser` hook and conditionally renders content:
+ * - If the user is logged in:
+ *   - A personalized greeting message is shown with the user's name.
+ *   - If the user has a role other than "1" (admin), they are prompted to fill in their profile and submit an application.
+ *   - If the user is an admin, they are prompted to go to the applications page to start reviewing applications.
+ * - If the user is not logged in:
+ *   - A generic message inviting the user to log in is displayed, along with a login button that navigates to the login page.
+ * 
+ * The background of the page features a looping video to create a dynamic and visually appealing effect.
+ * 
+ * @returns {JSX.Element} The rendered JSX element:
+ * - Displays a video background with a dynamic welcome message and call to action.
+ * - If logged in, the message is personalized with the user's name and role-based instructions.
+ * - If not logged in, a message encouraging the user to log in and a login button are displayed.
+ */
 const Home: React.FC = () => {
   const { user } = useUser();
   

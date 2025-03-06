@@ -1,6 +1,13 @@
 // src/utils/auth.ts
 import { User } from "../context/UserContext"; // Import User type from context
 
+/**
+ * Registers a new user by sending the provided form data to the backend.
+ * 
+ * @param formData - The user's data required for registration, including name, surname, pnr, username, email, and password.
+ * @returns A promise that resolves to an object containing a success message, access token, refresh token, and user data.
+ * @throws Will throw an error if the signup process fails or if the response structure is invalid.
+ */
 export async function signupUser(formData: {
     name: string;
     surname: string;

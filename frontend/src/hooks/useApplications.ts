@@ -1,6 +1,22 @@
 import { useState, useEffect } from "react";
 import useAuthFetch from "./useAuthFetch";
 
+/**
+ * Application interface
+ * 
+ * This interface defines the structure of an application object. It includes the following properties:
+ * - person_id: A unique identifier for the person submitting the application.
+ * - username: The username of the applicant.
+ * - name: The first name of the applicant.
+ * - surname: The last name of the applicant.
+ * - email: The email address of the applicant.
+ * - pnr: The personal number (identification number) of the applicant.
+ * - application_status: The current status of the application (e.g., pending, approved).
+ * - created_at: The timestamp when the application was created.
+ * - competences: An array of objects representing the competences of the applicant, with each object containing the name and years of experience.
+ * 
+ * @interface Application
+ */
 export interface Application {
   person_id: number;
   username: string;
@@ -13,6 +29,26 @@ export interface Application {
   competences: { name: string; years: number }[];
 }
 
+
+/**
+ * useApplications hook
+ * 
+ * This custom hook handles fetching, updating, and managing a list of applications. It provides the following:
+ * - Fetches a list of applications from the server.
+ * - Updates the application status by making a POST request.
+ * - Manages loading, error, and application data states.
+ * 
+ * @hook
+ * @returns {Object} The hook's return value, including the applications data, loading state, error state, and updateApplication function.
+ * 
+ * @property {Application[]} applications - The list of applications fetched from the server.
+ * @property {boolean} loading - Indicates whether the application data is currently being fetched.
+ * @property {string | null} error - Holds any error message related to fetching or updating applications.
+ * @property {Function} updateApplication - A function used to update the status of an application.
+ * 
+ * @example
+ * const { applications, loading, error, updateApplication } = useApplications();
+ */
 const useApplications = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

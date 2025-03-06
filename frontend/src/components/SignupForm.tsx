@@ -2,6 +2,21 @@ import React, { useState } from "react";
 import { TextField, Button, Box, Typography, Alert } from "@mui/material";
 import { useSignup } from "../hooks/useSignup"; // Use signup hook
 
+
+/**
+ * SignupForm Component
+ *
+ * A form that allows users to sign up by providing personal and account information.
+ * 
+ * Features:
+ * - Collects user's first name, last name, personal number, username, email, and password.
+ * - Uses a custom `useSignup` hook for handling the signup logic.
+ * - Displays loading state while the signup request is being processed.
+ * - Displays error messages if signup fails.
+ * - Form fields are validated and trimmed before submission.
+ *
+ * @returns {JSX.Element} A signup form with inputs for user details and a submit button.
+ */
 const SignupForm: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",

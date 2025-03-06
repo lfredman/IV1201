@@ -4,6 +4,20 @@ import { useLogin } from "../hooks/useLogin";  // Custom login hook
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+
+/**
+ * LoginForm Component
+ *
+ * A form that allows users to log in using their username, email, or personal number.
+ * Handles authentication via a custom login hook and navigates to the home page upon success.
+ * 
+ * Features:
+ * - Input validation for required fields
+ * - Displays error messages for invalid credentials
+ * - Provides links for account signup and password reset
+ *
+ * @returns {JSX.Element} A styled login form with input fields, buttons, and navigation links.
+ */
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

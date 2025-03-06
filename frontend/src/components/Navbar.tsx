@@ -10,6 +10,23 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
+/**
+ * Navbar Component
+ *
+ * A responsive navigation bar for the Recruitment System.
+ * Displays different navigation options based on the user's authentication status and role.
+ *
+ * Features:
+ * - If logged in:
+ *   - Shows "Profile" and "Log out" buttons
+ *   - Displays "Apply for a Job" for regular users (role_id ≠ 1)
+ *   - Displays "Applications" for admins (role_id === 1)
+ * - If not logged in:
+ *   - Shows "Log in" button
+ * - Implements smooth hover effects for buttons
+ *
+ * @returns {JSX.Element} A navigation bar with conditional rendering based on user state.
+ */
 const Navbar: React.FC = () => {
   const { user, logoutUser } = useUser();  // Get user and logout function from context
 

@@ -5,7 +5,21 @@ import { loginUser } from '../utils/auth'; // Import model function (API call)
 import { getProfile } from '../utils/profile'; // Import model function (API call)
 import { useValidation } from './useValidation';
 
-// Custom hook for login
+/**
+ * Custom hook for handling user login.
+ * 
+ * This hook is used to handle the login process by validating the password, making an API request to
+ * authenticate the user, and updating the global user context with the returned user data and tokens.
+ * It also provides an error message if the login attempt fails.
+ * 
+ * - Validates the password on the client side before making the API request.
+ * - Calls the login API to retrieve the authentication tokens and user data.
+ * - Updates the user context with the user data and tokens upon successful login.
+ * - Handles login errors by setting an error message to be displayed.
+ * 
+ * @returns {Object} The login function and error state.
+ * 
+ */
 export const useLogin = () => {
   const { loginUser: updateUserContext } = useUser(); // Renamed for clarity
   const [error, setError] = useState('');

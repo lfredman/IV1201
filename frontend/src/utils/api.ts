@@ -1,3 +1,22 @@
+
+
+/**
+ * Fetches a list of users or a specific user from the server based on the provided arguments.
+ * 
+ * The function makes a `GET` request to fetch user data. It supports:
+ * - Fetching all users if no additional argument is provided.
+ * - Fetching a specific user when an `id` (string or number) is provided as the second argument.
+ * - Handling multiple user IDs when an array is provided (though not fully implemented in this version).
+ *
+ * @param token - A valid authentication token to authorize the request.
+ * @param additional - An optional parameter that can be:
+ *   - A single user ID (string or number) to fetch a specific user.
+ *   - An array of user IDs to fetch multiple users (not implemented in this version).
+ *   - Undefined or no argument, in which case all users will be fetched.
+ * 
+ * @returns {Promise<string>} A promise that resolves with the user data in JSON format (string).
+ * @throws {Error} Throws an error if the fetch operation fails or if the API does not return a valid response.
+ */
 export async function getUsers(
     token: string,  // First argument must always be a single token (string)
     additional?: string | number | (string | number)[]  // Second argument is optional, can be string, number, or array

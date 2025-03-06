@@ -1,6 +1,15 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
-// Define the Competence type with an id
+/**
+ * Competence interface
+ * 
+ * This interface defines the structure for a competence object, which includes:
+ * - competence_id: A unique identifier for the competence.
+ * - competence_name: The name of the competence.
+ * - years_of_experience: The number of years the user has experience in this competence.
+ * 
+ * @interface Competence
+ */
 export interface Competence {
   competence_id: number;
   competence_name: string;
@@ -20,6 +29,20 @@ interface CompetenceContextType {
 
 const CompetenceContext = createContext<CompetenceContextType | undefined>(undefined);
 
+/**
+ * ProfileProvider Component
+ * 
+ * This provider component wraps the application and provides the competences data
+ * and functions (e.g., addCompetence, deleteCompetence, etc.) via the CompetenceContext.
+ * It manages both the permanent competences state and temporary changes state, 
+ * and syncs the data to local storage when updated.
+ * 
+ * @component
+ * @param {Object} props - The component's props
+ * @param {ReactNode} props.children - The children components to be wrapped by this provider.
+ * 
+ * @returns {JSX.Element} The wrapped children components with context provided.
+ */
 export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   const [competences, setCompetences] = useState<Competence[]>([]); // Stored competences (permanent locally)
   const [tempCompetences, setTempCompetences] = useState<Competence[]>([]); // Temporary changes
@@ -69,7 +92,17 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Custom hook to use the CompetenceContext
+/**
+ * useProfile Hook
+ * 
+ * This custom hook allows any component to easily access the competences context.
+ * It provides a convenient way to use the context's state and functions.
+ * 
+ * @hook
+ * @returns {CompetenceContextType} The context value with competences data and functions.
+ * 
+ * @throws {Error} If used outside of the ProfileProvider.
+ */
 export const useProfile = () => {
   const context = useContext(CompetenceContext);
   if (!context) {
