@@ -226,12 +226,13 @@ const ApplicationsList: React.FC = () => {
             {filteredApplications.map(app => {
               const numCompetences = app.competences.length;
               const totalYears = app.competences.reduce((sum, comp) => sum + comp.years, 0);
-              const totalAvailability: number = app.availability.reduce((sum, comp) => {
+              const totalAvailability: number = (app.availability ?? []).reduce((sum, comp) => {
                 const fromDate: Date = new Date(comp.from_date);
                 const toDate: Date = new Date(comp.to_date);
                 const differenceInDays: number = (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24);
                 return sum + differenceInDays;
-            }, 0);            
+            }, 0);
+                       
 
               return (
                 <TableRow key={app.person_id} onClick={() => handleProfileClick(app)} style={{ cursor: "pointer" }}>

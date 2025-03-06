@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getProfile } from "../utils/profile"; // API call function
 import { useUser } from "../context/UserContext"; // User context for tokens
 import { useAvailability as useAvailabilityContext } from "../context/AvailabilityContext"; // Profile context
 import useAuthFetch  from "./useAuthFetch";
