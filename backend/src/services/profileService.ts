@@ -1,6 +1,7 @@
 import { getCompetenceById, updateCompetenceById, Competences, hasCompetence} from '../models/competenceModel';
 import { getAvailabilityById, updateAvailabilityById, Availabilities, hasAvailability } from '../models/availabilityModel';
 import {getApplicationById, upsertApplication } from '../models/applicationModel'
+import { logger } from '../utils/logger';
 
 /**
  * Retrieves the competence data for a user based on the provided user ID.
@@ -13,7 +14,10 @@ import {getApplicationById, upsertApplication } from '../models/applicationModel
 export const getCompetenceService = async (user_id: string) => {
     const id = Number(user_id);
 
+    logger.info("user: " + user_id + " retrives competences.");
+
     if (isNaN(id)) {
+        logger.warn("Invalid userID: " + user_id);
         throw new Error("Invalid user_id");
     }
 
@@ -32,13 +36,16 @@ export const getCompetenceService = async (user_id: string) => {
  */
 export const updateCompetenceService = async (user_id: string, competences: Competences) => {
     // Convert user_id to a number
+    logger.info("user: " + user_id + " updates competences.");
     const id = Number(user_id);
     if (isNaN(id)) {
+        logger.warn("Invalid userID: " + user_id);
         throw new Error("Invalid user_id");
     }
 
     // Validate the `competences` object
     if (!competences || !Array.isArray(competences.competences)) {
+        logger.warn("Invalid competences for user: " + user_id);
         throw new Error("Invalid competences data");
     }
 
@@ -49,19 +56,24 @@ export const updateCompetenceService = async (user_id: string, competences: Comp
 
     // Call the model function to update the database
     try {
+        logger.info(user_id+" calls database for update ");
         const result = await updateCompetenceById(id, competences);
         return result; // Return the result from the model
     } catch (error) {
         console.error("Error updating competences:", error);
+        logger.error("Error updating competences for user: " + user_id);
         throw new Error("Failed to update competences");
     }
 };
 
 
 export const getAvailabilityService = async (user_id: string) => {
+
+    logger.info("user: " + user_id + " retrives availability service.");
     const id = Number(user_id);
 
     if (isNaN(id)) {
+        logger.warn("Invalid userID: " + user_id);
         throw new Error("Invalid user_id");
     }
 
@@ -72,12 +84,16 @@ export const getAvailabilityService = async (user_id: string) => {
 export const updateAvailabilityService = async (user_id: string, availabilities: Availabilities) => {
     // Convert user_id to a number
     const id = Number(user_id);
+    logger.info("user: " + user_id + " updates availability.");
     if (isNaN(id)) {
+
+        logger.warn("Invalid userID: " + user_id);
         throw new Error("Invalid user_id");
     }
 
     // Validate the `competences` object
     if (!availabilities || !Array.isArray(availabilities.availabilities)) {
+        logger.warn("Invalid competences data for user: " + user_id);
         throw new Error("Invalid competences data");
     }
 
@@ -85,13 +101,16 @@ export const updateAvailabilityService = async (user_id: string, availabilities:
     availabilities.person_id = id;
 
     console.log("Validated Availability Object:", availabilities);
+    logger.info("Validated competences data for user: " + user_id);
 
     // Call the model function to update the database
     try {
         const result = await updateAvailabilityById(id, availabilities.availabilities);
+        logger.info("Updated availability successful for user: " + user_id);
         return result; // Return the result from the model
     } catch (error) {
         console.error("Error updating availabilities:", error);
+        logger.error("Updated availability NOT successful for user: " + user_id);
         throw new Error("Failed to update availabilities");
     }
 };
@@ -99,7 +118,9 @@ export const updateAvailabilityService = async (user_id: string, availabilities:
 export const getApplicationService = async (user_id: string) => {
     // Convert user_id to a number
     const id = Number(user_id);
+    logger.info("Get Application service for user: " + user_id);
     if (isNaN(id)) {
+        logger.warn("Invalid userID: " + user_id);
         throw new Error("Invalid user_id");
     }
     return await getApplicationById(id);
@@ -107,9 +128,10 @@ export const getApplicationService = async (user_id: string) => {
 
 export const upsertApplicationService = async (user_id: string) => {
     
-
+    logger.info("Upsert Application service for user: " + user_id);
     const id = Number(user_id);
     if (isNaN(id)) {
+        logger.warn("Invalid userID: " + user_id);
         throw new Error("Invalid user_id");
     }
 
@@ -119,10 +141,13 @@ export const upsertApplicationService = async (user_id: string) => {
     ]);
 
     if (!hasComp || !hasAvail) {
+        logger.warn("Missing fields! For user: " + user_id);
         throw new Error(
             `Missing ${!hasComp ? 'competence' : ''}${!hasComp && !hasAvail ? ' and ' : ''}${!hasAvail ? 'availability' : ''}`
         );
     }
+
+    logger.info("Upsert Application service successful for user: " + user_id);
 
     const application = await upsertApplication(id, 'unhandled');
     return application;
