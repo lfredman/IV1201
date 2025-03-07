@@ -90,6 +90,7 @@ export const createPerson = async (
  * @returns {Promise<Person | null>} - The person object or null if no user was found.
  */
 export const getUserByUsername = async (username: string): Promise<Person | null> => {
+  
   if(!isInputSafe(username)){
     throw new Error("unsafe DB input");
   }
@@ -121,6 +122,7 @@ export const getUserByUsername = async (username: string): Promise<Person | null
  * @returns {Promise<Person | null>} - The person object or null if no user was found.
  */
 export const getUserByEmail = async (email: string): Promise<Person | null> => {
+  
   if(!isEmailValid(email)){
     throw new Error("Invalid email");
   }
@@ -271,7 +273,13 @@ export const changePassword = async (
   newPassword: string
 ): Promise<boolean> => {
   const client = await getClient(); // Acquire a client for transactions
+  
+  if(!isPasswordValid(newPassword)){
+    throw new Error("Not valid password strength");
+  }
+  
   try {
+
     await client.query("BEGIN"); // Start the transaction
 
     // Update password in the database

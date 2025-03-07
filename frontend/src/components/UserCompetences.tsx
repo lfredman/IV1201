@@ -3,8 +3,8 @@ import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useProfile } from '../hooks/useProfile'; // Using the custom hook
+import competenceOptions from '../utils/competenceOptions';
 
 interface UserCompetencesProps {
   editable?: boolean;
@@ -27,11 +27,6 @@ interface UserCompetencesProps {
  * 
  * @returns {JSX.Element} The rendered component.
  */
-const competenceOptions = [
-  { id: 1, name: "ticket sales" },
-  { id: 2, name: "lotteries" },
-  { id: 3, name: "roller coaster operation" },
-];
 
 const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) => {
   const { competences, tempCompetences, loading, error, success, handleAddCompetence, resetChanges, saveProfileChanges, handleDeleteCompetence} = useProfile();
@@ -54,15 +49,15 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
     setIsEditing(false);
   };
 
-  const handleDelete = (id: number) => {
-    handleDeleteCompetence(id);
+  const handleDelete = (competence_id: number) => {
+    handleDeleteCompetence(competence_id);
   };
 
   const handleAdd = () => {
     if (newCompetence.competence && newCompetence.years_of_experience) {
       handleAddCompetence({
         competence_id: parseInt(newCompetence.competence, 10),
-        competence_name: competenceOptions.find(c => c.id === parseInt(newCompetence.competence, 10))?.name || '',
+        competence_name: competenceOptions.find(c => c.competence_id === parseInt(newCompetence.competence, 10))?.name || '',
         years_of_experience: parseFloat(newCompetence.years_of_experience),
       });
       setNewCompetence({ competence: '', years_of_experience: '' });
@@ -136,8 +131,8 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
                         label="Competence"
                         autoWidth
                       >
-                        {competenceOptions.map(({ id, name }) => (
-                          <MenuItem key={id} value={id.toString()}>{name}</MenuItem>
+                        {competenceOptions.map(({ competence_id, name }) => (
+                          <MenuItem key={competence_id} value={competence_id.toString()}>{name}</MenuItem>
                         ))}
                       </Select>
                     </FormControl>

@@ -1,4 +1,5 @@
 import { query, getClient, queryWithClient } from "../utils/db";
+import {isEmailValid, isInputSafe, isPasswordValid, isPnrValid, isActionValid} from '../utils/validation';
 
 /**
  * Interface representing an Application object.
@@ -36,6 +37,9 @@ export interface SimpleApplication {
 }
 
 export const getApplicationById = async (person_id: number): Promise<SimpleApplication | null> => {
+
+  //validation of number is not neccessary
+
   const result = await query(
     `
     SELECT 
@@ -59,6 +63,10 @@ export const getApplicationById = async (person_id: number): Promise<SimpleAppli
 /*UPDATE APPLICATION IF IT EXISTS OR INSERT IF NOT*/
 export const upsertApplication = async (userId: number, action: string): Promise<SimpleApplication | null> => {
   const client = await getClient();
+
+  if(!isActionValid(action)){
+    throw new Error("Invalid action!");
+  }
 
   try {
     await client.query("BEGIN");
@@ -88,6 +96,8 @@ export const upsertApplication = async (userId: number, action: string): Promise
 };
 
 export const getApplicationsByIds = async (person_ids: number[]): Promise<Application[]> => {
+
+  //small validation. To specific for getting own validation function
   if (!person_ids || person_ids.length === 0) {
     throw new Error("No person IDs provided");
   }
@@ -190,6 +200,10 @@ const fetchApplications = async (whereClause: string, params: any[]): Promise<Ap
  */
 export const updateApplication = async (userId: number, action: string): Promise<Application[]> => {
   const client = await getClient(); // Acquire a client for transactions
+
+  if(!isActionValid(action)){
+    throw new Error("Invalid action!");
+  }
 
   try {
     await client.query("BEGIN"); // Start the transaction

@@ -4,6 +4,7 @@ IV1201
 │  ├─ jest.config.js
 │  ├─ package-lock.json
 │  ├─ package.json
+│  ├─ Procfile
 │  ├─ src
 │  │  ├─ app.ts
 │  │  ├─ controllers
@@ -16,6 +17,7 @@ IV1201
 │  │  ├─ models
 │  │  │  ├─ accountModel.ts
 │  │  │  ├─ applicationModel.ts
+│  │  │  ├─ availabilityModel.ts
 │  │  │  └─ competenceModel.ts
 │  │  ├─ routes
 │  │  │  ├─ accountRoutes.test.ts
@@ -36,10 +38,27 @@ IV1201
 ├─ Diagrams
 │  └─ readme.txt
 ├─ frontend
+│  ├─ .babelrc
+│  ├─ coverage
+│  │  ├─ lcov-report
+│  │  │  ├─ AvailabilityContext.tsx.html
+│  │  │  ├─ base.css
+│  │  │  ├─ block-navigation.js
+│  │  │  ├─ favicon.png
+│  │  │  ├─ index.html
+│  │  │  ├─ prettify.css
+│  │  │  ├─ prettify.js
+│  │  │  ├─ sort-arrow-sprite.png
+│  │  │  ├─ sorter.js
+│  │  │  └─ UserContext.tsx.html
+│  │  └─ lcov.info
 │  ├─ eslint.config.js
 │  ├─ index.html
+│  ├─ jest.config.cjs
+│  ├─ jest.setup.js
 │  ├─ package-lock.json
 │  ├─ package.json
+│  ├─ Procfile
 │  ├─ public
 │  │  └─ vite.svg
 │  ├─ README.md
@@ -52,22 +71,27 @@ IV1201
 │  │  │  └─ rollercoaster.mp4
 │  │  ├─ components
 │  │  │  ├─ AccountInfoForm.tsx
-│  │  │  ├─ AddCompetence.tsx
+│  │  │  ├─ ApplicationForm.tsx
 │  │  │  ├─ ApplicationsList.tsx
-│  │  │  ├─ ApplyForAJob.tsx
+│  │  │  ├─ AvailabilityForm.tsx
+│  │  │  ├─ ErrorBoundry.tsx
 │  │  │  ├─ LoginForm.tsx
 │  │  │  ├─ Navbar.tsx
 │  │  │  ├─ PasswordEmailResetForm.tsx
 │  │  │  ├─ PasswordResetForm.tsx
 │  │  │  ├─ SignupForm.tsx
-│  │  │  ├─ Test.tsx
 │  │  │  └─ UserCompetences.tsx
 │  │  ├─ context
+│  │  │  ├─ AvailabilityContext.test.tsx
+│  │  │  ├─ AvailabilityContext.tsx
 │  │  │  ├─ ProfileContext.tsx
+│  │  │  ├─ UserContext.test.tsx
 │  │  │  └─ UserContext.tsx
 │  │  ├─ hooks
 │  │  │  ├─ useApplications.ts
+│  │  │  ├─ useApply.ts
 │  │  │  ├─ useAuthFetch.ts
+│  │  │  ├─ useAvailiblity.ts
 │  │  │  ├─ useLogin.ts
 │  │  │  ├─ usePasswordReset.ts
 │  │  │  ├─ useProfile.ts
@@ -76,7 +100,6 @@ IV1201
 │  │  ├─ main.tsx
 │  │  ├─ pages
 │  │  │  ├─ ApplyForJob.tsx
-│  │  │  ├─ EditProfile.tsx
 │  │  │  ├─ Home.tsx
 │  │  │  ├─ Login.tsx
 │  │  │  ├─ NotFound.tsx
@@ -85,11 +108,11 @@ IV1201
 │  │  │  └─ Signup.tsx
 │  │  ├─ styles
 │  │  │  ├─ App.css
+│  │  │  ├─ PickersDayStyles.ts
 │  │  │  └─ video.css
 │  │  ├─ utils
-│  │  │  ├─ api.ts
 │  │  │  ├─ auth.ts
-│  │  │  ├─ profile.ts
+│  │  │  ├─ competenceOptions.ts
 │  │  │  └─ signup.ts
 │  │  └─ vite-env.d.ts
 │  ├─ tsconfig.app.json
@@ -97,6 +120,8 @@ IV1201
 │  ├─ tsconfig.node.json
 │  └─ vite.config.ts
 ├─ mod.sql
+├─ package-lock.json
+├─ ProjectTree
 └─ README.md
 
 ```

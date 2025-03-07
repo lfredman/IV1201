@@ -2,6 +2,7 @@ import { getCompetenceById, updateCompetenceById, Competences, hasCompetence} fr
 import { getAvailabilityById, updateAvailabilityById, Availabilities, hasAvailability } from '../models/availabilityModel';
 import {getApplicationById, upsertApplication } from '../models/applicationModel'
 import { logger } from '../utils/logger';
+import { isEmailValid, isPasswordValid, isPnrValid, isInputSafe, isCompetencesValid, isDateValid } from '../utils/validation';
 
 /**
  * Retrieves the competence data for a user based on the provided user ID.
@@ -18,6 +19,11 @@ export const getCompetenceService = async (user_id: string) => {
 
     if (isNaN(id)) {
         logger.warn("Invalid userID: " + user_id);
+        throw new Error("Invalid user_id tones2");
+    }
+
+    if(!isInputSafe(user_id)){
+        logger.warn("Not safe user id");
         throw new Error("Invalid user_id");
     }
 
@@ -44,9 +50,14 @@ export const updateCompetenceService = async (user_id: string, competences: Comp
     }
 
     // Validate the `competences` object
-    if (!competences || !Array.isArray(competences.competences)) {
+    if (!competences || !isCompetencesValid(competences)) {
         logger.warn("Invalid competences for user: " + user_id);
         throw new Error("Invalid competences data");
+    }
+
+    if(!isInputSafe(user_id)){
+        logger.warn("Not safe user ID");
+        throw new Error("Invalid user ID, not safe");
     }
 
     // Add user_id as person_id in the `competences` object
@@ -75,6 +86,11 @@ export const getAvailabilityService = async (user_id: string) => {
         throw new Error("Invalid user_id");
     }
 
+    if(!isInputSafe(user_id)){
+        logger.warn("Not safe user ID");
+        throw new Error("Invalid user ID, not safe");
+    }
+
     return await getAvailabilityById(id);
 };
 
@@ -86,13 +102,20 @@ export const updateAvailabilityService = async (user_id: string, availabilities:
     if (isNaN(id)) {
 
         logger.warn("Invalid userID: " + user_id);
-        throw new Error("Invalid user_id");
+        throw new Error("Invalid user_id!!!");
     }
 
-    // Validate the `competences` object
-    if (!availabilities || !Array.isArray(availabilities.availabilities)) {
-        logger.warn("Invalid competences data for user: " + user_id);
-        throw new Error("Invalid competences data");
+    if (!availabilities) {
+        logger.warn("Invalid availability data for user: " + user_id);
+        throw new Error("Invalid availability data");
+    }
+
+    // Validate
+    for(const av of availabilities.availabilities){
+        if(!isDateValid(av.from_date) || !isDateValid(av.to_date)){
+            logger.warn("Invalid date in availabilities");
+          throw new Error("Invalid date!");
+        }
     }
 
     // Add user_id as person_id in the `competences` object
@@ -114,23 +137,27 @@ export const updateAvailabilityService = async (user_id: string, availabilities:
 
 export const getApplicationService = async (user_id: string) => {
     // Convert user_id to a number
-    const id = Number(user_id);
+    
     logger.info("Get Application service for user: " + user_id);
-    if (isNaN(id)) {
+    
+    if (!isInputSafe(user_id)) {
         logger.warn("Invalid userID: " + user_id);
-        throw new Error("Invalid user_id");
+        throw new Error("Invalid user_id: " + user_id);
     }
+
+    const id = Number(user_id);
     return await getApplicationById(id);
 }
 
 export const upsertApplicationService = async (user_id: string) => {
     
     logger.info("Upsert Application service for user: " + user_id);
-    const id = Number(user_id);
-    if (isNaN(id)) {
+    
+    if ( !isInputSafe(user_id)) {
         logger.warn("Invalid userID: " + user_id);
         throw new Error("Invalid user_id");
     }
+    const id = Number(user_id);
 
     const [hasComp, hasAvail] = await Promise.all([
         hasCompetence(id),
@@ -148,4 +175,5 @@ export const upsertApplicationService = async (user_id: string) => {
 
     const application = await upsertApplication(id, 'unhandled');
     return application;
+
 };

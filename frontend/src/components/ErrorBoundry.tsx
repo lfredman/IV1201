@@ -22,9 +22,9 @@ class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("Uncaught error:", error, errorInfo);
   }
-
+  
   handleRetry = () => {
-    this.setState({ hasError: false, error: undefined });
+    window.location.reload(); // Reload the page
   };
 
   render() {

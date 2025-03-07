@@ -67,4 +67,14 @@ const isInputSafe = (input: string): boolean => {
     return safeRegex.test(input);
 };
 
-export {isEmailValid, isPnrValid, isPasswordValid, isInputSafe, isCompetencesValid};
+const isActionValid = (input: string): boolean => {
+    
+    return ["unhandled", "accepted", "rejected"].includes(input);
+};
+
+const isDateValid = (dateString: string): boolean => {
+    const date = new Date(dateString);
+    return !isNaN(date.getTime()); // Checks if the date is valid
+};
+
+export {isEmailValid, isPnrValid, isPasswordValid, isInputSafe, isCompetencesValid, isActionValid, isDateValid};
