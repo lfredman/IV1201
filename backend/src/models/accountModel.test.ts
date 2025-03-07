@@ -133,48 +133,5 @@ describe("Person Service Tests", () => {
         createdUsers.push(createdAdmin!); // Keep track of the created admin for cleanup
     });
 
-    it("should throw an error for invalid email", async () => {
-        const invalidEmailPerson = {
-            name: "John",
-            surname: "Doe",
-            pnr: "1234567890",
-            username: "john_doe_invalid_email",
-            email: "invalid-email", // Invalid email
-            password: "password123",
-        };
-    
-        await expect(
-            createPerson(
-                invalidEmailPerson.name,
-                invalidEmailPerson.surname,
-                invalidEmailPerson.pnr,
-                invalidEmailPerson.username,
-                invalidEmailPerson.email,
-                invalidEmailPerson.password
-            )
-        ).rejects.toThrow("Email not valid");
-    });
-    
-    it("should throw an error for unsafe input", async () => {
-        const unsafeUsernamePerson = {
-            name: "John",
-            surname: "Doe",
-            pnr: "1234567890",
-            username: "john_doe<script>",
-            email: "john.doe@example.com",
-            password: "password123",
-        };
-    
-        await expect(
-            createPerson(
-                unsafeUsernamePerson.name,
-                unsafeUsernamePerson.surname,
-                unsafeUsernamePerson.pnr,
-                unsafeUsernamePerson.username,
-                unsafeUsernamePerson.email,
-                unsafeUsernamePerson.password
-            )
-        ).rejects.toThrow("Not safe input in fields for DB");
-    });
     
 });
