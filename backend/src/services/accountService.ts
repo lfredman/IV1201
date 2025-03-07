@@ -246,7 +246,7 @@ export const pwdResetService = async (id: string, data: { password: string }) =>
 export const pwdResetByEmailService = async (data: { email: string }) => {
   const { email } = data;
 
-  console.log("Password reset request for:", email);
+  logger.info("Password reset request for:", email);
 
   if (!email) {
       throw new Error('Missing email parameter');
@@ -254,16 +254,18 @@ export const pwdResetByEmailService = async (data: { email: string }) => {
 
   // Validate email format
   if (!isEmailValid(email)) {
+      logger.warn("Password reset, invalid email format:", email);
       throw new Error('Invalid email format');
   }
 
   // Find user by email
   const user = await getUserByEmail(email);
   if (!user) {
+      logger.warn("Password reset, user not found for email:", email);
       throw new Error("User not found");
   }
 
-  console.log("Generating password reset token for:", user.email);
+  logger.info("Generating password reset token for:", user.email);
 
   // Calculate expiration time (15 minutes from now)
   const expirationTime = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
@@ -273,12 +275,12 @@ export const pwdResetByEmailService = async (data: { email: string }) => {
   const resetToken = jwt.sign({ userId: user.person_id }, JWT_SECRET, { expiresIn: '15m' });
 
   // Construct password reset link
-  const resetLink = `http://localhost:5173/reset?token=${resetToken}`;
+  const resetLink = `http://iv1201.peaceman.se/reset?token=${resetToken}`;
 
   // Send password reset email
   await sendEmail(
       user.email, 
-      "🔒 Reset Your Password - Action Required", 
+      "Reset Your Password - Action Required", 
       `Hello ${user.name || "User"},\n\nWe received a request to reset your password. Click the link below to set a new one. This link will expire at ${expirationTimeFormatted}.\n\nIf you didn’t request this, you can ignore this email.\n\nBest,\nThe KTH Team`, 
       `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">

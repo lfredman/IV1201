@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { TextField, Button, Box, Typography, Alert, CircularProgress } from "@mui/material";
 import { usePasswordReset } from "../hooks/usePasswordReset";
 
@@ -23,18 +23,31 @@ const PasswordEmailResetForm: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    
-    // Validate password before calling API
-    if (!email) {
+    setError(null); // Clear previous errors
+
+    if (!email.trim()) {
       setError("Email cannot be empty.");
       return;
     }
 
     try {
-      // Call password reset API with the token and new password
       await passwordResetByEmail(email);
-    } catch (err) {
-      setError("Password reset failed. Please try again.");
+    } catch (err: any) {
+      // Handle network errors
+      if (err instanceof TypeError && err.message.includes("Failed to fetch")) {
+        console.error("Network error or server unreachable:", err);
+        setError("Unable to connect to the server. Please check your internet connection or try again later.");
+        return;
+      }
+
+      // Extract API error message if available
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else if (err.message) {
+        setError(err.message);
+      } else {
+        setError("Password reset failed. Please try again.");
+      }
     }
   };
 
@@ -72,9 +85,10 @@ const PasswordEmailResetForm: React.FC = () => {
           margin="normal"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          disabled={loading}
         />
 
-        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }} disabled={loading}>
           {loading ? <CircularProgress size={24} /> : "Reset Password"}
         </Button>
       </form>
