@@ -65,7 +65,12 @@ export const useAvailability = () => {
   };
 
   const add = (availability: any) => {
-    addAvailability(availability); 
+    if (availability.from_date === 'Invalid Date' || availability.to_date === 'Invalid Date') {
+      triggerError("Availability contains invalid dates!");
+    }
+    else {
+      addAvailability(availability);
+    }
   }
 
   useEffect(() => {
