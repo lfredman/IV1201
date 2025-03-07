@@ -12,6 +12,10 @@ export const useAvailability = () => {
   
   const [success, setSuccess] = useState(false);
 
+  const triggerError = (message: string, seconds = 5) => {
+    setError(message);
+    setTimeout(() => setError(null), seconds * 1000);
+  };
   const triggerSuccess = (seconds = 5) => {
     setSuccess(true);
     setTimeout(() => setSuccess(false), seconds * 1000);
@@ -41,9 +45,13 @@ export const useAvailability = () => {
       
       return res.data;
     } catch (err: any) {
-      setError(err.message || 'An error occurred while updating availabilities');
-      console.error(err);
-      throw err;
+      if (err instanceof Error) {
+        console.error('Caught error:', err.message);
+        triggerError(err.message);
+      } else {
+        console.error('Caught unknown error:', err);
+        triggerError('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }
@@ -54,8 +62,7 @@ export const useAvailability = () => {
   
   const handleDeleteAvailability = (from_date: string, to_date: string) => {
     deleteAvailability(from_date, to_date); 
-    //   
-    };
+  };
 
   const add = (availability: any) => {
     addAvailability(availability); 
@@ -95,7 +102,7 @@ export const useAvailability = () => {
         }
       } catch (err) {
         console.error("Profile Fetch Error:", err);
-        setError("Failed to fetch profile data.");
+        triggerError("Failed to fetch profile data.");
       } finally {
         setLoading(false);
       }

@@ -82,3 +82,12 @@ export const updateAvailabilityById = async (person_id: number, availabilities: 
     client.release(); // Release the client back to the pool
   }
 };
+
+export const hasAvailability = async (person_id: number): Promise<boolean> => {
+  const result = await query(
+    `SELECT 1 FROM availability WHERE person_id = $1 LIMIT 1;`,
+    [person_id]
+  );
+
+  return result.length > 0;
+};

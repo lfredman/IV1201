@@ -26,6 +26,67 @@ export interface Application {
  * @returns {Promise<Application[]>} - A promise that resolves to an array of Application objects.
  * @throws {Error} - Throws an error if no person IDs are provided.
  */
+
+
+export interface SimpleApplication {
+  application_id: number;
+  person_id: number;
+  status: string;
+  created_at: string; // or Date if you want it parsed as Date
+}
+
+export const getApplicationById = async (person_id: number): Promise<SimpleApplication | null> => {
+  const result = await query(
+    `
+    SELECT 
+      applicant_id, 
+      person_id, 
+      status, 
+      created_at
+    FROM applicant
+    WHERE person_id = $1
+    `,
+    [person_id]
+  );
+
+  if (result.length > 0) {
+    return result[0];
+  } else {
+    return null;
+  }
+};
+
+/*UPDATE APPLICATION IF IT EXISTS OR INSERT IF NOT*/
+export const upsertApplication = async (userId: number, action: string): Promise<SimpleApplication | null> => {
+  const client = await getClient();
+
+  try {
+    await client.query("BEGIN");
+
+    await client.query(
+      `
+      INSERT INTO applicant (person_id, status, created_at)
+      VALUES ($1, $2, NOW())
+      ON CONFLICT (person_id)
+      DO UPDATE SET 
+        status = EXCLUDED.status,
+        created_at = NOW();
+      `,
+      [userId, action]
+    );
+
+    await client.query("COMMIT");
+
+    return getApplicationById(userId);
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Error upserting application:", error);
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
 export const getApplicationsByIds = async (person_ids: number[]): Promise<Application[]> => {
   if (!person_ids || person_ids.length === 0) {
     throw new Error("No person IDs provided");

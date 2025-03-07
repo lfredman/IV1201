@@ -1,5 +1,6 @@
-import { getCompetenceById, updateCompetenceById, Competences} from '../models/competenceModel';
-import { getAvailabilityById, updateAvailabilityById, Availabilities} from '../models/availabilityModel';
+import { getCompetenceById, updateCompetenceById, Competences, hasCompetence} from '../models/competenceModel';
+import { getAvailabilityById, updateAvailabilityById, Availabilities, hasAvailability } from '../models/availabilityModel';
+import {getApplicationById, upsertApplication } from '../models/applicationModel'
 
 /**
  * Retrieves the competence data for a user based on the provided user ID.
@@ -93,4 +94,36 @@ export const updateAvailabilityService = async (user_id: string, availabilities:
         console.error("Error updating availabilities:", error);
         throw new Error("Failed to update availabilities");
     }
+};
+
+export const getApplicationService = async (user_id: string) => {
+    // Convert user_id to a number
+    const id = Number(user_id);
+    if (isNaN(id)) {
+        throw new Error("Invalid user_id");
+    }
+    return await getApplicationById(id);
+}
+
+export const upsertApplicationService = async (user_id: string) => {
+    
+
+    const id = Number(user_id);
+    if (isNaN(id)) {
+        throw new Error("Invalid user_id");
+    }
+
+    const [hasComp, hasAvail] = await Promise.all([
+        hasCompetence(id),
+        hasAvailability(id)
+    ]);
+
+    if (!hasComp || !hasAvail) {
+        throw new Error(
+            `Missing ${!hasComp ? 'competence' : ''}${!hasComp && !hasAvail ? ' and ' : ''}${!hasAvail ? 'availability' : ''}`
+        );
+    }
+
+    const application = await upsertApplication(id, 'unhandled');
+    return application;
 };
