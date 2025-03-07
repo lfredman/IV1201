@@ -42,17 +42,24 @@ const isEmailValid = (input: string) => {
 }
 
 /**
- * Validates the competence data, specifically checking if the 'years_of_experience' field is a non-negative number.
+ * Validates the competence data by ensuring:
+ * 1. The object is not empty.
+ * 2. The 'years_of_experience' field exists, is a number, and is non-negative for each competence.
  *
  * @param {Competences} competences - The competence object to validate.
- * @returns {boolean} - Returns true if all competences are valid, otherwise false.
+ * @returns {boolean} - Returns true if the object is not empty and all competences are valid, otherwise false.
  */
-const isCompetencesValid = (competences: Competences) => {
-    return competences.competences.every(
-      (competence) =>
-        typeof competence.years_of_experience === "number" &&
-        competence.years_of_experience >= 0
-    );
+const isCompetencesValid = (competences: Competences): boolean => {
+    if (!competences) {
+        return false; // Return false if the object is empty
+    }
+
+    return Array.isArray(competences.competences) &&
+        competences.competences.every(
+            (competence) =>
+                typeof competence.years_of_experience === "number" &&
+                competence.years_of_experience >= 0
+        );
 }
 
 /**

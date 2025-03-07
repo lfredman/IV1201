@@ -2,7 +2,7 @@ import { getCompetenceById, updateCompetenceById, Competences, hasCompetence} fr
 import { getAvailabilityById, updateAvailabilityById, Availabilities, hasAvailability } from '../models/availabilityModel';
 import {getApplicationById, upsertApplication } from '../models/applicationModel'
 import { logger } from '../utils/logger';
-import { isEmailValid, isPasswordValid, isPnrValid, isInputSafe, isCompetencesValid, isDateValid } from '../utils/validation';
+import { isInputSafe, isCompetencesValid, isDateValid } from '../utils/validation';
 
 /**
  * Retrieves the competence data for a user based on the provided user ID.
@@ -51,6 +51,7 @@ export const updateCompetenceService = async (user_id: string, competences: Comp
 
     // Validate the `competences` object
     if (!competences || !isCompetencesValid(competences)) {
+        
         logger.warn("Invalid competences for user: " + user_id);
         throw new Error("Invalid competences data");
     }
@@ -111,11 +112,17 @@ export const updateAvailabilityService = async (user_id: string, availabilities:
     }
 
     // Validate
-    for(const av of availabilities.availabilities){
-        if(!isDateValid(av.from_date) || !isDateValid(av.to_date)){
-            logger.warn("Invalid date in availabilities");
-          throw new Error("Invalid date!");
+    if (Array.isArray(availabilities.availabilities)) {
+        // Validate each availability entry
+        for (const av of availabilities.availabilities) {
+            if (!isDateValid(av.from_date) || !isDateValid(av.to_date)) {
+                logger.warn("Invalid date in availabilities");
+                throw new Error("Invalid date!");
+            }
         }
+    } else {
+        logger.warn("Availabilities is not an iterable array.");
+        throw new Error("Availabilities data is invalid or missing.");
     }
 
     // Add user_id as person_id in the `competences` object

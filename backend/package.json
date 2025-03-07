@@ -8,7 +8,8 @@
     "start": "npm run build && node dist/app.js",
     "serve": "node dist/app.js",
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
-    "heroku-postbuild": "npm install --only=dev && npm run build"
+    "heroku-postbuild": "npm install --only=dev && npm run build",
+    "dev": "nodemon src/app.ts"
   },
   "keywords": [],
   "author": "",

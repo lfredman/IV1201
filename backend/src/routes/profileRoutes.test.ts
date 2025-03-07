@@ -11,20 +11,20 @@ describe('Profile Management', () => {
     let authTokenNormal = '';
     let user_id = -1;
     let adminUser = {
-        name: 'testadmin',
-        surname: 'testadmin',
+        name: 'testadminprofile',
+        surname: 'testadminprofile',
         pnr: '2947889484',
-        username: 'admin_user',
-        email: 'admin@admin.admin',
+        username: 'testadminprofile',
+        email: 'testadminprofile@admin.admin',
         password: 'AdminPassword123!',
     };
 
     const userdata = {
-        name: 'John',
-        surname: 'Doe',
-        pnr: '1919191919',
-        username: 'john_doe',
-        email: 'john.doe@example.com',
+        name: 'Leffe',
+        surname: 'Larsson',
+        pnr: '1919181919',
+        username: 'leffe',
+        email: 'leffe@example.com',
         password: 'Password123!',
     };
 
@@ -34,7 +34,25 @@ describe('Profile Management', () => {
         let data = await request(app).post('/account/register').send(userdata);
         const userId = data.body.data.user.person_id;
         await upsertApplication(userId, "unhandled");
-        console.log(userId)
+
+        // Now login the normal user to get the token
+        const loginData = {
+            loginField: userdata.username,
+            password: userdata.password,
+        };
+
+        const loginResponse = await request(app).post('/account/login').send(loginData);
+        authTokenNormal = loginResponse.body.data.accessToken;  // Set the auth token here
+        user_id = loginResponse.body.data.user.person_id; // Set user_id for later use
+
+        // Now login the normal user to get the token
+        const loginDataAdmin = {
+            loginField: adminUser.username,
+            password: adminUser.password,
+        };
+
+        const loginResponseAdmin = await request(app).post('/account/login').send(loginDataAdmin);
+        authTokenAdmin = loginResponseAdmin.body.data.accessToken;  // Set the auth token here
     });
 
     afterAll(async () => {
@@ -50,43 +68,9 @@ describe('Profile Management', () => {
         await deleteUserByUsername(userdata.username);
         await closeDB(); 
     });
-
-    describe('POST /account/login', () => {
-        it('should log in an admin user and return access & refresh tokens', async () => {
-            const loginData = {
-                loginField: adminUser.username,
-                password: adminUser.password,
-            };
-
-            const response = await request(app).post('/account/login').send(loginData);
-
-            expect(response.status).toBe(200);
-            expect(response.body.message).toBe('Login successful');
-            expect(response.body.data).toHaveProperty('accessToken');
-            expect(response.body.data).toHaveProperty('refreshToken');
-            authTokenAdmin = response.body.data.accessToken;
-
-        });
-
-        it('should log in an normal user and return access & refresh tokens', async () => {
-            const loginData = {
-                loginField: userdata.username,
-                password: userdata.password,
-            };
-
-            const response = await request(app).post('/account/login').send(loginData);
-
-            expect(response.status).toBe(200);
-            expect(response.body.message).toBe('Login successful');
-            expect(response.body.data).toHaveProperty('accessToken');
-            expect(response.body.data).toHaveProperty('refreshToken');
-            authTokenNormal = response.body.data.accessToken;
-
-            user_id = response.body.data.user.person_id;
-
-        });
-    });
-
+   
+    
+    
     describe('POST /profile/competence/', () => {
         it('should update competence data for authenticated user', async () => {
             const competences = [
@@ -189,7 +173,7 @@ describe('Profile Management', () => {
                 .send(updatedAvailability);
 
             expect(response.status).toBe(400);
-            expect(response.body.message).toBe('Invalid competences data');
+            expect(response.body.message).toBe('Availabilities data is invalid or missing.');
         });
     });
 
@@ -241,6 +225,6 @@ describe('Profile Management', () => {
         });
     });
 
-    }); 
+    });
 
 });

@@ -50,7 +50,6 @@ export const updateAvailabilityById = async (person_id: number, availabilities: 
     }
   }
 
-  console.log("BEGIN TRANSACTION AVAILABILITY");
   try {
     await client.query("BEGIN"); // Start the transaction
 
