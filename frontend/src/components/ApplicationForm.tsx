@@ -32,8 +32,34 @@ const ApplicationForm: React.FC = () => {
             {success && <Alert severity="success">Your application has been submitted!</Alert>}
             {application && (
                 <>
-                    <Typography>Status: {application.status}</Typography>
-                    <Typography>Created at: {application.created_at}</Typography>
+                    <Box
+                        component="span"
+                        sx={{
+                            display: "inline-block",
+                            padding: "4px 8px",
+                            borderRadius: "4px",
+                            fontWeight: "bold",
+                            backgroundColor: application.status === "accepted"
+                            ? "green"
+                            : application.status === "rejected"
+                            ? "red"
+                            : "orange",
+                            color: "white",
+                            marginLeft: "8px",
+                        }}
+                        >
+                                            <Typography>Status: {application.status}</Typography>
+
+                                  </Box>
+                    <Typography>Created at: {new Date(application.created_at).toLocaleString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      second: "2-digit",
+                      hour12: false,
+                    })}</Typography>
                 </>
             )}
 

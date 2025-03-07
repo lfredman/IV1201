@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext"; // User context for tokens
-import { useProfile as useProfileContext } from "../context/ProfileContext"; // Profile context
+import { Competence, useProfile as useProfileContext } from "../context/ProfileContext"; // Profile context
 import useAuthFetch  from "./useAuthFetch";
 import { useValidation } from "../hooks/useValidation";
 
@@ -35,10 +35,12 @@ export const useProfile = () => {
   const authFetch = useAuthFetch();
   const { validateCompetences} = useValidation();
 
+  /*Trigger error alert for 5 seconds*/
   const triggerError = (message: string, seconds = 5) => {
     setError(message);
     setTimeout(() => setError(null), seconds * 1000);
   };
+  /*Trigger success alert for 5 seconds*/
   const triggerSuccess = (seconds = 5) => {
     setSuccess(true);
     setTimeout(() => setSuccess(false), seconds * 1000);
@@ -66,6 +68,7 @@ export const useProfile = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
+        resetChanges(); //reset temporary competences
         throw new Error(errorData.message || 'Failed to update competences');
       }
       triggerSuccess();
@@ -91,7 +94,14 @@ export const useProfile = () => {
     
 
   };
-
+  const handleAddCompetence = (newCompetence: Competence) => {
+    if (newCompetence.years_of_experience <= 0) {
+      triggerError("Years of experiences must be above zero!")
+    }
+    else {
+      addCompetence(newCompetence);
+    }
+  }
   // Delete competence from temporary state
   const handleDeleteCompetence = (competence_id: number) => {
     deleteCompetence(competence_id); // Removes selected competence from tempCompetences
@@ -132,7 +142,6 @@ export const useProfile = () => {
         }
       } finally {
         setLoading(false);
-        //setSuccess(true);
       }
     };
 
@@ -148,6 +157,7 @@ export const useProfile = () => {
     saveProfileChanges, // Call this to apply changes
     handleDeleteCompetence,
     addCompetence,
+    handleAddCompetence,
     resetChanges // Call this to discard changes
   };
 };
