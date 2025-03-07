@@ -35,10 +35,12 @@ export const useProfile = () => {
   const authFetch = useAuthFetch();
   const { validateCompetences} = useValidation();
 
+  /*Trigger error alert for 5 seconds*/
   const triggerError = (message: string, seconds = 5) => {
     setError(message);
     setTimeout(() => setError(null), seconds * 1000);
   };
+  /*Trigger success alert for 5 seconds*/
   const triggerSuccess = (seconds = 5) => {
     setSuccess(true);
     setTimeout(() => setSuccess(false), seconds * 1000);
@@ -66,7 +68,7 @@ export const useProfile = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        resetChanges();
+        resetChanges(); //reset temporary competences
         throw new Error(errorData.message || 'Failed to update competences');
       }
       triggerSuccess();
@@ -140,7 +142,6 @@ export const useProfile = () => {
         }
       } finally {
         setLoading(false);
-        //setSuccess(true);
       }
     };
 
