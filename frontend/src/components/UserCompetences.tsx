@@ -3,7 +3,6 @@ import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useProfile } from '../hooks/useProfile'; // Using the custom hook
 import competenceOptions from '../utils/competenceOptions';
 

@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the Availability type
 interface Availability {
-  availability_id: number | null; // Optional if not needed initially
+  availability_id?: number | null; // Optional if not needed initially
   from_date: string;
   to_date: string;
 }

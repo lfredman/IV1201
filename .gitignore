@@ -32,3 +32,4 @@ backend/logs/*
 logs/
 *.log
 backend/coverage/*
+frontend/coverage/*
