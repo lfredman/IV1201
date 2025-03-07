@@ -15,6 +15,7 @@ import { UserProvider } from './context/UserContext';  // Import UserProvider
 import { ProfileProvider } from './context/ProfileContext';  // Import ProfileProvider
 import Navbar from "./components/Navbar";
 import ApplicationsList from "./components/ApplicationsList";
+import ErrorBoundary from "./components/ErrorBoundry";
 
 /**
  * Main entry point of the application.
@@ -44,6 +45,7 @@ const App: React.FC = () => {
     <UserProvider>
       <ProfileProvider>
       <Navbar></Navbar>
+      <ErrorBoundary>
       <AvailabilityProvider>
       <Routes>
         <Route path="/signup" element={<Signup />} />
@@ -57,6 +59,7 @@ const App: React.FC = () => {
         <Route path="/applications" element={<ApplicationsList />} />
       </Routes>
       </AvailabilityProvider>
+      </ErrorBoundary>
       </ProfileProvider>
     </UserProvider>
   );

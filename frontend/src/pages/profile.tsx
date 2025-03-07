@@ -38,7 +38,6 @@ const Profile: React.FC = () => {
         {user ? (
           <>
             <AccountInfoForm />
-            {user.role_id !== 1 && <UserCompetences editable={false} />}
             <PasswordResetForm />
             </>
         ) : (
