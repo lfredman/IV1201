@@ -14,7 +14,7 @@ import cors from 'cors';
 const app = express();
 const port = process.env.PORT || 3000;
 
-const allowedOrigins = ["http://localhost:5173", "http://127.0.0.1:5173", "http://iv1201.peaceman.se"];
+const allowedOrigins = ["http://localhost:5173", "http://127.0.0.1:5173", "http://iv1201.peaceman.se", "https://iv1201.peaceman.se"];
 
 const corsOptions = {
   origin: (origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) => {
