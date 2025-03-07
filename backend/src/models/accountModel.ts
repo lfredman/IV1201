@@ -325,3 +325,68 @@ export const deleteUserByUsername = async (usename: string): Promise<boolean> =>
     client.release();
   }
 };
+
+/**
+ * Creates a new admin in the database.
+ * 
+ * - Validates input fields: name, surname, username, email, pnr, and password.
+ * - Inserts the new admin into the database with a default role_id of 2.
+ * - If the operation is successful, returns the created person object.
+ * - If any error occurs during the process, a transaction rollback is performed, and an error message is thrown.
+ * 
+ * @param {string} name - The first name of the admin.
+ * @param {string} surname - The surname of the admin.
+ * @param {string} pnr - The PNR (Personal Identification Number) of the admin.
+ * @param {string} username - The username for the admin.
+ * @param {string} email - The email address of the admin.
+ * @param {string} password - The password for the admin.
+ * @returns {Promise<Person | null>} - The created person object or null if the operation failed.
+ */
+
+export const createAdmin = async (
+  name: string, 
+  surname: string,
+  pnr: string,
+  username: string,
+  email: string,
+  password: string
+): Promise<Person | null> => {
+  const client = await getClient();
+
+  try {
+    await client.query("BEGIN");
+
+    // Validation
+    if(!isInputSafe(name) || !isInputSafe(surname) || !isInputSafe(username)){
+      throw new Error("Not safe input in fields for DB");
+    }
+    if(!isEmailValid(email)){
+      throw new Error("Email not valid");
+    }
+    if(!isPnrValid(pnr)){
+      throw new Error("Pnr not valid");
+    }
+
+    // Insert person
+    const result = await queryWithClient(
+      client,
+      `INSERT INTO person (name, surname, pnr, username, email, password, role_id) 
+       VALUES ($1, $2, $3, $4, $5, $6, 1) 
+       RETURNING *`,
+      [name, surname, pnr, username, email, password]
+    );
+
+    await client.query("COMMIT");
+
+    if (result && result.length > 0) {
+      return result[0];
+    }
+    return null;
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error('Error creating person:', error);
+    throw new Error('Unable to create person');
+  } finally {
+    client.release();
+  }
+};

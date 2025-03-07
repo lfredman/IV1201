@@ -29,7 +29,7 @@ export interface Application {
 
 
 export interface SimpleApplication {
-  application_id: number;
+  applicant_id: number;
   person_id: number;
   status: string;
   created_at: string; // or Date if you want it parsed as Date

@@ -38,7 +38,6 @@ export const getAvailabilityById = async (person_id: number): Promise<Availabili
 
 export const updateAvailabilityById = async (person_id: number, availabilities: Availability[]): Promise<Availabilities | null> => {
   const client = await getClient(); // Acquire a client for transactions
-  console.log("BEGIN TRANSACTION AVAILABILITY");
   try {
     await client.query("BEGIN"); // Start the transaction
 
@@ -57,9 +56,7 @@ export const updateAvailabilityById = async (person_id: number, availabilities: 
       await queryWithClient(client, `DELETE FROM availability WHERE person_id = $1`, [person_id]);
     }
 
-    console.log(availabilities);
     const newAvailabilities = availabilities.filter(av => !av.availability_id);
-    console.log(newAvailabilities);
     // Insert or update each availability
     for (const availability of newAvailabilities) {
       await queryWithClient(

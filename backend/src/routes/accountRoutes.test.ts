@@ -32,7 +32,6 @@ describe('User Registration, Login, and Token Refresh', () => {
     describe('POST /account/register', () => {
         it('should register a new user successfully', async () => {
             const response = await request(app).post('/account/register').send(userdata);
-            console.log(response.body.message);
             expect(response.status).toBe(201);
             expect(response.body.message).toBe('User registered successfully');
             expect(response.body.data.user).toHaveProperty('username', userdata.username);

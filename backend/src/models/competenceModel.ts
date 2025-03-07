@@ -39,7 +39,6 @@ export const getCompetenceById = async (person_id: number): Promise<Competences 
   `);
 
   // If result is an array directly, you can return it as is
-  console.log(result);
   if (result && Array.isArray(result)) {
     return {
       person_id,
@@ -80,7 +79,6 @@ export const updateCompetenceById = async (person_id: number, competences: Compe
     if(!isCompetencesValid(competences)){
       throw new Error("invalid competences");
     }
-    console.log("comp were valid")
 
     await client.query("BEGIN"); // Start the transaction
     

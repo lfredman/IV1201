@@ -71,9 +71,6 @@ export const authorizeRoleOrOwnership = (
   next: NextFunction
 ): void => {
   const { role_id, userId } = req.user;  // Extract role and userId from the token
-
-  console.log("Role ID:", role_id, "User ID:", userId);
-
   // Admins have full access
   if (role_id === 1) {
     return next();
@@ -81,8 +78,6 @@ export const authorizeRoleOrOwnership = (
 
   // Get the user ID from either URL params or request body
   const resourceUserId = req.params.id || req.body.userId;
-
-  console.log("Resource id", resourceUserId)
 
   if (!resourceUserId) {
     res.status(400).json({ message: "User ID is required" });

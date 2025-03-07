@@ -52,8 +52,6 @@ export const updateCompetenceService = async (user_id: string, competences: Comp
     // Add user_id as person_id in the `competences` object
     competences.person_id = id;
 
-    console.log("Validated Competences Object:", competences);
-
     // Call the model function to update the database
     try {
         logger.info(user_id+" calls database for update ");
@@ -100,7 +98,6 @@ export const updateAvailabilityService = async (user_id: string, availabilities:
     // Add user_id as person_id in the `competences` object
     availabilities.person_id = id;
 
-    console.log("Validated Availability Object:", availabilities);
     logger.info("Validated competences data for user: " + user_id);
 
     // Call the model function to update the database

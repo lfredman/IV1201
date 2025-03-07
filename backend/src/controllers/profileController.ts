@@ -90,7 +90,7 @@ export const updateCompetence = async (req: AuthRequest, res: Response): Promise
       }
 
       const data = await updateAvailabilityService(id, req.body);
-      res.status(201).json({ message: "User competence updated successfully", data });
+      res.status(201).json({ message: "User availability updated successfully", data });
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ message: error.message });
