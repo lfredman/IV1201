@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext"; // User context for tokens
-import { useProfile as useProfileContext } from "../context/ProfileContext"; // Profile context
+import { Competence, useProfile as useProfileContext } from "../context/ProfileContext"; // Profile context
 import useAuthFetch  from "./useAuthFetch";
 import { useValidation } from "../hooks/useValidation";
 
@@ -66,6 +66,7 @@ export const useProfile = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
+        resetChanges();
         throw new Error(errorData.message || 'Failed to update competences');
       }
       triggerSuccess();
@@ -91,7 +92,14 @@ export const useProfile = () => {
     
 
   };
-
+  const handleAddCompetence = (newCompetence: Competence) => {
+    if (newCompetence.years_of_experience <= 0) {
+      triggerError("Years of experiences must be above zero!")
+    }
+    else {
+      addCompetence(newCompetence);
+    }
+  }
   // Delete competence from temporary state
   const handleDeleteCompetence = (competence_id: number) => {
     deleteCompetence(competence_id); // Removes selected competence from tempCompetences
@@ -148,6 +156,7 @@ export const useProfile = () => {
     saveProfileChanges, // Call this to apply changes
     handleDeleteCompetence,
     addCompetence,
+    handleAddCompetence,
     resetChanges // Call this to discard changes
   };
 };

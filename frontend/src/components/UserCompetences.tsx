@@ -34,7 +34,7 @@ const competenceOptions = [
 ];
 
 const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) => {
-  const { competences, tempCompetences, loading, error, success, addCompetence, resetChanges, saveProfileChanges, handleDeleteCompetence} = useProfile();
+  const { competences, tempCompetences, loading, error, success, handleAddCompetence, resetChanges, saveProfileChanges, handleDeleteCompetence} = useProfile();
   const [isEditing, setIsEditing] = useState(editable);
   const [newCompetence, setNewCompetence] = useState({ competence: '', years_of_experience: '' });
   
@@ -58,9 +58,9 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
     handleDeleteCompetence(id);
   };
 
-  const handleAddCompetence = () => {
+  const handleAdd = () => {
     if (newCompetence.competence && newCompetence.years_of_experience) {
-      addCompetence({
+      handleAddCompetence({
         competence_id: parseInt(newCompetence.competence, 10),
         competence_name: competenceOptions.find(c => c.id === parseInt(newCompetence.competence, 10))?.name || '',
         years_of_experience: parseFloat(newCompetence.years_of_experience),
@@ -89,7 +89,7 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
       {error && <Alert severity="error">{error}</Alert>}
       {success && <Alert severity="success">Changes saved successfully!</Alert>}
 
-      {!loading && !error && (
+      {!loading && (
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -149,11 +149,11 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
                       onChange={(e) => setNewCompetence({ ...newCompetence, years_of_experience: e.target.value })}
                       label="Years"
                       sx={{width: 'auto', maxWidth: "100px", textAlign: 'center'}}
-                      
+                      inputProps={{ min: 0 }}
                     />
                   </TableCell>
                   <TableCell align="center">
-                    <IconButton color="primary" size='small' onClick={handleAddCompetence}>
+                    <IconButton color="primary" size='small' onClick={handleAdd}>
                       <AddIcon/>
                     </IconButton>
                   </TableCell>
