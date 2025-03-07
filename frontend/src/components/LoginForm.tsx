@@ -35,11 +35,21 @@ const LoginForm: React.FC = () => {
     }
 
     try {
-      await login(username, password);  // Call API
-      navigate('/');
-      // Handle success (redirect, show message, update context, etc.)
-    } catch (err) {
-      setError("Invalid username or password");
+      await login(username, password);
+      navigate("/");
+    } catch (err: any) {
+      if (err instanceof TypeError && err.message.includes("Failed to fetch")) {
+        console.error("Network error or server unreachable:", err);
+        setError("Unable to connect to the server. Please check your internet connection or try again later.");
+        return;
+      }
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else if (err.message) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
     }
   };
 
