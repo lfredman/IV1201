@@ -68,6 +68,9 @@ export const useAvailability = () => {
     if (availability.from_date === 'Invalid Date' || availability.to_date === 'Invalid Date') {
       triggerError("Availability contains invalid dates!");
     }
+    else if (availability.to_date < availability.from_date) {
+      triggerError("To date must be later than from date!");
+    }
     else {
       addAvailability(availability);
     }
