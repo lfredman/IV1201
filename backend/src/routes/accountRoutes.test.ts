@@ -114,6 +114,43 @@ describe('User Registration, Login, and Token Refresh', () => {
             expect(response.status).toBe(400);
             expect(response.body.errors).toContain('Password must be at least 8 characters long and include uppercase, lowercase, number, and a special character.');
         });
+
+        it('should return an error if name is missing or not a string', async () => {
+            const invalidUserData = { ...userdata, name: null };
+            const response = await request(app).post('/account/register').send(invalidUserData);
+            expect(response.status).toBe(400);
+            expect(response.body.errors).toContain('Name is required and must be a string.');
+        });
+    
+        it('should return an error if surname is missing or not a string', async () => {
+            const invalidUserData = { ...userdata, surname: null };
+            const response = await request(app).post('/account/register').send(invalidUserData);
+            expect(response.status).toBe(400);
+            expect(response.body.errors).toContain('Surname is required and must be a string.');
+        });
+    
+        it('should return an error if username is missing or not a string', async () => {
+            const invalidUserData = { ...userdata, username: null };
+            const response = await request(app).post('/account/register').send(invalidUserData);
+            expect(response.status).toBe(400);
+            expect(response.body.errors).toContain('Username is required and must be a string.');
+        });
+    
+        it('should return an error if email is missing, not a string, or invalid', async () => {
+            // Missing email
+            let invalidUserData = { ...userdata, email: null };
+            let response = await request(app).post('/account/register').send(invalidUserData);
+            expect(response.status).toBe(400);
+            expect(response.body.errors).toContain('A valid email is required.');
+        });
+    
+        it('should return an error if password is missing, not a string, or too weak', async () => {
+            // Missing password
+            let invalidUserData = { ...userdata, password: null };
+            let response = await request(app).post('/account/register').send(invalidUserData);
+            expect(response.status).toBe(400);
+            expect(response.body.errors).toContain('Password must be at least 8 characters long and include uppercase, lowercase, number, and a special character.');
+        });
     });
 
     describe('POST /account/login', () => {
@@ -178,5 +215,53 @@ describe('User Registration, Login, and Token Refresh', () => {
             expect(response.status).toBe(400);
             expect(response.body.message).toBe('Invalid or expired refresh token');
         });
+    });
+
+
+    describe('Password Reset Service', () => {
+        let accessToken: string;
+        let user_id: string;
+        beforeAll(async () => {
+            const loginData = {
+                loginField: 'john_doe',
+                password: 'Password123!',
+            };
+
+            const response = await request(app).post('/account/login').send(loginData);
+            accessToken = response.body.data.accessToken;
+            user_id = response.body.data.user.person_id
+            
+        });
+
+        it('should reset users password', async () => {
+            const response = await request(app)
+                .post('/account/reset')
+                .set('Authorization', `Bearer ${accessToken}`)
+                .send({password: "Hejhej123456!"});
+
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe('Password reset successfully');
+        });
+
+        it('should not reset users password due to password constraints', async () => {
+            const response = await request(app)
+                .post('/account/reset')
+                .set('Authorization', `Bearer ${accessToken}`)
+                .send({password: "hejhej"});
+
+            expect(response.status).toBe(400);
+            expect(response.body.message).toBe('Password must contain at least 8 characters, one uppercase letter, one number, and one special character');
+        });
+
+        it('should not reset users password due no password entered', async () => {
+            const response = await request(app)
+                .post('/account/reset')
+                .set('Authorization', `Bearer ${accessToken}`)
+                .send({});
+
+            expect(response.status).toBe(400);
+            expect(response.body.message).toBe('Missing parameters');
+        });
+
     });
 });

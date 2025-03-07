@@ -220,7 +220,6 @@ export const pwdResetService = async (id: string, data: { password: string }) =>
   const { password } = data;
   
   logger.info('Password reset service begins');
-  console.log("Login: ", id, " PWD: ", password)
   // If no user is found or password doesn't match, throw error
   if (!id || !password) {
     logger.warn('Password reset service failed. Missing parameters');
@@ -237,11 +236,8 @@ export const pwdResetService = async (id: string, data: { password: string }) =>
   // Validate password strength
   if (!isPasswordValid(password)) {
     logger.warn('Password reset service failed. Invalid password strength');
-    console.log(password);
     throw new Error('Password must contain at least 8 characters, one uppercase letter, one number, and one special character');
   }
-
-  console.log("CHANING PASSWORD FOR ", user)
 
   const hashedPassword = await bcrypt.hash(password, 10);
 

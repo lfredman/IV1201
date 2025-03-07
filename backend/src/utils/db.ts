@@ -37,7 +37,12 @@ export const query = async (text: string, params?: any[]): Promise<any[]> => {
  */
 export const getClient = async (): Promise<PoolClient> => {
   const client = await pool.connect();
-  return client;
+  try {
+    return client;
+  } catch (error) {
+    client.release();
+    throw error;
+  }
 };
 
 /**
@@ -65,4 +70,6 @@ export const queryWithClient = async (
  *
  * @returns {void} - No return value.
  */
-export const closeDB = () => pool.end();
+export const closeDB = async () => {
+  await pool.end();
+};

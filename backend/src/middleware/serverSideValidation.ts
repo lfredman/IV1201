@@ -18,10 +18,19 @@ import { isEmailValid, isPnrValid, isPasswordValid } from '../utils/validation';
  * @returns {void} - The function either proceeds to the next middleware or returns an error response.
  */
 export const validateRegister = (req: Request, res: Response, next: NextFunction): void => {
-  const { username, email, password, pnr } = req.body;
+  const { name, surname, username, email, password, pnr } = req.body;
   const errors: string[] = [];
 
   // Check required fields
+
+  if (!name || typeof name !== 'string') {
+    errors.push('Name is required and must be a string.');
+  }
+
+  if (!surname || typeof surname !== 'string') {
+    errors.push('Surname is required and must be a string.');
+  }
+
   if (!username || typeof username !== 'string') {
     errors.push('Username is required and must be a string.');
   }
