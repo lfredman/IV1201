@@ -71,16 +71,18 @@ export const useSignup = () => {
       // navigate to home screen
       navigate("/");
       return userData; // Return user or token if needed elsewhere
-    } catch (err) {
-
-      setError("Sign up failed! " + err.message)
-      if (err instanceof Error) {
-        const errMsg: string = "Sign up failed! " + err.message;
+    } catch (err: any) {
+      if (err instanceof TypeError && err.message.includes("Failed to fetch")) {
+        console.error("Network error or server unreachable:", err);
+        setError("Unable to connect to the server. Please check your internet connection or try again later.");
+        return;
+      }
+      if (err.response?.data?.message) {
+        setError(`Sign up failed! ${err.response.data.message}`);
       } else {
-        const errMsg: string = "Sign up failed!";
-      }      
+        setError("Sign up failed! Please try again.");
+      }
     } finally {
-      
       setLoading(false);
     }
   };
