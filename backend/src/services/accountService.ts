@@ -275,7 +275,7 @@ export const pwdResetByEmailService = async (data: { email: string }) => {
   const resetToken = jwt.sign({ userId: user.person_id }, JWT_SECRET, { expiresIn: '15m' });
 
   // Construct password reset link
-  const resetLink = `http://iv1201.peaceman.se/reset?token=${resetToken}`;
+  const resetLink = `https://iv1201.peaceman.se/reset?token=${resetToken}`;
 
   // Send password reset email
   await sendEmail(
