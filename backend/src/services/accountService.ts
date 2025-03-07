@@ -75,6 +75,7 @@ export const registerService = async (data: {
 
     // 3. Validate password strength
     if (!isPasswordValid(password)) {
+      logger.warn('Invalid password entered');
       throw new Error('Password must contain at least 8 characters, one uppercase letter, one number, and one special character');
     }
 
@@ -173,6 +174,8 @@ export const loginService = async (data: { loginField: string; password: string 
 export const tokenRefreshService = async (refreshToken: string) => {
   let accessToken = {};
 
+  logger.info('Token refresh service begins');
+
   try {
     const user = jwt.verify(refreshToken, JWT_SECRET) as JwtPayload;
     accessToken = jwt.sign(
@@ -207,21 +210,25 @@ export const tokenRefreshService = async (refreshToken: string) => {
  */
 export const pwdResetService = async (id: string, data: { password: string }) => {
   const { password } = data;
-    
+  
+  logger.info('Password reset service begins');
   console.log("Login: ", id, " PWD: ", password)
   // If no user is found or password doesn't match, throw error
   if (!id || !password) {
+    logger.warn('Password reset service failed. Missing parameters');
     throw new Error('Missing parameters');
   }
 
   const user = await getUserById(id);
 
   if (!user) {
+    logger.warn('Password reset service failed. User not found');
     throw new Error("User not found");
   }
   
   // Validate password strength
   if (!isPasswordValid(password)) {
+    logger.warn('Password reset service failed. Invalid password strength');
     console.log(password);
     throw new Error('Password must contain at least 8 characters, one uppercase letter, one number, and one special character');
   }
@@ -230,6 +237,7 @@ export const pwdResetService = async (id: string, data: { password: string }) =>
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
+  logger.info('Password reset service complete');
   
   return changePassword(user.person_id, hashedPassword);
 };
@@ -300,6 +308,8 @@ export const pwdResetByEmailService = async (data: { email: string }) => {
   );
 
   console.log("Password reset email sent to:", user.email);
+
+  logger.info("Password reset email sent successfully", user.email);
 
   return { message: "Password reset email sent successfully" };
 };
