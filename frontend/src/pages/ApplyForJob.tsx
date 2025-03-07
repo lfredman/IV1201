@@ -1,10 +1,7 @@
 import React from "react";
-import ApplyForAJob from "../components/ApplyForAJob"; // Import the form
 import { useUser } from "../context/UserContext";
-import UserSchedule from "../components/UserSchedule";
 import DateRangeScheduler from "../components/AvailabilityForm";
 import { Box, Typography, Container, Grid } from "@mui/material";
-import AddCompetence from "../components/AddCompetence";
 import UserCompetences from "../components/UserCompetences";
 import ApplicationForm from "../components/ApplicationForm";
 
