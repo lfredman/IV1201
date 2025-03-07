@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import { createPerson, getUserByUsername, getUserByEmail, getUserByPnr, changePassword, getUserById } from '../models/accountModel';
 import { logger } from '../utils/logger';
 import { sendEmail } from '../utils/email';
-import { isEmailValid, isPasswordValid, isPnrValid } from '../utils/validation';
+import { isEmailValid, isPasswordValid, isPnrValid, isInputSafe } from '../utils/validation';
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET as string;
@@ -119,16 +119,24 @@ export const loginService = async (data: { loginField: string; password: string 
   let user: any;
 
   // Check if it's an email
-  if (loginField.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+  if (isEmailValid(loginField)) {
+
     user = await getUserByEmail(loginField);
     logger.info('Login attempt using email', { loginField });
   }
   // Check if it's a personal number (PNR)
-  else if (loginField.match(/^\d{1,15}(-\d{1,15})*$/)) {
+  else if (isPnrValid(loginField)) {
+
     user = await getUserByPnr(loginField);
     logger.info('Login attempt using PNR', { loginField });
   }
+
   // Otherwise, treat it as a username
+  if(!isInputSafe(loginField)){
+    logger.warn("Not safe input");
+    throw new Error("Invalid input! Not safe");
+  }
+  
   else {
     user = await getUserByUsername(loginField);
     logger.info('Login attempt using username', { loginField });

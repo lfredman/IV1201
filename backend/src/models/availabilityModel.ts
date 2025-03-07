@@ -1,5 +1,6 @@
 import { query, getClient, queryWithClient } from "../utils/db";
 import dayjs from "dayjs";
+import {isEmailValid, isInputSafe, isPasswordValid, isPnrValid, isActionValid, isDateValid} from '../utils/validation';
 
 export interface Availability {
   availability_id: any;
@@ -13,6 +14,9 @@ export interface Availabilities {
 }
 
 export const getAvailabilityById = async (person_id: number): Promise<Availabilities | null> => {
+
+  //No need to validate number.
+
   const result = await query(
     `SELECT availability_id, from_date, to_date FROM availability WHERE person_id = $1;`,
     [person_id]
@@ -38,6 +42,14 @@ export const getAvailabilityById = async (person_id: number): Promise<Availabili
 
 export const updateAvailabilityById = async (person_id: number, availabilities: Availability[]): Promise<Availabilities | null> => {
   const client = await getClient(); // Acquire a client for transactions
+
+  //validation
+  for(const av of availabilities){
+    if(!isDateValid(av.from_date) || !isDateValid(av.to_date)){
+      throw new Error("Invalid date!");
+    }
+  }
+
   console.log("BEGIN TRANSACTION AVAILABILITY");
   try {
     await client.query("BEGIN"); // Start the transaction
