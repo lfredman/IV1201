@@ -83,14 +83,14 @@ jobs:
         run: npm ci
         working-directory: backend
 
+      - name: Install Heroku CLI # <- IMPORTANT!!! Make sure the cli is installed before using the action
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+
       # Authenticate with Heroku CLI to get DATABASE_URL
       - name: Authenticate with Heroku CLI
         run: |
           echo "HEROKU_API_KEY=${{ secrets.HEROKU }}" | heroku auth:token
-
-      - name: Install Heroku CLI # <- IMPORTANT!!! Make sure the cli is installed before using the action
-        run: |
-          curl https://cli-assets.heroku.com/install.sh | sh
 
       # Fetch DATABASE_URL from Heroku
       - name: Get Heroku DATABASE_URL
