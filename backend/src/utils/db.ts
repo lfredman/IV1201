@@ -2,18 +2,20 @@ import { Pool, QueryResult, PoolClient } from 'pg';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// Create a new pool of connections
+// Parse the DATABASE_URL environment variable for Heroku
+const { DATABASE_URL } = process.env;
+
+if (!DATABASE_URL) {
+  throw new Error('DATABASE_URL environment variable is required');
+}
+
+// Create a new pool of connections using DATABASE_URL (Heroku Postgres URL)
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: 5432,
+  connectionString: DATABASE_URL, // Use the DATABASE_URL environment variable directly
   ssl: {
     rejectUnauthorized: false, // Allows self-signed certificates (use cautiously)
   },
-});
-
+})
 /**
  * Executes a general database query and returns the result rows.
  * This function is non-transactional and can be used for standard queries.

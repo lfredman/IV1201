@@ -59,7 +59,6 @@ jobs:
         env:
           HD_VITE_BACKEND_URL: ${{ vars.VITE_BACKEND_URL }}
 
-
   backend:
     runs-on: ubuntu-latest
 
@@ -84,15 +83,27 @@ jobs:
         run: npm ci
         working-directory: backend
 
-      # Set environment variables using GitHub Secrets
+      # Authenticate with Heroku CLI to get DATABASE_URL
+      - name: Authenticate with Heroku CLI
+        run: |
+          echo "HEROKU_API_KEY=${{ secrets.HEROKU }}" | heroku auth:token
+
+      # Fetch DATABASE_URL from Heroku
+      - name: Get Heroku DATABASE_URL
+        run: |
+          DATABASE_URL=$(heroku config:get DATABASE_URL --app iv1201backend)
+          echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
+
+      # Set environment variables for database connection
       - name: Set Environment Variables
         run: |
           touch .env  # Create the .env file if it doesn't exist
-          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env  # Decode the base64 password
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_URL=${{ env.DATABASE_URL }}" >> .env
           echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
           echo "GMAIL=${{ secrets.GMAIL }}" >> .env
           echo "GMAIL_SECRET=${{ secrets.GMAIL_SECRET }}" >> .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
