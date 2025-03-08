@@ -87,10 +87,9 @@ jobs:
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
 
-      # Authenticate with Heroku CLI to get DATABASE_URL
-      - name: Authenticate with Heroku CLI
-        run: |
-          echo "HEROKU_API_KEY=${{ secrets.HEROKU }}" | heroku auth:token
+      # Set the Heroku API key and authenticate
+      - name: Set Heroku API Key for Authentication
+        run: echo "HEROKU_API_KEY=${{ secrets.HEROKU }}" >> $GITHUB_ENV
 
       # Fetch DATABASE_URL from Heroku
       - name: Get Heroku DATABASE_URL
