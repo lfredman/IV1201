@@ -22,14 +22,25 @@ const ApplicationForm: React.FC = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 2,
-                maxWidth: 400
+                maxWidth: 400,
+                backgroundColor: "white",
+                
             }}
         >
-            <Typography variant="h6">Application</Typography>
+            <Typography variant="h5">Application</Typography>
 
             {loading && <Typography>Loading...</Typography>}
             {error && <Alert severity="error">{error}</Alert>}
             {success && <Alert severity="success">Your application has been submitted!</Alert>}
+            {!application && !error && !loading && (
+                <Typography 
+                style={{ fontSize: '0.8rem', padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '5px' }}
+                >
+                You have not submitted any application! <br />
+                Add your availability + competences and click submit!
+                </Typography>
+
+            )}
             {application && (
                 <>
                     <Box
@@ -48,7 +59,7 @@ const ApplicationForm: React.FC = () => {
                             marginLeft: "8px",
                         }}
                         >
-                                            <Typography>Status: {application.status}</Typography>
+                                            <Typography>Status: {application.status.charAt(0).toUpperCase() + application.status.slice(1).replace(/_/g, ' ')}</Typography>
 
                                   </Box>
                     <Typography>Created at: {new Date(application.created_at).toLocaleString("en-US", {

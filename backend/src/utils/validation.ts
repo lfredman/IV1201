@@ -70,7 +70,7 @@ const isCompetencesValid = (competences: Competences): boolean => {
  * @returns {boolean} - Returns true if the input is safe, otherwise false.
  */
 const isInputSafe = (input: string): boolean => {
-    const safeRegex = /^[a-zA-Z0-9_\-@.]+$/;
+    const safeRegex = /^[a-zA-Z0-9_\-@.åäöÅÄÖ]+$/;
     return safeRegex.test(input);
 };
 

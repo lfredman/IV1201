@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import { useUser } from '../context/UserContext';
 import rollercoasterVideo from '../assets/rollercoaster.mp4';
-import '../styles/video.css';
+//import '../styles/video.css';
 import { Button } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
@@ -35,12 +35,12 @@ const Home: React.FC = () => {
 
   return (
     <Box sx={{color: 'black'}}>
-      {/* Video Background */}
+      {/* Video Background 
       <div className="video-container">
         <video autoPlay loop muted id='video'>
           <source src={rollercoasterVideo} type="video/mp4" />
         </video>
-      </div>
+      </div>*/}
 
 
       <Box

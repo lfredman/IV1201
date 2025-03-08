@@ -3,6 +3,8 @@ import { useUser } from '../context/UserContext';  // Import the useUser hook
 import AccountInfoForm from '../components/AccountInfoForm';
 import UserCompetences from '../components/UserCompetences'
 import PasswordResetForm from '../components/PasswordResetForm';
+import { Container } from '@mui/system';
+import { Typography } from '@mui/material';
 
 
 /**
@@ -24,27 +26,36 @@ const Profile: React.FC = () => {
   const { user } = useUser();
 
   return (
-    <Box>
-      <Box 
-        component="section" 
-        sx={{ 
-          p: 2, 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          height: '100vh',
-        }}
-      >
-        {user ? (
-          <>
-            <AccountInfoForm />
-            <PasswordResetForm />
-            </>
-        ) : (
-          <p>You can't be here! Please log in.</p>
-        )}
-      </Box>
-    </Box>
+    <Container
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '80vh',
+        p: 2,
+      }}
+    >
+      {user ? (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap', // Ensures wrapping of components on smaller screens
+            justifyContent: 'center',
+            gap: 3,
+            width: '100%',
+            backgroundColor: 'transparent',
+          }}
+        >
+          <AccountInfoForm />
+          <PasswordResetForm />
+        </Box>
+      ) : (
+        <Typography variant="h6" sx={{ textAlign: 'center', color: 'gray' }}>
+          You can't be here! Please log in.
+        </Typography>
+      )}
+    </Container>
   );
 };
 

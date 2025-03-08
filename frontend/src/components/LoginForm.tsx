@@ -55,62 +55,70 @@ const LoginForm: React.FC = () => {
 
   return (
     <Box 
-      sx={{
-        width: 300,
-        mx: "auto",
-        mt: 5,
-        p: 3,
-        borderRadius: 2,
-        boxShadow: 3,
-        textAlign: "center",
+      sx={{ 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center", 
+        minHeight: "80vh" // Full height for vertical centering
       }}
     >
-      <Typography variant="h5" gutterBottom>
-        Login
-      </Typography>
-
-      {error && <Alert severity="error">{error}</Alert>}
-
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Username - Email - Personal number"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+      <Box 
+        sx={{
+          width: 300,
+          p: 3,
+          borderRadius: 2,
+          boxShadow: 3,
+          textAlign: "center",
+          backgroundColor: "white",
+        }}
+      >
+        <Typography variant="h5" gutterBottom>
           Login
-        </Button>
+        </Typography>
 
-        <Box sx={{ mt: 2 }}>
-          <Typography variant="body2" color="text.secondary">
-            Don't have an account?&nbsp;
-            <Link to="/signup" style={{ textDecoration: 'underline', color: '#1976d2' }}>
-              Sign up here
-            </Link>
-          </Typography>
-        </Box>
+        {error && <Alert severity="error">{error}</Alert>}
 
-        <Box sx={{ mt: 2 }}>
-          <Typography variant="body2" color="text.secondary">
-            <Link to="/reset" style={{ textDecoration: 'none', color: '#1976d2' }}>
-              Forgot your password?
-            </Link>
-          </Typography>
-        </Box>
-      </form>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Username - Email - Personal number"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <TextField
+            label="Password"
+            type="password"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+            Login
+          </Button>
+
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="body2" color="text.secondary">
+              Don't have an account?&nbsp;
+              <Link to="/signup" style={{ textDecoration: 'underline', color: '#1976d2' }}>
+                Sign up here
+              </Link>
+            </Typography>
+          </Box>
+
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="body2" color="text.secondary">
+              <Link to="/reset" style={{ textDecoration: 'none', color: '#1976d2' }}>
+                Forgot your password?
+              </Link>
+            </Typography>
+          </Box>
+        </form>
+      </Box>
     </Box>
   );
 };

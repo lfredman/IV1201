@@ -64,10 +64,10 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ editable = false })
     };
 
     return (
-        <Box sx={{ mx: 'auto', mt: 5, p: 3, borderRadius: 2, boxShadow: 3, textAlign: 'center' }}>
+        <Box sx={{ mx: 'auto', mt: 5, p: 3, borderRadius: 2, boxShadow: 3, textAlign: 'center', backgroundColor: "white"}}>
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Typography variant="h6">Your Availability</Typography>
-                <IconButton aria-label="edit" size="small" onClick={handleEditToggle}>
+                <IconButton aria-label="edit" size="medium" onClick={handleEditToggle}>
                     <EditNoteIcon fontSize="inherit" />
                 </IconButton>
             </Stack>

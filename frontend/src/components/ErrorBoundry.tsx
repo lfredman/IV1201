@@ -48,6 +48,7 @@ const styles = {
     textAlign: "center" as const,
     padding: "20px",
     marginTop: "50px",
+    backgroundColor: "white",
   },
   errorText: {
     color: "red",

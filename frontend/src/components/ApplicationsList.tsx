@@ -146,7 +146,7 @@ const ApplicationsList: React.FC = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", }}>
         <CircularProgress />
       </Box>
     );
@@ -167,6 +167,7 @@ const ApplicationsList: React.FC = () => {
       padding: 1,
       overflowX: "hidden", // Prevents horizontal overflow
       boxSizing: "border-box", // Ensures padding is included in width calculations
+      backgroundColor: "white",
     }}>
       <TextField
         label="Search applications"

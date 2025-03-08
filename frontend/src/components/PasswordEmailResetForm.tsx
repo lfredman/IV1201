@@ -52,46 +52,54 @@ const PasswordEmailResetForm: React.FC = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: 300,
-        mx: "auto",
-        mt: 5,
-        p: 3,
-        borderRadius: 2,
-        boxShadow: 3,
-        textAlign: "center",
+    <Box 
+      sx={{ 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center", 
+        minHeight: "80vh"
       }}
     >
-      <Typography variant="h5" gutterBottom>
-        Reset Password By Email
-      </Typography>
+      <Box
+        sx={{
+          width: 300,
+          p: 3,
+          borderRadius: 2,
+          boxShadow: 3,
+          textAlign: "center",
+          backgroundColor: "white",
+        }}
+      >
+        <Typography variant="h5" gutterBottom>
+          Reset Password By Email
+        </Typography>
 
-      {error && <Alert severity="error">{error}</Alert>}
-      {success && (
-        <Alert severity="success">
-          Reset link sent to {email}!
-          <div>Please check your email</div>
-          <div>Redirecting to login...</div>
-        </Alert>
-      )}
+        {error && <Alert severity="error">{error}</Alert>}
+        {success && (
+          <Alert severity="success">
+            Reset link sent to {email}!
+            <div>Please check your email</div>
+            <div>Redirecting to login...</div>
+          </Alert>
+        )}
 
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Email"
-          type="email"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={loading}
-        />
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Email"
+            type="email"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
+          />
 
-        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }} disabled={loading}>
-          {loading ? <CircularProgress size={24} /> : "Reset Password"}
-        </Button>
-      </form>
+          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }} disabled={loading}>
+            {loading ? <CircularProgress size={24} /> : "Reset Password"}
+          </Button>
+        </form>
+      </Box>
     </Box>
   );
 };

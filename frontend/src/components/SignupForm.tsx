@@ -39,7 +39,7 @@ const SignupForm: React.FC = () => {
   };
 
   return (
-    <Box sx={{ width: 320, mx: "auto", mt: 5, p: 3, borderRadius: 2, boxShadow: 3, textAlign: "center" }}>
+    <Box sx={{ width: 320, mx: "auto", mt: 5, p: 3, borderRadius: 2, boxShadow: 3, textAlign: "center", backgroundColor: "white",}}>
       <Typography variant="h5" gutterBottom>Sign up</Typography>
       {error && <Alert severity="error">{error}</Alert>}
       <form onSubmit={handleSubmit}>

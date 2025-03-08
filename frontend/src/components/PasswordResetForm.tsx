@@ -54,40 +54,48 @@ const PasswordResetForm: React.FC = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: 300,
-        mx: "auto",
-        mt: 5,
-        p: 3,
-        borderRadius: 2,
-        boxShadow: 3,
-        textAlign: "center",
-      }}
-    >
-      <Typography variant="h5" gutterBottom>
-        Change Password
-      </Typography>
+    <Box 
+          sx={{ 
+            display: "flex", 
+            justifyContent: "center", 
+            alignItems: "center", 
+            //minHeight: "80vh"
+          }}
+        >
+            <Box
+              sx={{
+                width: 300,
+                p: 3,
+                borderRadius: 2,
+                boxShadow: 3,
+                textAlign: "center",
+                backgroundColor: "white",
+              }}
+            >
+        <Typography variant="h5" gutterBottom>
+          Change Password
+        </Typography>
 
-      {error && <Alert severity="error">{error}</Alert>}
-      {success && <Alert severity="success">Password changed successfully! Redirecting to login...</Alert>}
+        {error && <Alert severity="error">{error}</Alert>}
+        {success && <Alert severity="success">Password changed successfully! Redirecting to login...</Alert>}
 
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="New Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          disabled={loading}
-        />
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="New Password"
+            type="password"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={loading}
+          />
 
-        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }} disabled={loading}>
-          {loading ? <CircularProgress size={24} /> : "Reset Password"}
-        </Button>
-      </form>
+          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }} disabled={loading}>
+            {loading ? <CircularProgress size={24} /> : "Reset Password"}
+          </Button>
+        </form>
+      </Box>
     </Box>
   );
 };

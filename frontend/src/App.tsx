@@ -9,13 +9,14 @@ import ResetPassword from "./pages/ResetPassword"
 import "./styles/App.css"; // Import global styles here
 import { AvailabilityProvider } from "./context/AvailabilityContext";
 
-
 import { UserProvider } from './context/UserContext';  // Import UserProvider
 import { ProfileProvider } from './context/ProfileContext';  // Import ProfileProvider
 import Navbar from "./components/Navbar";
 import ApplicationsList from "./components/ApplicationsList";
 import ErrorBoundary from "./components/ErrorBoundry";
-
+import rollercoasterVideo from './assets/rollercoaster.mp4';
+import './styles/video.css';
+import { useEffect, useRef, useState } from "react";
 /**
  * Main entry point of the application.
  * 
@@ -42,6 +43,11 @@ import ErrorBoundary from "./components/ErrorBoundry";
 const App: React.FC = () => {
   return (
     <UserProvider>
+      <div className="video-container">
+        <video autoPlay loop muted id='video'>
+          <source src={rollercoasterVideo} type="video/mp4" />
+        </video>
+      </div>
       <ProfileProvider>
       <Navbar></Navbar>
       <ErrorBoundary>

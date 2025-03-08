@@ -17,12 +17,32 @@ const ApplyForJob: React.FC = () => {
     <Container sx={{ mt: 4 }}>
       {user ? (
         <Box>
-          <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 600 }}>
-            Welcome to apply for a job, {user.name}
-          </Typography>
-          <Typography variant="h6" align="center" gutterBottom sx={{ mb: 4 }}>
-            Start filling in your competencies & availability
-          </Typography>
+<Typography 
+  variant="h5" 
+  align="center" 
+  gutterBottom 
+  sx={{ 
+    fontWeight: 600, 
+    color: "white", 
+    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" // Added shadow effect
+  }}
+>
+  Welcome to apply for a job, {user.name}
+</Typography>
+
+<Typography 
+  variant="h6" 
+  align="center" 
+  gutterBottom 
+  sx={{ 
+    mb: 4, 
+    color: "white", 
+    textShadow: "1px 1px 3px rgba(0, 0, 0, 0.5)" // Added shadow effect
+  }}
+>
+  Start by filling in your competencies and availability
+</Typography>
+
 
           <Grid container spacing={4} justifyContent="center">
             <Grid item xs={12} sm={8} md={6}>

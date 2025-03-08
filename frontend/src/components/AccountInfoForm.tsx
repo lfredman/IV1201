@@ -24,12 +24,12 @@ const AccountInfoForm: React.FC = () => {
     <Box 
       sx={{
         width: 300,
-        mx: "auto",
         mt: 5,
         p: 3,
         borderRadius: 2,
         boxShadow: 3,
         textAlign: "center",
+        backgroundColor: "white",
       }}
     >
       <Typography variant="h5" gutterBottom>
