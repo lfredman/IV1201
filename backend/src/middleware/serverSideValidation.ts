@@ -75,7 +75,7 @@ export const validateLogin = (req: Request, res: Response, next: NextFunction): 
     const errors: string[] = [];
 
     // Validate password: must be provided and be a string (you may add more complexity checks if needed)
-    if (!password || typeof password !== 'string' || !isPasswordValid(password)) {
+    if (!password || typeof password !== 'string') {  // We cant validate password requirements due to old users must be able to login
       errors.push('Password is required.');
     }
 
