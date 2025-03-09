@@ -46,6 +46,10 @@ jobs:
         working-directory: frontend
         continue-on-error: true
 
+      - name: Run Frontend Tests
+        run: npm test
+        working-directory: frontend
+
       - name: Install Heroku CLI # <- IMPORTANT!!! Make sure the cli is installed before using the action
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh

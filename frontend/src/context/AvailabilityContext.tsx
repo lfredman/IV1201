@@ -34,7 +34,6 @@ export const AvailabilityProvider = ({ children }: { children: ReactNode }) => {
 
   const addAvailability = (newAvailability: Availability) => {
     newAvailability.availability_id = null;
-    console.log(newAvailability);
     setTempAvailabilities((prev) => {
       const exists = prev.some(
         (av) => av.from_date === newAvailability.from_date && av.to_date === newAvailability.to_date
@@ -54,26 +53,18 @@ export const AvailabilityProvider = ({ children }: { children: ReactNode }) => {
 
   const updateAvailability = () => {
     setAvailabilitiesAndCache(tempAvailabilities);
-    console.log("Updated availability:", tempAvailabilities);
   };
 
   const deleteAvailability = (from_date: string, to_date: string) => {
     setTempAvailabilities((prev) => prev.filter((av) => !(av.from_date === from_date && av.to_date === to_date)));
-    console.log("Deleted availability:", from_date, " to ", to_date);
   };
-
-  React.useEffect(() => {
-    console.log("Updated availabilities react why:", availabilities);
-  }, [availabilities]);
 
   const saveAvailabilities = () => {
     setAvailabilities(tempAvailabilities);
-    console.log("Changes saved.");
   };
 
   const discardChanges = () => {
     setTempAvailabilities(availabilities);
-    console.log("Changes discarded.");
   };
 
 
