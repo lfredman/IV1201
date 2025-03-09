@@ -1,4 +1,4 @@
-import { query, getClient, queryWithClient } from "../utils/db";
+import { getClient, queryWithClient } from "../utils/db";
 import { isEmailValid, isInputSafe, isPasswordValid, isPnrValid } from '../utils/validation';
 
 /**

@@ -220,7 +220,6 @@ describe('User Registration, Login, and Token Refresh', () => {
 
     describe('Password Reset Service', () => {
         let accessToken: string;
-        let user_id: string;
         beforeAll(async () => {
             const loginData = {
                 loginField: 'john_doe',
@@ -228,9 +227,7 @@ describe('User Registration, Login, and Token Refresh', () => {
             };
 
             const response = await request(app).post('/account/login').send(loginData);
-            accessToken = response.body.data.accessToken;
-            user_id = response.body.data.user.person_id
-            
+            accessToken = response.body.data.accessToken;            
         });
 
         it('should reset users password', async () => {

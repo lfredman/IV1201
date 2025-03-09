@@ -116,6 +116,11 @@ jobs:
         run: cat .env
         working-directory: backend
 
+      - name: Run Backend ESLint (Static Analysis)
+        run: npm run lint
+        working-directory: backend
+        continue-on-error: true
+
       - name: Run Backend Tests
         run: npm test
         working-directory: backend

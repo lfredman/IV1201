@@ -1,4 +1,5 @@
 import React, { Component, ErrorInfo } from "react";
+import { Container, Typography, Button, Paper } from "@mui/material";
 
 interface Props {
   children: React.ReactNode;
@@ -20,50 +21,34 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("Uncaught error:", error, errorInfo);
+    console.error("An unexpected error occurred:", error, errorInfo);
   }
-  
+
   handleRetry = () => {
-    window.location.reload(); // Reload the page
+    this.setState({ hasError: false, error: undefined });
+    window.location.reload();
   };
 
   render() {
     if (this.state.hasError) {
       return (
-        <div style={styles.container}>
-          <h2>Something went wrong. Try refreshing the page.</h2>
-          <p style={styles.errorText}>{this.state.error?.message}</p>
-          <button onClick={this.handleRetry} style={styles.button}>
-            Try Again
-          </button>
-        </div>
+        <Container maxWidth="sm" sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80vh" }}>
+          <Paper elevation={3} sx={{ padding: 4, textAlign: "center" }}>
+            <Typography variant="h5" color="error" gutterBottom>
+              Oops! Something went wrong.
+            </Typography>
+            <Typography variant="body1" color="textSecondary" gutterBottom>
+              {this.state.error?.message || "An unexpected error has occurred."}
+            </Typography>
+            <Button variant="contained" color="primary" onClick={this.handleRetry} sx={{ marginTop: 2 }}>
+              Try Again
+            </Button>
+          </Paper>
+        </Container>
       );
     }
     return this.props.children;
   }
 }
-
-const styles = {
-  container: {
-    textAlign: "center" as const,
-    padding: "20px",
-    marginTop: "50px",
-    backgroundColor: "white",
-  },
-  errorText: {
-    color: "red",
-    fontSize: "14px",
-  },
-  button: {
-    padding: "10px 20px",
-    fontSize: "16px",
-    cursor: "pointer",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    border: "none",
-    borderRadius: "5px",
-    marginTop: "10px",
-  },
-};
 
 export default ErrorBoundary;

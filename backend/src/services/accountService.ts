@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { createPerson, getUserByUsername, getUserByEmail, getUserByPnr, changePassword, getUserById } from '../models/accountModel';
+import { Person, createPerson, getUserByUsername, getUserByEmail, getUserByPnr, changePassword, getUserById } from '../models/accountModel';
 import { logger } from '../utils/logger';
 import { sendEmail } from '../utils/email';
 import { isEmailValid, isPasswordValid, isPnrValid, isInputSafe } from '../utils/validation';
@@ -116,7 +116,7 @@ export const loginService = async (data: { loginField: string; password: string 
 
   logger.info('Login attempt', { loginField });
 
-  let user: any;
+  let user: Person | null;
 
   // Check if it's an email
   if (isEmailValid(loginField)) {
@@ -161,7 +161,7 @@ export const loginService = async (data: { loginField: string; password: string 
     { expiresIn: '1h' }
   );
 
-  const { password: _password, ...userWithoutPassword } = user;
+  const { ...userWithoutPassword } = user;
 
   logger.info('User logged in successfully', { userId: user.person_id });
 

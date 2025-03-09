@@ -1,9 +1,9 @@
 import { query, getClient, queryWithClient } from "../utils/db";
 import dayjs from "dayjs";
-import {isEmailValid, isInputSafe, isPasswordValid, isPnrValid, isActionValid, isDateValid} from '../utils/validation';
+import {isDateValid} from '../utils/validation';
 
 export interface Availability {
-  availability_id: any;
+  availability_id: string | number | null;
   from_date: string;
   to_date: string;
 }

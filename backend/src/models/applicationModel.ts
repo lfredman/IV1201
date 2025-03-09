@@ -1,5 +1,5 @@
 import { query, getClient, queryWithClient } from "../utils/db";
-import {isEmailValid, isInputSafe, isPasswordValid, isPnrValid, isActionValid} from '../utils/validation';
+import {isActionValid} from '../utils/validation';
 
 /**
  * Interface representing an Application object.
@@ -125,7 +125,7 @@ export const getAllApplications = async (): Promise<Application[]> => {
  * @param {any[]} params - An array of parameters to be used in the query.
  * @returns {Promise<Application[]>} - A promise that resolves to an array of Application objects.
  */
-const fetchApplications = async (whereClause: string, params: any[]): Promise<Application[]> => {
+const fetchApplications = async (whereClause: string, params: [number[]] | []): Promise<Application[]> => {
   const client = await getClient(); 
 
   try {
@@ -208,7 +208,7 @@ export const updateApplication = async (userId: number, action: string): Promise
   try {
     await client.query("BEGIN"); // Start the transaction
 
-    const result: Application[] = await queryWithClient(
+    await queryWithClient(
       client,
       `
       UPDATE applicant

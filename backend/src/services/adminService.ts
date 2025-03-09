@@ -1,6 +1,6 @@
 import { getApplicationsByIds, getAllApplications, updateApplication } from '../models/applicationModel'
 import { logger } from '../utils/logger';
-import { isEmailValid, isPasswordValid, isPnrValid, isInputSafe, isActionValid } from '../utils/validation';
+import { isActionValid } from '../utils/validation';
 
 /**
  * Retrieves applications based on the provided query parameters.
@@ -77,7 +77,6 @@ export const updateApplicationService = async (data: { id: number, action: strin
         throw new Error("Invalid or missing 'action' query parameter");
     }
 
-    // validActions = ['unhandled', 'accepted', 'rejected'];
     if (!isActionValid(data.action)) {
         logger.error('Invalid action provided', { data });
         throw new Error("Invalid action provided. Valid actions are 'unhandled', 'accepted' or 'rejected'");

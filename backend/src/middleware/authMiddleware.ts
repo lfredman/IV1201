@@ -10,11 +10,16 @@ if (!JWT_SECRET) {
   throw new Error('JWT_SECRET is not defined in environment variables');
 }
 
+interface CustomJwtPayload extends JwtPayload {
+  role_id: number;
+  userId: number;
+}
+
 /**
  * Interface that extends the Request object to include the user object attached after token verification.
  */
 export interface AuthRequest extends Request {
-  user?: any;
+  user?: CustomJwtPayload;
 }
 
 /**
@@ -38,7 +43,7 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
 
   try {
     // Try to verify the token and decode it
-    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+    const decoded = jwt.verify(token, JWT_SECRET) as CustomJwtPayload;
     req.user = decoded; // Attach the decoded token to the request object
     next(); // Proceed to the next middleware or route handler
   } catch (error) {
@@ -70,6 +75,12 @@ export const authorizeRoleOrOwnership = (
   res: Response, 
   next: NextFunction
 ): void => {
+
+  if (!req.user) {
+    res.status(401).json({ message: 'User not authenticated' });
+    return;
+  }
+
   const { role_id, userId } = req.user;  // Extract role and userId from the token
   // Admins have full access
   if (role_id === 1) {

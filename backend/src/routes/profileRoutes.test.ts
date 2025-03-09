@@ -120,7 +120,7 @@ describe('Profile Management', () => {
                 .get(`/profile/competence/${user_id}`)
                 .set('Authorization', `Bearer ${authTokenAdmin}`);
             
-            expect(response.status).toBe(201);  // Changed from 201 to 200
+            expect(response.status).toBe(200);
             expect(response.body.message).toBe('User competence parsed successfully');
             expect(response.body.data).toHaveProperty('competences');  // Fixed property name
         });
@@ -139,7 +139,7 @@ describe('Profile Management', () => {
                 .get('/profile/competence/')
                 .set('Authorization', `Bearer ${authTokenNormal}`);
     
-            expect(response.status).toBe(201);  // Changed from 201 to 200
+            expect(response.status).toBe(200);
             expect(response.body.message).toBe('User competence parsed successfully');
             expect(response.body.data).toHaveProperty('competences');  // Fixed property name
         });
@@ -183,7 +183,7 @@ describe('Profile Management', () => {
                 .get('/profile/availability/')
                 .set('Authorization', `Bearer ${authTokenNormal}`);
             
-            expect(response.status).toBe(201);
+            expect(response.status).toBe(200);
             expect(response.body.message).toBe('User availability parsed successfully');
             expect(response.body.data).toHaveProperty('availabilities');
         });
@@ -219,7 +219,7 @@ describe('Profile Management', () => {
                 .get('/profile/application/')
                 .set('Authorization', `Bearer ${authTokenNormal}`);
             
-            expect(response.status).toBe(201);
+            expect(response.status).toBe(200);
             expect(response.body.message).toBe('User application retrieved successfully');
             expect(response.body.data).toHaveProperty('status');
         });

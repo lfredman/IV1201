@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../app';
 import { closeDB } from '../utils/db';
 import { createAdmin, deleteUserByUsername } from '../models/accountModel';
-import { getApplicationById, upsertApplication, getAllApplications, SimpleApplication } from '../models/applicationModel';
+import { upsertApplication } from '../models/applicationModel';
 import bcrypt from 'bcryptjs';
 
 describe('Admin Application Management', () => {

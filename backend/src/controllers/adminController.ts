@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { getApplicationService, updateApplicationService } from "../services/adminService";
 import { AuthRequest } from "../middleware/authMiddleware";  // Import the AuthRequest type
 

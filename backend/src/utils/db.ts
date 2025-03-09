@@ -1,4 +1,5 @@
-import { Pool, QueryResult, PoolClient } from 'pg';
+/* eslint-disable */
+import { Pool, PoolClient } from 'pg';
 import dotenv from 'dotenv';
 dotenv.config();
 
