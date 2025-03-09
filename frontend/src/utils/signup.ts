@@ -42,7 +42,7 @@ export async function signupUser(formData: {
 
     console.log(res);
     // Validate response structure
-    const { message, data } = res;
+    const { data } = res;
     if (!data || !data.user || !data.accessToken || !data.refreshToken) {
       throw new Error("Invalid response structure");
     }

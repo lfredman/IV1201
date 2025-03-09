@@ -41,9 +41,10 @@ jobs:
           echo "VITE_BACKEND_URL=${{ vars.VITE_BACKEND_URL }}" >> .env
         working-directory: frontend
 
-      - name: Display .env file contents
-        run: cat .env
+      - name: Run Frontend ESLint (Static Analysis)
+        run: npm run lint
         working-directory: frontend
+        continue-on-error: true
 
       - name: Install Heroku CLI # <- IMPORTANT!!! Make sure the cli is installed before using the action
         run: |
@@ -110,10 +111,6 @@ jobs:
           echo "GMAIL=${{ secrets.GMAIL }}" >> .env
           echo "GMAIL_SECRET=${{ secrets.GMAIL_SECRET }}" >> .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-        working-directory: backend
-
-      - name: Display .env file contents
-        run: cat .env
         working-directory: backend
 
       - name: Run Backend ESLint (Static Analysis)

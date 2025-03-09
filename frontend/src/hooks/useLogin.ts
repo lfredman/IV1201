@@ -44,12 +44,18 @@ export const useLogin = () => {
       updateUserContext(userData, accessToken, refreshToken); // Update global context with the new user data
 
       return userData; // Return user or token if needed elsewhere
-    } catch (err: any) {
-      const errMsg = `Login failed. Please try again. ${err?.message || "An unknown error occurred."}`;
-      setError(errMsg)
+    } catch (err: unknown) {
+      let errMsg = 'Login failed. Please try again.';
+
+      if (err instanceof Error) {
+        errMsg = `Login failed. ${err.message}`;
+      } else if (typeof err === 'object' && err !== null && 'message' in err) {
+        errMsg = `Login failed. ${(err as { message: string }).message}`;
+      }
+
+      setError(errMsg);
       throw err; // Propagate error
     }
   };
-
   return { login, error, setError };
 };

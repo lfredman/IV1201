@@ -68,9 +68,13 @@ const useApplications = () => {
       } else {
         setError("No applications found or invalid response format.");
       }
-    } catch (err: any) {
-        const errMsg = `Application fetch failed! ${err?.message || "An unknown error occurred."}`;
-        setError(errMsg)
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        const errMsg = `Application fetch failed! ${err.message || "An unknown error occurred."}`;
+        setError(errMsg);
+      } else {
+        setError("An unexpected error occurred while fetching applications.");
+      }
     } finally {
       setLoading(false);
     }
@@ -108,9 +112,13 @@ const useApplications = () => {
         setError("No applications found or invalid response format.");
       }
       return res.data[0];
-    } catch (err: any) {
-      const errMsg = `Application update failed! ${err?.message || "An unknown error occurred."}`;
-      setError(errMsg)
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        const errMsg = `Application update failed! ${err.message || "An unknown error occurred."}`;
+        setError(errMsg);
+      } else {
+        setError("An unexpected error occurred while fetching applications.");
+      }
     } finally {
       setLoading(false);
     }

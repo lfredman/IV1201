@@ -92,9 +92,13 @@ export const usePasswordReset = () => {
         logoutUser();
         navigate("/login");  // Optionally redirect to login page
       }, 3000);
-    } catch (err: any) {
-      // Handle errors gracefully
-      const errMsg = `Password reset failed! ${err?.message || "An unknown error occurred."}`;
+    } catch (err: unknown) {
+      let errMsg = "Password reset failed! An unknown error occurred.";
+      if (err instanceof Error) {
+        errMsg = `Password reset failed! ${err.message}`;
+      } else if (typeof err === "object" && err !== null && "message" in err) {
+        errMsg = `Password reset failed! ${(err as { message: string }).message}`;
+      }
       setError(errMsg);
     } finally {
       setLoading(false);
@@ -145,9 +149,13 @@ export const usePasswordReset = () => {
         logoutUser();
         navigate("/login");  // Optionally redirect to login page
       }, 3000);
-    } catch (err: any) {
-      // Handle errors gracefully
-      const errMsg = `Password reset failed! ${err?.message || "An unknown error occurred."}`;
+    } catch (err: unknown) {
+      let errMsg = "Password reset failed! An unknown error occurred.";
+      if (err instanceof Error) {
+        errMsg = `Password reset failed! ${err.message}`;
+      } else if (typeof err === "object" && err !== null && "message" in err) {
+        errMsg = `Password reset failed! ${(err as { message: string }).message}`;
+      }
       setError(errMsg);
     } finally {
       setLoading(false);

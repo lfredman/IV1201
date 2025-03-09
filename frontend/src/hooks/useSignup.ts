@@ -3,6 +3,7 @@ import { signupUser } from "../utils/signup"; // API call
 import { useNavigate } from "react-router-dom";
 import { useUser } from '../context/UserContext'; // Import the context
 import { useValidation } from "../hooks/useValidation";
+import { isCustomError } from "../utils/error";
 
 /**
  * Custom hook for managing the user signup process.
@@ -71,16 +72,23 @@ export const useSignup = () => {
       // navigate to home screen
       navigate("/");
       return userData; // Return user or token if needed elsewhere
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (err instanceof TypeError && err.message.includes("Failed to fetch")) {
         console.error("Network error or server unreachable:", err);
         setError("Unable to connect to the server. Please check your internet connection or try again later.");
         return;
       }
-      if (err.response?.data?.message) {
-        setError(`Sign up failed! ${err.response.data.message}`);
-      } else {
+
+      if (isCustomError(err)) {
+        if (err.response?.data?.message) {
+          setError(`Sign up failed! ${err.response.data.message}`);
+        } else {
+          setError("Sign up failed! Please try again.");
+        }
+      } else if (err instanceof Error) {
         setError("Sign up failed! Please try again.");
+      } else {
+        setError("An unexpected error occurred.");
       }
     } finally {
       setLoading(false);

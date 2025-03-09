@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
 import useAuthFetch  from "./useAuthFetch";
 
+interface ApplicationData {
+    applicant_id: number;
+    created_at: string;
+    person_id: number;
+    status: string;
+  }
+
 export const useApplication = () => {
-    const [application, setApplication] = useState<any>(null);
+    const [application, setApplication] = useState<ApplicationData | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
@@ -16,20 +23,6 @@ export const useApplication = () => {
     const triggerSuccess = (seconds = 5) => {
         setSuccess(true);
         setTimeout(() => setSuccess(false), seconds * 1000);
-    };
-
-    const loadFromCache = () => {
-        const cachedApplication = localStorage.getItem("application");
-        if (cachedApplication) {
-        const parsedApplication = JSON.parse(cachedApplication);
-        setApplication(parsedApplication);
-        }
-    };
-
-    // Save to localStorage
-    const saveToCache = (data: any) => {
-        localStorage.setItem("application", JSON.stringify(data));
-        setApplication(data); // Also update the state
     };
 
     useEffect(() => {

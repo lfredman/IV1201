@@ -34,24 +34,30 @@ const PasswordResetForm: React.FC = () => {
     try {
       // Call password reset API with the new password
       await passwordReset(password);
-    } catch (err: any) {
+    } catch (err: unknown) {
       // Handle network errors
       if (err instanceof TypeError && err.message.includes("Failed to fetch")) {
         console.error("Network error or server unreachable:", err);
         setError("Unable to connect to the server. Please check your internet connection or try again later.");
         return;
       }
-
-      // Extract API error message if available
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
-      } else if (err.message) {
+    
+      // Handle API errors
+      if (err instanceof Error && err.message) {
         setError(err.message);
+      } else if (err && typeof err === 'object' && 'response' in err) {
+        const error = (err as { response?: { data?: { message?: string } } }).response;
+        if (error?.data?.message) {
+          setError(error.data.message);
+        } else {
+          setError("Password reset failed. Please try again.");
+        }
       } else {
         setError("Password reset failed. Please try again.");
       }
     }
-  };
+  }
+    
 
   return (
     <Box 

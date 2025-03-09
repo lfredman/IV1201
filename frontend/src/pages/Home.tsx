@@ -1,7 +1,5 @@
 import Box from '@mui/material/Box';
 import { useUser } from '../context/UserContext';
-import rollercoasterVideo from '../assets/rollercoaster.mp4';
-//import '../styles/video.css';
 import { Button } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
@@ -30,9 +28,6 @@ import { Link } from 'react-router-dom';
 const Home: React.FC = () => {
   const { user } = useUser();
   
-
- 
-
   return (
     <Box sx={{color: 'black'}}>
       {/* Video Background 

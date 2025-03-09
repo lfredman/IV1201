@@ -35,19 +35,18 @@ const LoginForm: React.FC = () => {
     }
 
     try {
-      await login(username, password);
-      navigate("/");
-    } catch (err: any) {
+      await login(username, password); // Await the Promise returned by login
+      navigate("/"); // Navigate to the home page upon success
+    } catch (err: unknown) {
       if (err instanceof TypeError && err.message.includes("Failed to fetch")) {
+        // This handles network errors like the server being unreachable
         console.error("Network error or server unreachable:", err);
         setError("Unable to connect to the server. Please check your internet connection or try again later.");
-        return;
-      }
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
-      } else if (err.message) {
-        setError(err.message);
+      } else if (err instanceof Error) {
+        // This handles regular errors (like validation or other issues)
+        setError(err.message || "An unexpected error occurred. Please try again.");
       } else {
+        // If the error type is not recognized, we show a generic error
         setError("An unexpected error occurred. Please try again.");
       }
     }

@@ -4,8 +4,8 @@ import { useAvailability as useAvailabilityContext } from "../context/Availabili
 import useAuthFetch  from "./useAuthFetch";
 
 export const useAvailability = () => {
-  const { user, accessToken } = useUser(); 
-  const {availabilities, tempAvailabilities, saveAvailabilities,discardChanges, addAvailability, deleteAvailability, updateAvailability, setAvailabilitiesAndCache} = useAvailabilityContext();
+  const { accessToken } = useUser(); 
+  const {availabilities, tempAvailabilities,discardChanges, addAvailability, deleteAvailability, setAvailabilitiesAndCache} = useAvailabilityContext();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const authFetch = useAuthFetch();
@@ -44,7 +44,7 @@ export const useAvailability = () => {
       setAvailabilitiesAndCache(res.data.availabilities);
       
       return res.data;
-    } catch (err: any) {
+    } catch (err) {
       if (err instanceof Error) {
         console.error('Caught error:', err.message);
         triggerError(err.message);
@@ -64,7 +64,13 @@ export const useAvailability = () => {
     deleteAvailability(from_date, to_date); 
   };
 
-  const add = (availability: any) => {
+  interface Availability {
+    from_date: string;
+    to_date: string;
+  }
+
+  const add = (availability: Availability) => {
+    console.log("AVA", availability)
     if (availability.from_date === 'Invalid Date' || availability.to_date === 'Invalid Date') {
       triggerError("Availability contains invalid dates!");
     }
@@ -117,8 +123,8 @@ export const useAvailability = () => {
     };
 
     fetchProfile();
-  }, [accessToken]); // ✅ Only re-fetch when token changes
-
+  }, [accessToken]);
+  
   return { 
     availabilities, 
     tempAvailabilities, // Expose tempavailability so UI can show changes before saving

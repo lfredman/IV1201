@@ -27,7 +27,7 @@ import { useValidation } from "../hooks/useValidation";
  *   - `resetChanges`: Function to discard any unsaved changes and reset to the initial competences.
  */
 export const useProfile = () => {
-  const { user, accessToken } = useUser(); 
+  const { accessToken } = useUser(); 
   const { competences, tempCompetences, setCompetencesAndCache, addCompetence, deleteCompetence, updateProfile, resetChanges } = useProfileContext();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -79,7 +79,7 @@ export const useProfile = () => {
       updateProfile(); // Apply tempCompetences to competence
       
       return res.data;
-    } catch (err: any) {
+    } catch (err) {
       if (err instanceof Error) {
           console.error('Caught error:', err.message);
           triggerError(err.message);

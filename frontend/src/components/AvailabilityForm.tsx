@@ -22,7 +22,7 @@ const style = {
     p: 4,
 };
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)(() => ({
     fontSize: 14,
     fontWeight: 'bold',
 }));

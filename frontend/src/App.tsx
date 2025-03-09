@@ -16,7 +16,6 @@ import ApplicationsList from "./components/ApplicationsList";
 import ErrorBoundary from "./components/ErrorBoundry";
 import rollercoasterVideo from './assets/rollercoaster.mp4';
 import './styles/video.css';
-import { useEffect, useRef, useState } from "react";
 /**
  * Main entry point of the application.
  * 

@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import { useUser } from '../context/UserContext';  // Import the useUser hook
 import AccountInfoForm from '../components/AccountInfoForm';
-import UserCompetences from '../components/UserCompetences'
 import PasswordResetForm from '../components/PasswordResetForm';
 import { Container } from '@mui/system';
 import { Typography } from '@mui/material';

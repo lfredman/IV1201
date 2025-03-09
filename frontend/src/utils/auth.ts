@@ -39,7 +39,7 @@ export async function loginUser(loginField: string, password: string): Promise<{
     const res = await response.json();
     
     // Validate response structure to ensure all required fields exist
-    const { message, data } = res;
+    const { data } = res;
     if (!data || !data.user || !data.accessToken || !data.refreshToken) {
       throw new Error('Invalid response structure');
     }
