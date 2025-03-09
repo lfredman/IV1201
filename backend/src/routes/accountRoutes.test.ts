@@ -177,7 +177,7 @@ describe('User Registration, Login, and Token Refresh', () => {
             const response = await request(app).post('/account/login').send(loginData);
             expect(response.status).toBe(400);
             
-            expect(response.body.errors).toContain('Password is required.');
+            expect(response.body.message).toContain('Invalid credentials');
         });
     });
 
