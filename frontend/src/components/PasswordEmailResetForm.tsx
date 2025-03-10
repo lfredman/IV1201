@@ -21,6 +21,16 @@ const PasswordEmailResetForm: React.FC = () => {
   // Use the custom hook to handle password reset logic
   const { passwordResetByEmail, loading, error, success, setError } = usePasswordReset();
 
+  /**
+   * Handles the form submission for requesting a password reset.
+   *
+   * Validates the email input, clears previous errors, and sends a password reset request.
+   * Displays error messages in case of failure and success message upon successful request.
+   *
+   * @param {React.FormEvent} event - The submit event of the form.
+   * @returns {Promise<void>} Resolves when the password reset request has been processed.
+   */
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null); // Clear previous errors
@@ -55,11 +65,11 @@ const PasswordEmailResetForm: React.FC = () => {
   };
 
   return (
-    <Box 
-      sx={{ 
-        display: "flex", 
-        justifyContent: "center", 
-        alignItems: "center", 
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         minHeight: "80vh"
       }}
     >

@@ -92,7 +92,11 @@ const ApplicationsList: React.FC = () => {
   });
   
 
-  // Search filter
+  /**
+   * Filters applications based on the search query. Searches across all application fields.
+   * 
+   * @returns {Application[]} The filtered list of applications based on the search query.
+   */
   const filteredApplications = sortedApplications.filter(app =>
     Object.values(app).some(value => {
       const strValue = value ? value.toString() : "";
@@ -100,7 +104,13 @@ const ApplicationsList: React.FC = () => {
     })
   );
 
-  // Handle sorting change
+ /**
+ * Handles sorting by different application attributes.
+ * Allows sorting by "name", "email", "application_status", "competences", "totalYears", and "totalAvailability".
+ * 
+ * @param {keyof Application | "totalCompetences" | "totalYears" | "totalAvailability"} key - The field to sort by.
+ */
+
   const handleSort = (key: keyof Application | "totalCompetences" | "totalYears" | "totalAvailability" ) => {
     setSortConfig(prev => ({
       key,
@@ -108,7 +118,13 @@ const ApplicationsList: React.FC = () => {
     }));
   };
 
-  // Handle profile row click
+  /**
+ * Handles updating the status of the selected application.
+ * Accepts, rejects, or sets the application as unhandled based on the passed action.
+ * 
+ * @param {ApplicationAction} action - The action to take on the application: "unhandled", "accepted", or "rejected".
+ * @throws Will throw an error if the status update fails.
+ */
   const handleProfileClick = (application: Application) => {
     setSelectedApplication(application);
     setModalOpen(true);

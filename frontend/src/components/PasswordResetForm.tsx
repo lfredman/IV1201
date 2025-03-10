@@ -21,6 +21,17 @@ const PasswordResetForm: React.FC = () => {
   // Use the custom hook to handle password reset logic
   const { passwordReset, loading, error, success, setError } = usePasswordReset();
 
+  /**
+   * Handles the form submission for resetting the password.
+   * 
+   * - Validates the password input to ensure it is not empty.
+   * - Calls the password reset API with the new password.
+   * - Displays success or error messages based on the response.
+   * 
+   * @param {React.FormEvent} event - The submit event of the form.
+   * @returns {Promise<void>} Resolves when the password reset request has been processed.
+   */
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null); // Clear previous errors

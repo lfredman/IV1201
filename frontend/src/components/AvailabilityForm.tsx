@@ -58,32 +58,58 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ editable = false })
 
     const displayedAvailabilities = isEditing ? tempAvailabilities : availabilities;
 
+    /**
+    * Toggles the editing state of the component.
+    * Switches between edit mode and view mode.
+    */
     const handleEditToggle = () => setIsEditing((prev) => !prev);
+
+    /**
+     * Discards the changes made to the availability and exits edit mode.
+     * Calls the `discardChanges` function to reset any temporary changes.
+     */
     const handleDiscard = () => {
         discardChanges();
         setIsEditing(false);
     };
+
+    /**
+     * Saves the changes made to the availability and exits edit mode.
+     * Calls the `saveAvailabilitiesChanges` function to persist the changes.
+     */
     const handleSave = async () => {
         await saveAvailabilitiesChanges();
         setIsEditing(false);
     };
+    /**
+         * Opens the modal to add a new availability period.
+         */
     const handleOpen = () => setOpen(true);
+
+    /**
+     * Closes the modal to add a new availability period.
+     */
     const handleClose = () => setOpen(false);
 
+    /**
+     * Adds a new availability period to the list and resets the form fields.
+     * Calls the `add` function from the `useAvailability` hook to update the availability state.
+     * Closes the modal after adding the availability.
+     */
     const handleAdd = () => {
         if (newAvailability.start && newAvailability.end) {
             add({
                 from_date: newAvailability.start.format('YYYY-MM-DD'),
                 to_date: newAvailability.end.format('YYYY-MM-DD'),
             });
-            
+
             setNewAvailability({ start: dayjs(), end: dayjs() });
             handleClose();
         }
     };
 
     return (
-        <Box sx={{ mx: 'auto', mt: 5, p: 3, borderRadius: 2, boxShadow: 3, textAlign: 'center', backgroundColor: "white"}}>
+        <Box sx={{ mx: 'auto', mt: 5, p: 3, borderRadius: 2, boxShadow: 3, textAlign: 'center', backgroundColor: "white" }}>
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Typography variant="h6">Your Availability</Typography>
                 <IconButton aria-label="edit" size="medium" onClick={handleEditToggle}>

@@ -29,10 +29,10 @@ const Navbar: React.FC = () => {
   const { user, logoutUser } = useUser();  // Get user and logout function from context
 
   const buttonStyle = {
-    mx: 1, 
+    mx: 1,
     color: "white", // Default text color
     transition: "background-color 0.3s ease", // Smooth transition
-    "&:hover": { 
+    "&:hover": {
       backgroundColor: "rgba(255, 255, 255, 0.1)", // Light white overlay on hover
       color: "#FFD700" // Optional: Gold text on hover
     }
@@ -40,15 +40,15 @@ const Navbar: React.FC = () => {
 
   return (
 
-      <AppBar position = "sticky">
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Recruitment System 
-          </Typography>
-          <Button color="inherit" component={Link} to="/" sx = {buttonStyle}>
-            Home
-          </Button>
-          {user ? (
+    <AppBar position="sticky">
+      <Toolbar>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          Recruitment System
+        </Typography>
+        <Button color="inherit" component={Link} to="/" sx={buttonStyle}>
+          Home
+        </Button>
+        {user ? (
           // If logged in, show profile, applications, and logout
           <>
             <Button color="inherit" component={Link} to="/profile" sx={buttonStyle}>
@@ -56,11 +56,11 @@ const Navbar: React.FC = () => {
             </Button>
             {user.role_id != 1 ? (<Button color="inherit" component={Link} to="/apply" sx={buttonStyle}>
               Apply for a Job
-            </Button>): <div></div> }
+            </Button>) : <div></div>}
             {user.role_id == 1 ? (<Button color="inherit" component={Link} to="/applications" sx={buttonStyle}>
               Applications
-            </Button>): <div></div> }
-            
+            </Button>) : <div></div>}
+
             <Button color="inherit" onClick={logoutUser} sx={buttonStyle}>
               Log out
             </Button>
@@ -72,10 +72,10 @@ const Navbar: React.FC = () => {
               Log in
             </Button>
           </>
-          )}
-        </Toolbar>
-      </AppBar>
-    
+        )}
+      </Toolbar>
+    </AppBar>
+
   );
 };
 

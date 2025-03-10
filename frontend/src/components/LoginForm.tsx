@@ -53,15 +53,15 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <Box 
-      sx={{ 
-        display: "flex", 
-        justifyContent: "center", 
-        alignItems: "center", 
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         minHeight: "80vh" // Full height for vertical centering
       }}
     >
-      <Box 
+      <Box
         sx={{
           width: 300,
           p: 3,

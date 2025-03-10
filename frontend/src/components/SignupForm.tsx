@@ -29,10 +29,25 @@ const SignupForm: React.FC = () => {
 
   const { signup, error, loading } = useSignup(); // Signup logic
 
+  /**
+   * Handles input change for each form field.
+   * 
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The change event for the input fields.
+   * Updates the state for the corresponding input field with trimmed value.
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value.trim() }));
   };
 
+  /**
+   * Handles the form submission for user signup.
+   * 
+   * - Calls the `signup` function from the custom hook to send the user data.
+   * 
+   * @param {React.FormEvent} event - The submit event for the form.
+   * @returns {void}
+   */
+  
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     signup(formData); // Calls hook function
