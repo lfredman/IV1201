@@ -57,7 +57,7 @@ app.use((req, res) => {
 // If the environment is not 'test', start the server and listen on the specified port
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);  // Logs a message when the server starts
+    
   });
 }
 

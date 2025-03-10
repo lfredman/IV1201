@@ -3,7 +3,7 @@
 ## Overview
 This project is a web-based recruitment application designed for an amusement park to handle up to **15,000 job applications** over a two-week period. The system supports two types of users:
 - **Applicants**: Register and submit job applications via a browser.
-- **Recruiters**: Administer applications (sort, accept, reject, or mark as "unhandled") via a browser or a future mobile app.
+- **Recruiters**: Administer applications (sort, accept, reject, or mark as "unhandled") via a browser, or a future mobile app.
 
 ---
 
@@ -81,11 +81,6 @@ The application follows a **Monolithic Architecture using Client-Side Rendering 
 ### Installation
 1. Clone the repository: `git clone <repository-url>`
 2. Create a `.env` file in the `backend` folder with the following variables, also add them to the Github secrets:
-    - DB_USER=""
-    - DB_HOST=""
-    - DB_DATABASE=""
-    - DB_PASSWORD=""
-    - DB_PORT=""
     - JWT_SECRET=""
     - GMAIL=""
     - GMAIL_SECRET=""
@@ -100,7 +95,7 @@ The application follows a **Monolithic Architecture using Client-Side Rendering 
 
 ### Local development
 1. Start the development servers: 
-   - Backend: `cd backend && npm start`
+   - Backend: `cd backend && npm run dev`
    - Frontend: `cd frontend && npm run dev`
 
 ### Cloud deployment

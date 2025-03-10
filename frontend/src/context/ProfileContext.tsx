@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import { createContext, useState, useContext, ReactNode } from "react";
 
 /**
  * Competence interface
@@ -16,7 +16,21 @@ export interface Competence {
   years_of_experience: number;
 }
 
-// Define the context type
+/**
+ * The context type for managing competences.
+ * 
+ * This context provides the competences state, temporary competences state, and various actions like
+ * adding, deleting, and updating competences.
+ * 
+ * @interface CompetenceContextType
+ * @property {Competence[]} competences - The list of all competences.
+ * @property {Competence[]} tempCompetences - The temporary list of competences for editing.
+ * @property {(newCompetence: Competence) => void} addCompetence - Function to add or update a competence in the tempCompetences state.
+ * @property {(competence_id: number) => void} deleteCompetence - Function to delete a competence by its id from the tempCompetences state.
+ * @property {(newCompetences: Competence[]) => void} setCompetencesAndCache - Function to set the competences and store them in local storage.
+ * @property {() => void} updateProfile - Function to update the profile by setting the tempCompetences as the final list of competences.
+ * @property {() => void} resetChanges - Function to reset the changes made to tempCompetences and restore the original competences list.
+ */
 interface CompetenceContextType {
   competences: Competence[];
   tempCompetences: Competence[];
@@ -26,6 +40,14 @@ interface CompetenceContextType {
   updateProfile: () => void; 
   resetChanges: () => void; 
 }
+
+/**
+ * CompetenceContext provides a context for managing the competences data within the app.
+ * It handles adding, deleting, updating, and caching the competences.
+ * 
+ * @const CompetenceContext
+ * @type {React.Context<CompetenceContextType | undefined>}
+ */
 
 const CompetenceContext = createContext<CompetenceContextType | undefined>(undefined);
 
@@ -47,12 +69,23 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   const [competences, setCompetences] = useState<Competence[]>([]); // Stored competences (permanent locally)
   const [tempCompetences, setTempCompetences] = useState<Competence[]>([]); // Temporary changes
 
+  /**
+   * Sets the competences and caches them in local storage.
+   * 
+   * @param {Competence[]} newCompetences - The new list of competences to set and cache.
+   */
+
   const setCompetencesAndCache = (newCompetences: Competence[]) => {
     setCompetences(newCompetences);
     setTempCompetences(newCompetences); // Sync temp state
     localStorage.setItem("competences", JSON.stringify(newCompetences)); 
   };
-  // Add or update competence in temporary state
+
+  /**
+   * Adds a new competence or updates an existing one in the temporary state.
+   * 
+   * @param {Competence} newCompetence - The competence to add or update in the temporary state.
+   */
   const addCompetence = (newCompetence: Competence) => {
     setTempCompetences((prev) => {
       // Check if competence already exists
@@ -68,15 +101,28 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  // Delete competence from temporary state
+
+   /**
+   * Deletes a competence from the temporary state by its competence_id.
+   * 
+   * @param {number} id - The ID of the competence to delete.
+   */
+  
   const deleteCompetence = (id: number) => {
     setTempCompetences((prev) => prev.filter((comp) => comp.competence_id !== id));
   };
+
+  /**
+   * Updates the profile by setting the temporary competences as the final list of competences.
+   */
 
   const updateProfile = () => {
     setCompetencesAndCache(tempCompetences);
   };
 
+  /**
+   * Resets any changes made to the temporary competences and restores the original competences list.
+   */
   const resetChanges = () => {
     setTempCompetences(competences); // Reset temp changes
   };

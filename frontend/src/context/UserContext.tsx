@@ -25,6 +25,20 @@ export interface User {
   pnr: number;
 }
 
+/**
+ * UserContextType interface
+ * 
+ * This interface defines the structure of the user context. It contains the following properties:
+ * - user: The user object representing the current user.
+ * - accessToken: The access token used for authentication.
+ * - refreshToken: The refresh token used for obtaining new access tokens.
+ * - loginUser: A function to log in a user and store user data and tokens.
+ * - logoutUser: A function to log out a user and remove user data and tokens.
+ * - updateAccessToken: A function to update the access token.
+ * 
+ * @interface UserContextType
+ */
+
 interface UserContextType {
   user: User | null;
   accessToken: string | null;
@@ -33,6 +47,16 @@ interface UserContextType {
   logoutUser: () => void;
   updateAccessToken: (accessToken: string) => void;
 }
+
+/**
+ * UserContext provides a context for managing user authentication state.
+ * It stores user data, access tokens, and refresh tokens and provides functions 
+ * to log in, log out, and update tokens.
+ * 
+ * @const UserContext
+ * @type {React.Context<UserContextType | undefined>}
+ */
+
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
@@ -64,7 +88,14 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // Function to log in and store user data, access token, and refresh token
+/**
+   * Logs in the user by storing user data, access token, and refresh token.
+   * 
+   * @param {User} user - The user object to log in.
+   * @param {string} accessToken - The access token for authentication.
+   * @param {string} refreshToken - The refresh token for refreshing the access token.
+   */
+   
   const loginUser = (user: User, accessToken: string, refreshToken: string) => {
     setUser(user);
     setAccessToken(accessToken);
@@ -74,7 +105,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("refreshToken", refreshToken); // Store refresh token
   };
 
-  // Function to log out and ensure the token and user data are removed
+  /**
+   * Logs out the user by clearing all user data, access tokens, refresh tokens, and other cached data.
+   * Also redirects to the home page ("/").
+   */  
+  
   const logoutUser = () => {
     setUser(null);
     setAccessToken(null);
@@ -88,7 +123,12 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     navigate("/"); // Redirect if needed
   };
 
-  // Function to update the access token
+  /**
+   * Updates the access token and stores the new value in `localStorage`.
+   * 
+   * @param {string} newAccessToken - The new access token to be stored.
+   */
+
   const updateAccessToken = (newAccessToken: string) => {
     setAccessToken(newAccessToken);
     localStorage.setItem("accessToken", newAccessToken); // Store updated access token

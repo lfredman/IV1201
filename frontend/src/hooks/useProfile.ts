@@ -48,7 +48,6 @@ export const useProfile = () => {
   
   // Update tempCompetences first, and only apply them when updateProfile is called
   const saveProfileChanges = async () => {
-    console.log("TEMP", tempCompetences)
     try {
 
       if(!validateCompetences(tempCompetences)){
@@ -74,8 +73,7 @@ export const useProfile = () => {
       triggerSuccess();
       const res = await response.json();
       
-      console.log(res.data.competences)
-      console.log(competences);
+
       updateProfile(); // Apply tempCompetences to competence
       
       return res.data;
@@ -127,7 +125,6 @@ export const useProfile = () => {
         method: "GET",
       })
       const res = await profileData.json();
-      console.log("RES", res)
 
       if (res.data.competences && Array.isArray(res.data.competences)) {
           setCompetencesAndCache(res.data.competences); // Load data into competences

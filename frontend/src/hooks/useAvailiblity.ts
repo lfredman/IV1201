@@ -45,7 +45,6 @@ export const useAvailability = () => {
 
   // Update tempAvalilibty first, and only apply them when updateProfile is called
   const saveAvailabilitiesChanges = async () => {
-    console.log("TEMP", tempAvailabilities)
     try {
       const response = await authFetch(`/profile/availability`, {
         method: 'POST',
@@ -92,7 +91,6 @@ export const useAvailability = () => {
   }
 
   const add = (availability: Availability) => {
-    console.log("AVA", availability)
     if (availability.from_date === 'Invalid Date' || availability.to_date === 'Invalid Date') {
       triggerError("Availability contains invalid dates!");
     }
@@ -120,7 +118,6 @@ export const useAvailability = () => {
       setError(null);
 
       try {
-          console.log("FETCHING AVAILABILITY")
           const response = await authFetch(`/profile/availability`, {
             method: 'GET'
           });
@@ -131,7 +128,6 @@ export const useAvailability = () => {
           }
     
           const res = await response.json();
-          console.log("AVAILABILITIES RESPONSE: ", res.data.availabilities)
 
         if (res.data.availabilities) {
           setAvailabilitiesAndCache(res.data.availabilities); // Load data into availability

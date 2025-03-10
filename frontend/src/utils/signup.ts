@@ -40,7 +40,6 @@ export async function signupUser(formData: {
 
     const res = await response.json();
 
-    console.log(res);
     // Validate response structure
     const { data } = res;
     if (!data || !data.user || !data.accessToken || !data.refreshToken) {

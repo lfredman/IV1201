@@ -71,8 +71,6 @@ export const useSignup = () => {
       const res = await signupUser(formData);
       const { message, accessToken, refreshToken, userData } = res;
 
-      console.log(message);
-      console.log("User Data:", userData); // Debugging to ensure userData is correct
 
       // Set user globally in context and save the tokens to localStorage
       updateUserContext(userData, accessToken, refreshToken); // Update global context with the new user data
