@@ -159,13 +159,13 @@ export const loginService = async (data: { loginField: string; password: string 
   const accessToken = jwt.sign(
     { userId: user.person_id, role_id: user.role_id, username: user.username },
     JWT_SECRET,
-    { expiresIn: '1m' }
+    { expiresIn: '1h' }
   );
 
   const refreshToken = jwt.sign(
     { userId: user.person_id, role_id: user.role_id, username: user.username },
     JWT_SECRET,
-    { expiresIn: '1h' }
+    { expiresIn: '24h' }
   );
 
   const { ...userWithoutPassword } = user;
@@ -196,7 +196,7 @@ export const tokenRefreshService = async (refreshToken: string) => {
     accessToken = jwt.sign(
       { userId: user.userId, role_id: user.role_id, username: user.username },
       JWT_SECRET,
-      { expiresIn: '5m' }
+      { expiresIn: '1h' }
     );
     logger.info('Access token refreshed', { userId: user.userId });
   } catch (error: unknown) {
