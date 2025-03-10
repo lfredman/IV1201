@@ -32,17 +32,63 @@ const corsOptions = {
     }
   },
 };
+// Define a simple GET route for the root endpoint ('/'), returning info about the endpoints
+app.get('/', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>IV1201</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f4; }
+            .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+            h1 { text-align: center; }
+            .section { margin-top: 20px; }
+            .endpoint { padding: 10px; margin: 10px 0; border-left: 4px solid #007bff; background: #eef5ff; padding-left: 15px; }
+            .method { font-weight: bold; color: #007bff; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>IV1201 API Endpoints Information</h1>
+            
+            <div class="section">
+                <h2>Account API</h2>
+                <div class="endpoint"><span class="method">POST</span> /register - Registers a new user.</div>
+                <div class="endpoint"><span class="method">POST</span> /login - Authenticates an existing user.</div>
+                <div class="endpoint"><span class="method">GET</span> /refresh - Refreshes the access token.</div>
+                <div class="endpoint"><span class="method">POST</span> /reset - Allows authenticated users to reset their password.</div>
+                <div class="endpoint"><span class="method">POST</span> /resetbyemail - Initiates a password reset via email.</div>
+            </div>
 
+            <div class="section">
+                <h2>Admin API</h2>
+                <div class="endpoint"><span class="method">GET</span> /applications - Retrieves the list of applications.</div>
+                <div class="endpoint"><span class="method">POST</span> /applications - Updates an existing application.</div>
+            </div>
+
+            <div class="section">
+                <h2>Profile API</h2>
+                <div class="endpoint"><span class="method">GET</span> /competence/:id - Gets competence data for a user by ID.</div>
+                <div class="endpoint"><span class="method">GET</span> /competence/ - Gets competence data for the authenticated user.</div>
+                <div class="endpoint"><span class="method">POST</span> /competence/ - Updates competence data for the authenticated user.</div>
+                <div class="endpoint"><span class="method">GET</span> /availability/ - Gets availability data for the authenticated user.</div>
+                <div class="endpoint"><span class="method">POST</span> /availability/ - Updates availability data for the authenticated user.</div>
+                <div class="endpoint"><span class="method">GET</span> /application/ - Gets application data for the authenticated user.</div>
+                <div class="endpoint"><span class="method">POST</span> /application/ - Creates or updates application data for the authenticated user.</div>
+            </div>
+        </div>
+    </body>
+    </html>
+  `);
+});
 // Use CORS middleware with the specified configuration
 app.use(cors(corsOptions));
 
 // Use body-parser middleware to parse incoming request bodies as JSON
 app.use(bodyParser.json());
-
-// Define a simple GET route for the root endpoint ('/'), returning a welcome message
-app.get('/', (req, res) => {
-  res.send('Welcome to the server!');
-});
 
 // Define routes for the application, mapped to different paths
 app.use('/account', accountRouter);  // All requests to /account will be handled by accountRouter
@@ -60,6 +106,8 @@ if (process.env.NODE_ENV !== 'test') {
     
   });
 }
+
+
 
 // Export the app instance for use in testing or further configuration
 export default app;
