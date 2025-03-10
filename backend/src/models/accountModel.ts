@@ -42,7 +42,6 @@ export const createPerson = async (
   const client = await getClient();
 
   try {
-    await client.query("BEGIN");
 
     // Validation
     if(!isInputSafe(name) || !isInputSafe(surname) || !isInputSafe(username)){
@@ -54,6 +53,8 @@ export const createPerson = async (
     if(!isPnrValid(pnr)){
       throw new Error("Pnr not valid");
     }
+
+    await client.query("BEGIN");
 
     // Insert person
     const result = await queryWithClient(
@@ -90,20 +91,31 @@ export const createPerson = async (
  * @returns {Promise<Person | null>} - The person object or null if no user was found.
  */
 export const getUserByUsername = async (username: string): Promise<Person | null> => {
-  
-  if(!isInputSafe(username)){
-    throw new Error("unsafe DB input");
-  }
-
   const client = await getClient();
+
   try {
+    // Validate if username is safe
+    if(!isInputSafe(username)){
+      throw new Error("unsafe DB input");
+    }
+
+    // Start a transaction
+    await client.query("BEGIN");
+
+    // Query user by username
     const result = await queryWithClient(
       client,
       `SELECT * FROM public.person WHERE username = $1`,
       [username]
     );
+
+    // Commit the transaction
+    await client.query("COMMIT");
+
     return result.length > 0 ? result[0] : null;
   } catch (error) {
+    // Rollback in case of any error
+    await client.query("ROLLBACK");
     console.error("Error fetching user by username:", error);
     throw new Error("Failed to retrieve user");
   } finally {
@@ -123,25 +135,39 @@ export const getUserByUsername = async (username: string): Promise<Person | null
  */
 export const getUserByEmail = async (email: string): Promise<Person | null> => {
   
-  if(!isEmailValid(email)){
+  // Validate if the email is in a valid format
+  if (!isEmailValid(email)) {
     throw new Error("Invalid email");
   }
 
   const client = await getClient();
+
   try {
+    // Start a transaction
+    await client.query("BEGIN");
+
+    // Query user by email
     const result = await queryWithClient(
       client,
       `SELECT * FROM public.person WHERE email = $1`,
       [email]
     );
+
+    // Commit the transaction
+    await client.query("COMMIT");
+
     return result.length > 0 ? result[0] : null;
   } catch (error) {
+    // Rollback in case of any error
+    await client.query("ROLLBACK");
     console.error("Error fetching user by email:", error);
     throw new Error("Failed to retrieve user");
   } finally {
+    // Release the client back to the pool
     client.release();
   }
 };
+
 
 
 /**
@@ -160,18 +186,25 @@ export const getUserByPnr = async (pnr: string): Promise<Person | null> => {
   }
 
   const client = await getClient();
+  
   try {
+    await client.query("BEGIN");  // Start a transaction
+
     const result = await queryWithClient(
       client,
       `SELECT * FROM public.person WHERE pnr = $1`,
       [pnr]
     );
+
+    await client.query("COMMIT");  // Commit the transaction
+
     return result.length > 0 ? result[0] : null;
   } catch (error) {
+    await client.query("ROLLBACK");  // Rollback the transaction in case of error
     console.error("Error fetching user by pnr:", error);
     throw new Error("Failed to retrieve user");
   } finally {
-    client.release();
+    client.release();  // Release the client back to the pool
   }
 };
 
@@ -191,18 +224,25 @@ export const getUserById = async (id: string): Promise<Person | null> => {
   }
 
   const client = await getClient();
+
   try {
+    await client.query("BEGIN");  // Start a transaction
+
     const result = await queryWithClient(
       client,
       `SELECT * FROM public.person WHERE person_id = $1`,
       [id]
     );
+
+    await client.query("COMMIT");  // Commit the transaction
+
     return result.length > 0 ? result[0] : null;
   } catch (error) {
+    await client.query("ROLLBACK");  // Rollback the transaction in case of error
     console.error("Error fetching user by id:", error);
     throw new Error("Failed to retrieve user");
   } finally {
-    client.release();
+    client.release();  // Release the client back to the pool
   }
 };
 
@@ -224,13 +264,19 @@ export const getUsersByIds = async (ids: number[]): Promise<Person[] | null> => 
   const queryString = `SELECT * FROM public.person WHERE person_id IN (${sanitizedIds})`;
 
   try {
+    await client.query("BEGIN");  // Start a transaction
+
     const result = await queryWithClient(client, queryString, []);
+
+    await client.query("COMMIT");  // Commit the transaction
+
     return result.length > 0 ? result : null;
   } catch (error) {
+    await client.query("ROLLBACK");  // Rollback the transaction in case of error
     console.error("Error fetching users:", error);
     throw new Error("Failed to retrieve users");
   } finally {
-    client.release();
+    client.release();  // Release the client back to the pool
   }
 };
 
@@ -244,16 +290,24 @@ export const getUsersByIds = async (ids: number[]): Promise<Person[] | null> => 
  */
 export const getUsersAll = async (): Promise<Person[] | null> => {
   const client = await getClient(); // Acquire a client for transactions
+  
   try {
+    await client.query("BEGIN");  // Start a transaction
+
     const result = await queryWithClient(client, `SELECT * FROM public.person`, []);
+    
+    await client.query("COMMIT");  // Commit the transaction
+
     return result.length > 0 ? result : null;
   } catch (error) {
+    await client.query("ROLLBACK");  // Rollback the transaction in case of error
     console.error("Error fetching all users:", error);
     throw new Error("Failed to retrieve all users");
   } finally {
-    client.release();
+    client.release();  // Release the client back to the pool
   }
 };
+
 
 
 /**
@@ -274,12 +328,11 @@ export const changePassword = async (
 ): Promise<boolean> => {
   const client = await getClient(); // Acquire a client for transactions
   
-  if(!isPasswordValid(newPassword)){
+  if (!isPasswordValid(newPassword)) {
     throw new Error("Not valid password strength");
   }
   
   try {
-
     await client.query("BEGIN"); // Start the transaction
 
     // Update password in the database
@@ -312,27 +365,34 @@ export const changePassword = async (
  * @param {string} username - The username of the person to delete.
  * @returns {Promise<boolean>} - Returns `true` if the user was deleted successfully, `false` otherwise.
  */
-export const deleteUserByUsername = async (usename: string): Promise<boolean> => {
-  if(!isInputSafe(usename)){
-    throw new Error("unsafe DB input");
+export const deleteUserByUsername = async (username: string): Promise<boolean> => {
+  if (!isInputSafe(username)) {
+    throw new Error("Unsafe DB input");
   }
-  
+
   const client = await getClient(); // Acquire a client for transactions
+
   try {
+    await client.query("BEGIN"); // Start the transaction
+
     const result = await queryWithClient(
       client,
       `DELETE FROM public.person WHERE username = $1 RETURNING *`,
-      [usename]
+      [username]
     );
+
+    await client.query("COMMIT"); // Commit the transaction
 
     return result.length > 0; // Returns true if a user was deleted, false otherwise
   } catch (error) {
+    await client.query("ROLLBACK"); // Rollback on error
     console.error("Error deleting user:", error);
     throw new Error("Failed to delete user");
   } finally {
-    client.release();
+    client.release(); // Release the client back to the pool
   }
 };
+
 
 /**
  * Creates a new admin in the database.
@@ -350,7 +410,6 @@ export const deleteUserByUsername = async (usename: string): Promise<boolean> =>
  * @param {string} password - The password for the admin.
  * @returns {Promise<Person | null>} - The created person object or null if the operation failed.
  */
-
 export const createAdmin = async (
   name: string, 
   surname: string,
@@ -359,23 +418,23 @@ export const createAdmin = async (
   email: string,
   password: string
 ): Promise<Person | null> => {
-  const client = await getClient();
+  const client = await getClient(); // Acquire a client for transactions
 
   try {
-    await client.query("BEGIN");
+    await client.query("BEGIN"); // Start the transaction
 
     // Validation
-    if(!isInputSafe(name) || !isInputSafe(surname) || !isInputSafe(username)){
+    if (!isInputSafe(name) || !isInputSafe(surname) || !isInputSafe(username)) {
       throw new Error("Not safe input in fields for DB");
     }
-    if(!isEmailValid(email)){
+    if (!isEmailValid(email)) {
       throw new Error("Email not valid");
     }
-    if(!isPnrValid(pnr)){
+    if (!isPnrValid(pnr)) {
       throw new Error("Pnr not valid");
     }
 
-    // Insert person
+    // Insert person as an admin with role_id 1
     const result = await queryWithClient(
       client,
       `INSERT INTO person (name, surname, pnr, username, email, password, role_id) 
@@ -384,17 +443,17 @@ export const createAdmin = async (
       [name, surname, pnr, username, email, password]
     );
 
-    await client.query("COMMIT");
+    await client.query("COMMIT"); // Commit the transaction
 
     if (result && result.length > 0) {
       return result[0];
     }
     return null;
   } catch (error) {
-    await client.query("ROLLBACK");
-    console.error('Error creating person:', error);
-    throw new Error('Unable to create person');
+    await client.query("ROLLBACK"); // Rollback on error
+    console.error('Error creating admin:', error);
+    throw new Error('Unable to create admin');
   } finally {
-    client.release();
+    client.release(); // Release the client back to the pool
   }
 };
