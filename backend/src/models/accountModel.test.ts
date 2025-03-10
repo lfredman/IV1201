@@ -17,19 +17,19 @@ describe("Person Service Tests", () => {
     let createdUsers: Person[] = [];
 
     beforeAll(async () => {
-        // You can initialize any common setup here if needed
+
     });
 
     afterAll(async () => {
-        jest.setTimeout(10000); // Set timeout for async operations
+        jest.setTimeout(10000); 
         for (const user of createdUsers) {
             try {
-                await deleteUserByUsername(user.username); // Clean up users after tests
+                await deleteUserByUsername(user.username);
             } catch (error) {
                 console.error(`Error deleting user ${user.username}:`, error);
             }
         }
-        await closeDB(); // Close DB connection after all tests are done
+        await closeDB(); 
     });
 
     it("should create a person", async () => {
@@ -51,61 +51,61 @@ describe("Person Service Tests", () => {
             personData.password
         );
 
-        expect(createdPerson).toBeTruthy(); // Check if a person is created
-        expect(createdPerson?.username).toBe(personData.username); // Verify the username
-        createdUsers.push(createdPerson!); // Keep track of created users for cleanup
+        expect(createdPerson).toBeTruthy(); 
+        expect(createdPerson?.username).toBe(personData.username); 
+        createdUsers.push(createdPerson!); 
     });
 
     it("should retrieve a user by username", async () => {
         const user = await getUserByUsername("john_doe");
-        expect(user).toBeTruthy(); // Ensure the user is found
-        expect(user?.username).toBe("john_doe"); // Verify the correct user is returned
+        expect(user).toBeTruthy();
+        expect(user?.username).toBe("john_doe"); 
     });
 
     it("should retrieve a user by email", async () => {
         const user = await getUserByEmail("john.doe@example.com");
-        expect(user).toBeTruthy(); // Ensure the user is found
-        expect(user?.email).toBe("john.doe@example.com"); // Verify the correct user is returned
+        expect(user).toBeTruthy();
+        expect(user?.email).toBe("john.doe@example.com"); 
     });
 
     it("should retrieve a user by PNR", async () => {
         const user = await getUserByPnr("1234567890");
-        expect(user).toBeTruthy(); // Ensure the user is found
-        expect(user?.pnr).toBe("1234567890"); // Verify the correct user is returned
+        expect(user).toBeTruthy();
+        expect(user?.pnr).toBe("1234567890"); 
     });
 
     it("should retrieve a user by ID", async () => {
-        const user = createdUsers[0]; // Get the first created user
+        const user = createdUsers[0]; 
         const fetchedUser = await getUserById(user.person_id.toString());
-        expect(fetchedUser).toBeTruthy(); // Ensure the user is found
-        expect(fetchedUser?.person_id).toBe(user.person_id); // Verify the correct user is returned
+        expect(fetchedUser).toBeTruthy();
+        expect(fetchedUser?.person_id).toBe(user.person_id); 
     });
 
     it("should retrieve multiple users by IDs", async () => {
-        const userIds = createdUsers.map((user) => user.person_id); // Get an array of user IDs
+        const userIds = createdUsers.map((user) => user.person_id); 
         const users = await getUsersByIds(userIds);
-        expect(users).toBeTruthy(); // Ensure users are found
-        expect(users?.length).toBeGreaterThan(0); // Ensure at least one user is returned
+        expect(users).toBeTruthy();
+        expect(users?.length).toBeGreaterThan(0);
     });
 
     it("should retrieve all users", async () => {
         const users = await getUsersAll();
-        expect(users).toBeTruthy(); // Ensure users are found
-        expect(users?.length).toBeGreaterThan(0); // Ensure users are returned
+        expect(users).toBeTruthy();
+        expect(users?.length).toBeGreaterThan(0); 
     });
 
     it("should change a user's password", async () => {
-        const user = createdUsers[0]; // Get the first created user
-        const newPassword = "StrongPassw0rd!"; // Set a new password
+        const user = createdUsers[0]; 
+        const newPassword = "StrongPassw0rd!"; 
         const result = await changePassword(user.person_id, newPassword);
-        expect(result).toBe(true); // Ensure password change is successful
+        expect(result).toBe(true); 
     });
 
     it("should delete a user by username", async () => {
-        const user = createdUsers.pop(); // Get and remove the last user
+        const user = createdUsers.pop(); 
         if (user) {
-            const result = await deleteUserByUsername(user.username); // Delete the user by username
-            expect(result).toBe(true); // Ensure the deletion is successful
+            const result = await deleteUserByUsername(user.username); 
+            expect(result).toBe(true); 
         }
     });
 
@@ -128,9 +128,9 @@ describe("Person Service Tests", () => {
             adminData.password
         );
 
-        expect(createdAdmin).toBeTruthy(); // Ensure the admin is created
-        expect(createdAdmin?.role_id).toBe(1); // Ensure the role ID is 1 for admin
-        createdUsers.push(createdAdmin!); // Keep track of the created admin for cleanup
+        expect(createdAdmin).toBeTruthy(); 
+        expect(createdAdmin?.role_id).toBe(1); 
+        createdUsers.push(createdAdmin!);
     });
 
     

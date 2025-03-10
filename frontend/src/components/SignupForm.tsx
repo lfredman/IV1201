@@ -47,14 +47,14 @@ const SignupForm: React.FC = () => {
    * @param {React.FormEvent} event - The submit event for the form.
    * @returns {void}
    */
-  
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    signup(formData); // Calls hook function
+    signup(formData);
   };
 
   return (
-    <Box sx={{ width: 320, mx: "auto", mt: 5, p: 3, borderRadius: 2, boxShadow: 3, textAlign: "center", backgroundColor: "white",}}>
+    <Box sx={{ width: 320, mx: "auto", mt: 5, p: 3, borderRadius: 2, boxShadow: 3, textAlign: "center", backgroundColor: "white", }}>
       <Typography variant="h5" gutterBottom>Sign up</Typography>
       {error && <Alert severity="error">{error}</Alert>}
       <form onSubmit={handleSubmit}>
@@ -74,7 +74,7 @@ const SignupForm: React.FC = () => {
             fullWidth
             margin="normal"
             type={type}
-            value={formData[name as keyof typeof formData]} // Ensure this matches formData structure
+            value={formData[name as keyof typeof formData]}
             onChange={handleChange}
             autoComplete="off"
           />

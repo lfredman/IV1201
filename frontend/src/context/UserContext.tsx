@@ -114,13 +114,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     setAccessToken(null);
     setRefreshToken(null);
-    localStorage.removeItem("user"); // Remove user data
-    localStorage.removeItem("accessToken"); // Remove access token
-    localStorage.removeItem("refreshToken"); // Remove refresh token
+    localStorage.removeItem("user"); 
+    localStorage.removeItem("accessToken"); 
+    localStorage.removeItem("refreshToken"); 
     localStorage.removeItem("competences");
     localStorage.removeItem("availabilities");
-    sessionStorage.clear(); // Optionally clear session storage
-    navigate("/"); // Redirect if needed
+    sessionStorage.clear();
+    navigate("/"); 
   };
 
   /**
@@ -131,7 +131,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const updateAccessToken = (newAccessToken: string) => {
     setAccessToken(newAccessToken);
-    localStorage.setItem("accessToken", newAccessToken); // Store updated access token
+    localStorage.setItem("accessToken", newAccessToken);
   };
 
   return (

@@ -6,20 +6,18 @@ dotenv.config();
 const GMAIL = process.env.GMAIL as string;
 const GMAIL_SECRET = process.env.GMAIL_SECRET as string;
 
-// Ensure that Gmail credentials are defined in environment variables
 if (!GMAIL || !GMAIL_SECRET) {
     throw new Error("GMAIL credentials are missing in environment variables.");
 }
 
-// Create a reusable transporter object for sending emails via Gmail's SMTP server
 const transporter = nodemailer.createTransport({
-    port: 465, // SMTP port for secure connection (SSL)
-    host: "smtp.gmail.com", // Host address for Gmail's SMTP service
+    port: 465, 
+    host: "smtp.gmail.com", 
     auth: {
-        user: GMAIL, // Gmail email address used for authentication
-        pass: GMAIL_SECRET, // Gmail app password (should be used instead of regular password)
+        user: GMAIL, 
+        pass: GMAIL_SECRET, 
     },
-    secure: true, // Use TLS (Transport Layer Security) for secure communication
+    secure: true, 
 });
 
 /**
@@ -35,19 +33,18 @@ const transporter = nodemailer.createTransport({
  */
 export const sendEmail = async (to: string, subject: string, text: string, html?: string): Promise<any> => {
     try {
-        // Send email using the previously configured transporter
         const info = await transporter.sendMail({
-            from: `"Recruitment Application" <${GMAIL}>`, // Sender's email address and name
-            to, // Recipient email address
-            subject, // Subject of the email
-            text, // Plain text version of the email content
-            html, // Optional HTML version of the email content
+            from: `"Recruitment Application" <${GMAIL}>`, 
+            to, 
+            subject, 
+            text, 
+            html, 
         });
 
-        return info; // Return the result from the email send operation
+        return info; 
     } catch (error) {
-        // Catch any error that occurs during the email sending process
+       
         console.error("Error sending email:", error);
-        throw new Error("Failed to send email."); // Throw a new error with a generic message
+        throw new Error("Failed to send email.");
     }
 };

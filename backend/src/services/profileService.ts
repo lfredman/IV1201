@@ -17,7 +17,6 @@ export const getCompetenceService = async (user_id: string) => {
 
     logger.info(`User ${user_id} retrieves competences.`);
 
-    // Validate user_id
     if (isNaN(id)) {
         logger.warn(`Invalid userID: ${user_id}`);
         throw new Error("Invalid user_id tones2");
@@ -47,7 +46,6 @@ export const updateCompetenceService = async (user_id: string, competences: Comp
 
     logger.info(`User ${user_id} updates competences.`);
 
-    // Validate user ID and competence data
     if (isNaN(id)) {
         logger.warn(`Invalid userID: ${user_id}`);
         throw new Error("Invalid user_id");
@@ -63,7 +61,6 @@ export const updateCompetenceService = async (user_id: string, competences: Comp
         throw new Error("Invalid user ID, not safe");
     }
 
-    // Add user_id as person_id in the `competences` object
     competences.person_id = id;
 
     try {
@@ -89,7 +86,6 @@ export const getAvailabilityService = async (user_id: string) => {
 
     logger.info(`User ${user_id} retrieves availability.`);
 
-    // Validate user ID
     if (isNaN(id)) {
         logger.warn(`Invalid userID: ${user_id}`);
         throw new Error("Invalid user_id");
@@ -100,7 +96,6 @@ export const getAvailabilityService = async (user_id: string) => {
         throw new Error("Invalid user ID, not safe");
     }
 
-    // Fetch availability data by user ID
     return await getAvailabilityById(id);
 };
 
@@ -118,7 +113,6 @@ export const updateAvailabilityService = async (user_id: string, availabilities:
 
     logger.info(`User ${user_id} updates availability.`);
 
-    // Validate user ID and availability data
     if (isNaN(id)) {
         logger.warn(`Invalid userID: ${user_id}`);
         throw new Error("Invalid user_id");
@@ -129,7 +123,6 @@ export const updateAvailabilityService = async (user_id: string, availabilities:
         throw new Error("Invalid availability data");
     }
 
-    // Validate each availability entry for correct dates
     if (Array.isArray(availabilities.availabilities)) {
         for (const av of availabilities.availabilities) {
             if (!isDateValid(av.from_date) || !isDateValid(av.to_date)) {
@@ -191,7 +184,6 @@ export const upsertApplicationService = async (user_id: string) => {
 
     const id = Number(user_id);
 
-    // Check for the existence of availability
     const [hasAvail] = await Promise.all([
         hasAvailability(id),
     ]);

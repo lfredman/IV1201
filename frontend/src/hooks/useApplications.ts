@@ -54,7 +54,7 @@ const useApplications = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const authFetch = useAuthFetch(); // Assuming this fetch is stable and does not change on each render
+  const authFetch = useAuthFetch();
 
   const fetchApplications = async () => {
     try {
@@ -85,7 +85,7 @@ const useApplications = () => {
   }, []); 
 
   const updateApplication = async (user_id: number, action: string) => {
-    setLoading(true); // Set loading to true while fetching
+    setLoading(true); 
     try {
       const response = await authFetch(`/admin/applications`, {
         method: 'POST',

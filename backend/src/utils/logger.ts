@@ -11,12 +11,12 @@ import 'winston-daily-rotate-file';
  * @type {winston.transports.DailyRotateFile} - A transport that manages daily rotation and archiving of log files.
  */
 const dailyRotateFileTransport = new winston.transports.DailyRotateFile({
-  dirname: './logs', // Directory where log files will be stored
-  filename: 'application-%DATE%.log', // Log file naming pattern, %DATE% is replaced by current date
-  datePattern: 'YYYY-MM-DD', // The format of the date in the filename (e.g., application-2025-03-10.log)
-  zippedArchive: true, // Compress old log files to save disk space
-  maxSize: '20m', // Maximum size of a log file before a new one is created (20MB)
-  maxFiles: '14d', // Log files older than 14 days are deleted
+  dirname: './logs',
+  filename: 'application-%DATE%.log',
+  datePattern: 'YYYY-MM-DD',
+  zippedArchive: true,
+  maxSize: '20m',
+  maxFiles: '14d',
 });
 
 /**
@@ -28,13 +28,13 @@ const dailyRotateFileTransport = new winston.transports.DailyRotateFile({
  * @type {winston.Logger} - The logger instance used for logging messages throughout the application.
  */
 const logger = winston.createLogger({
-  level: 'info', // The minimum log level to capture ('info' and all levels above)
-  format: winston.format.combine( // Log formatting: combines timestamp and JSON format
-    winston.format.timestamp(), // Adds a timestamp to each log entry
-    winston.format.json() // Formats log entries as JSON objects
+  level: 'info', 
+  format: winston.format.combine( 
+    winston.format.timestamp(), 
+    winston.format.json() 
   ),
   transports: [
-    dailyRotateFileTransport, // Add the daily rotating file transport to the logger
+    dailyRotateFileTransport, 
   ],
 });
 

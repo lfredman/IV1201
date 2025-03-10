@@ -9,12 +9,10 @@ import {
 } from "../services/profileService";
 import { AuthRequest } from "../middleware/authMiddleware"; 
 
-// Helper function to get the user ID, either from the token or the request parameters.
 const getUserId = (req: AuthRequest): string => {
   const idFromParams = req.params.id;
   const idFromToken = req.user?.userId;
 
-  // If `idFromParams` is available, return it; otherwise, return the token `userId` as a string.
   return idFromParams || idFromToken?.toString() || ''; // Fallback to an empty string if both are undefined
 };
 
@@ -30,11 +28,11 @@ const getUserId = (req: AuthRequest): string => {
  */
 export const getCompetence = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const id = getUserId(req); // Get user ID from either token or route parameter
-    const data = await getCompetenceService(id); // Fetch competence data for the user
+    const id = getUserId(req); 
+    const data = await getCompetenceService(id); 
     res.status(200).json({ message: "User competence parsed successfully", data });
   } catch (error) {
-    handleError(res, error); // Handle errors by passing them to the error handler
+    handleError(res, error); 
   }
 };
 
@@ -50,11 +48,11 @@ export const getCompetence = async (req: AuthRequest, res: Response): Promise<vo
  */
 export const updateCompetence = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const id = getUserId(req); // Get user ID from either token or route parameter
-    const data = await updateCompetenceService(id, req.body); // Update competence data for the user
+    const id = getUserId(req); 
+    const data = await updateCompetenceService(id, req.body); 
     res.status(201).json({ message: "User competence updated successfully", data });
   } catch (error) {
-    handleError(res, error); // Handle errors by passing them to the error handler
+    handleError(res, error); 
   }
 };
 
@@ -70,11 +68,11 @@ export const updateCompetence = async (req: AuthRequest, res: Response): Promise
  */
 export const getAvailability = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const id = getUserId(req); // Get user ID from either token or route parameter
-    const data = await getAvailabilityService(id); // Fetch availability data for the user
+    const id = getUserId(req); 
+    const data = await getAvailabilityService(id); 
     res.status(200).json({ message: "User availability parsed successfully", data });
   } catch (error) {
-    handleError(res, error); // Handle errors by passing them to the error handler
+    handleError(res, error); 
   }
 };
 
@@ -90,11 +88,11 @@ export const getAvailability = async (req: AuthRequest, res: Response): Promise<
  */
 export const updateAvailability = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const id = getUserId(req); // Get user ID from either token or route parameter
-    const data = await updateAvailabilityService(id, req.body); // Update availability data for the user
+    const id = getUserId(req); 
+    const data = await updateAvailabilityService(id, req.body);
     res.status(201).json({ message: "User availability updated successfully", data });
   } catch (error) {
-    handleError(res, error); // Handle errors by passing them to the error handler
+    handleError(res, error);
   }
 };
 
@@ -110,11 +108,11 @@ export const updateAvailability = async (req: AuthRequest, res: Response): Promi
  */
 export const getApplication = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const id = getUserId(req); // Get user ID from either token or route parameter
-    const data = await getApplicationService(id); // Fetch application data for the user
+    const id = getUserId(req); 
+    const data = await getApplicationService(id); 
     res.status(200).json({ message: "User application retrieved successfully", data });
   } catch (error) {
-    handleError(res, error); // Handle errors by passing them to the error handler
+    handleError(res, error); 
   }
 };
 
@@ -130,11 +128,11 @@ export const getApplication = async (req: AuthRequest, res: Response): Promise<v
  */
 export const upsertApplication = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const id = getUserId(req); // Get user ID from either token or route parameter
-    const data = await upsertApplicationService(id); // Update or insert application data for the user
+    const id = getUserId(req); 
+    const data = await upsertApplicationService(id); 
     res.status(201).json({ message: "User application updated successfully", data });
   } catch (error) {
-    handleError(res, error); // Handle errors by passing them to the error handler
+    handleError(res, error); 
   }
 };
 
@@ -147,8 +145,8 @@ export const upsertApplication = async (req: AuthRequest, res: Response): Promis
  */
 const handleError = (res: Response, error: unknown): void => {
   if (error instanceof Error) {
-    res.status(400).json({ message: error.message }); // Send 400 for known errors
+    res.status(400).json({ message: error.message }); 
   } else {
-    res.status(500).json({ message: "An unknown error occurred" }); // Send 500 for unknown errors
+    res.status(500).json({ message: "An unknown error occurred" });
   }
 };

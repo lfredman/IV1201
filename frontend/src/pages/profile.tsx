@@ -39,7 +39,7 @@ const Profile: React.FC = () => {
           sx={{
             display: 'flex',
             flexDirection: 'row',
-            flexWrap: 'wrap', // Ensures wrapping of components on smaller screens
+            flexWrap: 'wrap',
             justifyContent: 'center',
             gap: 3,
             width: '100%',

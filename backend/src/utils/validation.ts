@@ -13,7 +13,7 @@ import { Competences } from '../models/competenceModel';
  */
 const isPasswordValid = (password: string): boolean => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
-    return passwordRegex.test(password); // Returns true if the password matches the regex pattern
+    return passwordRegex.test(password);
 };
 
 /**
@@ -24,9 +24,9 @@ const isPasswordValid = (password: string): boolean => {
  * @returns {boolean} - Returns true if the PNR is valid, otherwise false.
  */
 const isPnrValid = (input: string): boolean => {
-    const pnrRegex = /^[0-9 -]+$/; // Allows digits and spaces
-    const digitsOnly = input.replace(/\D/g, ''); // Removes non-digit characters
-    return pnrRegex.test(input) && (digitsOnly.length === 10 || digitsOnly.length === 12); // Validates format and digit count
+    const pnrRegex = /^[0-9 -]+$/;
+    const digitsOnly = input.replace(/\D/g, '');
+    return pnrRegex.test(input) && (digitsOnly.length === 10 || digitsOnly.length === 12);
 };
 
 /**
@@ -37,8 +37,8 @@ const isPnrValid = (input: string): boolean => {
  * @returns {boolean} - Returns true if the email is valid, otherwise false.
  */
 const isEmailValid = (input: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regular expression for a valid email format
-    return emailRegex.test(input); // Returns true if the email matches the regex pattern
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(input);
 };
 
 /**
@@ -51,14 +51,14 @@ const isEmailValid = (input: string): boolean => {
  */
 const isCompetencesValid = (competences: Competences): boolean => {
     if (!competences) {
-        return false; // Return false if the competences object is empty or undefined
+        return false;
     }
 
-    return Array.isArray(competences.competences) && // Checks if competences is an array
+    return Array.isArray(competences.competences) &&
         competences.competences.every(
             (competence) =>
-                typeof competence.years_of_experience === "number" && // Validates if years_of_experience is a number
-                competence.years_of_experience >= 0 // Ensures the experience is non-negative
+                typeof competence.years_of_experience === "number" &&
+                competence.years_of_experience >= 0
         );
 };
 
@@ -70,8 +70,8 @@ const isCompetencesValid = (competences: Competences): boolean => {
  * @returns {boolean} - Returns true if the input is safe, otherwise false.
  */
 const isInputSafe = (input: string): boolean => {
-    const safeRegex = /^[a-zA-Z0-9_\-@.åäöÅÄÖ]+$/; // Regular expression to allow letters, digits, and certain special characters
-    return safeRegex.test(input); // Returns true if input matches the safe character pattern
+    const safeRegex = /^[a-zA-Z0-9_\-@.åäöÅÄÖ]+$/;
+    return safeRegex.test(input);
 };
 
 /**
@@ -82,7 +82,7 @@ const isInputSafe = (input: string): boolean => {
  * @returns {boolean} - Returns true if the action is valid, otherwise false.
  */
 const isActionValid = (input: string): boolean => {
-    return ["unhandled", "accepted", "rejected"].includes(input); // Checks if the input is one of the predefined valid actions
+    return ["unhandled", "accepted", "rejected"].includes(input);
 };
 
 /**
@@ -93,8 +93,8 @@ const isActionValid = (input: string): boolean => {
  * @returns {boolean} - Returns true if the date is valid, otherwise false.
  */
 const isDateValid = (dateString: string): boolean => {
-    const date = new Date(dateString); // Converts the string into a Date object
-    return !isNaN(date.getTime()); // Returns true if the date is valid (i.e., not NaN)
+    const date = new Date(dateString);
+    return !isNaN(date.getTime());
 };
 
 export { isEmailValid, isPnrValid, isPasswordValid, isInputSafe, isCompetencesValid, isActionValid, isDateValid };

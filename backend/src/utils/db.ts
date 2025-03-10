@@ -3,19 +3,20 @@ import { Pool, PoolClient } from 'pg';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// Parse the DATABASE_URL environment variable for Heroku
 const { DATABASE_URL } = process.env;
 
-// Ensure the DATABASE_URL is defined in the environment variables
 if (!DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is required');
 }
 
-// Create a new pool of connections using the DATABASE_URL (Heroku Postgres URL)
+/**
+ * PostgreSQL connection pool using DATABASE_URL.
+ * SSL is enabled with `rejectUnauthorized: false` (ensure security considerations are taken).
+ */
 const pool = new Pool({
-  connectionString: DATABASE_URL, // Use the DATABASE_URL environment variable directly
+  connectionString: DATABASE_URL, 
   ssl: {
-    rejectUnauthorized: false, // Allows self-signed certificates (use cautiously)
+    rejectUnauthorized: false,
   },
 });
 
@@ -29,8 +30,8 @@ const pool = new Pool({
  * @returns {Promise<any[]>} - A promise that resolves with the result rows from the query.
  */
 export const query = async (text: string, params?: any[]): Promise<any[]> => {
-  const res = await pool.query(text, params);  // Execute the query using the connection pool
-  return res.rows;  // Return the result rows from the query
+  const res = await pool.query(text, params);  
+  return res.rows;
 };
 
 /**
@@ -41,12 +42,12 @@ export const query = async (text: string, params?: any[]): Promise<any[]> => {
  * @returns {Promise<PoolClient>} - A promise that resolves with the acquired database client.
  */
 export const getClient = async (): Promise<PoolClient> => {
-  const client = await pool.connect();  // Acquire a client from the connection pool
+  const client = await pool.connect();  
   try {
-    return client;  // Return the acquired client
+    return client; 
   } catch (error) {
-    client.release();  // Release the client if there's an error while acquiring
-    throw error;  // Propagate the error
+    client.release();  
+    throw error;
   }
 };
 
@@ -65,8 +66,8 @@ export const queryWithClient = async (
   text: string,
   params?: any[]
 ): Promise<any[]> => {
-  const res = await client.query(text, params);  // Execute the query using the provided client
-  return res.rows;  // Return the result rows from the query
+  const res = await client.query(text, params);  
+  return res.rows;  
 };
 
 /**
@@ -74,8 +75,8 @@ export const queryWithClient = async (
  * This function should be used when the application is shutting down or during testing.
  * Once the pool is closed, no further queries can be executed.
  * 
- * @returns {void} - No return value.
+ * @returns {Promise<void>} - Resolves when the pool is closed.
  */
 export const closeDB = async (): Promise<void> => {
-  await pool.end();  // Close the connection pool
+  await pool.end();  
 };

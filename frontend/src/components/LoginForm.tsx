@@ -22,12 +22,12 @@ const LoginForm: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const { login } = useLogin();  // Custom hook for API request
-  const navigate = useNavigate(); // Create navigate function
+  const { login } = useLogin();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setError(null); // Clear previous errors
+    setError(null);
 
     if (!username || !password) {
       setError("Both fields are required!");
@@ -35,18 +35,15 @@ const LoginForm: React.FC = () => {
     }
 
     try {
-      await login(username, password); // Await the Promise returned by login
-      navigate("/"); // Navigate to the home page upon success
+      await login(username, password);
+      navigate("/");
     } catch (err: unknown) {
       if (err instanceof TypeError && err.message.includes("Failed to fetch")) {
-        // This handles network errors like the server being unreachable
         console.error("Network error or server unreachable:", err);
         setError("Unable to connect to the server. Please check your internet connection or try again later.");
       } else if (err instanceof Error) {
-        // This handles regular errors (like validation or other issues)
         setError(err.message || "An unexpected error occurred. Please try again.");
       } else {
-        // If the error type is not recognized, we show a generic error
         setError("An unexpected error occurred. Please try again.");
       }
     }
@@ -58,7 +55,7 @@ const LoginForm: React.FC = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "80vh" // Full height for vertical centering
+        minHeight: "80vh"
       }}
     >
       <Box

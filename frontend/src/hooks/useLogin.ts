@@ -19,7 +19,7 @@ import { useValidation } from './useValidation';
  * 
  */
 export const useLogin = () => {
-  const { loginUser: updateUserContext } = useUser(); // Renamed for clarity
+  const { loginUser: updateUserContext } = useUser();
   const [error, setError] = useState('');
 
   //client side validation
@@ -32,15 +32,13 @@ export const useLogin = () => {
         setError("Too weak to be password");
       }
 
-      // Call the login API to get the tokens and userData
-      const res = await loginUser(username, password); // Model function (API request)
+      const res = await loginUser(username, password); 
       const { message, accessToken, refreshToken, userData } = res;
 
 
-      // Set user globally in context and save the tokens to localStorage
-      updateUserContext(userData, accessToken, refreshToken); // Update global context with the new user data
+      updateUserContext(userData, accessToken, refreshToken);
 
-      return userData; // Return user or token if needed elsewhere
+      return userData; 
     } catch (err: unknown) {
       let errMsg = 'Login failed. Please try again.';
 
@@ -51,7 +49,7 @@ export const useLogin = () => {
       }
 
       setError(errMsg);
-      throw err; // Propagate error
+      throw err; 
     }
   };
   return { login, error, setError };

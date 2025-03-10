@@ -72,13 +72,11 @@ export const useSignup = () => {
       const { message, accessToken, refreshToken, userData } = res;
 
 
-      // Set user globally in context and save the tokens to localStorage
-      updateUserContext(userData, accessToken, refreshToken); // Update global context with the new user data
-      localStorage.setItem('accessToken', accessToken); // Store access token in localStorage
-      localStorage.setItem('refreshToken', refreshToken); // Store refresh token in localStorage
-      // navigate to home screen
+      updateUserContext(userData, accessToken, refreshToken);
+      localStorage.setItem('accessToken', accessToken); 
+      localStorage.setItem('refreshToken', refreshToken); 
       navigate("/");
-      return userData; // Return user or token if needed elsewhere
+      return userData; 
     } catch (err: unknown) {
       if (err instanceof TypeError && err.message.includes("Failed to fetch")) {
         console.error("Network error or server unreachable:", err);

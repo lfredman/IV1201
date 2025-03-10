@@ -72,7 +72,7 @@ export const useApplication = () => {
             const res = await response.json();
 
             if (res.data) {
-                setApplication(res.data); // assuming backend sends application in res.data
+                setApplication(res.data); 
             }
             } catch (err) {
                 console.error("Application Fetch Error:", err);

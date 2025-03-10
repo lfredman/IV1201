@@ -14,13 +14,9 @@ import { AuthRequest } from "../middleware/authMiddleware";
  */
 export const getApplications = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        // Extract the 'ids' query parameter and pass it to the service for retrieving the relevant applications.
         const data = await getApplicationService(req.query as { ids: string });
-        // Send back the successfully retrieved applications with a 200 status code.
         res.status(200).json({ message: "Applications parsed successfully", data });
     } catch (error) {
-        // Handle errors by sending a 400 status if the error is an instance of Error,
-        // or a 500 status if it is an unknown error.
         if (error instanceof Error) {
             res.status(400).json({ message: error.message });
         } else {
@@ -41,13 +37,9 @@ export const getApplications = async (req: AuthRequest, res: Response): Promise<
  */
 export const updateApplication = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        // Pass the request body data to the service for updating the application.
         const data = await updateApplicationService(req.body);
-        // Send back the successfully updated application with a 201 status code.
         res.status(201).json({ message: "User application updated successfully", data });
     } catch (error) {
-        // Handle errors by sending a 400 status if the error is an instance of Error,
-        // or a 500 status if it is an unknown error.
         if (error instanceof Error) {
             res.status(400).json({ message: error.message });
         } else {

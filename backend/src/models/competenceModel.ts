@@ -5,17 +5,17 @@ import { isCompetencesValid } from "../utils/validation";
  * Interface representing a single Competence object.
  */
 export interface Competence {
-  competence_id: number;        // Unique identifier for the competence.
-  competence_name: string;      // Name of the competence.
-  years_of_experience: number;  // Number of years of experience for this competence.
+  competence_id: number;        
+  competence_name: string;     
+  years_of_experience: number; 
 }
 
 /**
  * Interface representing a collection of competences for a specific person.
  */
 export interface Competences {
-  person_id: number;         // The person's ID to whom the competences belong.
-  competences: Competence[];  // List of competences associated with the person.
+  person_id: number;         
+  competences: Competence[];  
 }
 
 /**
@@ -52,11 +52,11 @@ export const getCompetenceById = async (person_id: number): Promise<Competences 
         .map(competence => ({
           competence_id: competence.competence_id,
           competence_name: competence.competence_name,
-          years_of_experience: parseFloat(competence.years_of_experience), // Ensure years_of_experience is a number.
+          years_of_experience: parseFloat(competence.years_of_experience),
         }))
     };
   } else {
-    return null;  // Return null if no results were found for the person.
+    return null; 
   }
 };
 
@@ -72,20 +72,17 @@ export const getCompetenceById = async (person_id: number): Promise<Competences 
  * @throws {Error} - Throws an error if the competences are invalid or there is a failure during the database operation.
  */
 export const updateCompetenceById = async (person_id: number, competences: Competences): Promise<Competences | null> => {
-  const client = await getClient();  // Acquire a client for transactions.
+  const client = await getClient();  
 
   try {
-    // Validate the competences before proceeding.
     if (!isCompetencesValid(competences)) {
       throw new Error("Invalid competences");
     }
 
-    await client.query("BEGIN");  // Start the transaction to ensure atomicity.
+    await client.query("BEGIN"); 
 
-    // Extract the competence IDs to keep.
     const competenceIds = competences.competences.map(c => c.competence_id);
 
-    // Delete competences that are no longer in the new list.
     if (competenceIds.length > 0) {
       await queryWithClient(
         client,
@@ -95,11 +92,9 @@ export const updateCompetenceById = async (person_id: number, competences: Compe
         [person_id, ...competenceIds]
       );
     } else {
-      // If no competences are provided, delete all competences for this person.
       await queryWithClient(client, `DELETE FROM competence_profile WHERE person_id = $1`, [person_id]);
     }
 
-    // Insert or update each competence for the person.
     for (const competence of competences.competences) {
       await queryWithClient(
         client,
@@ -111,16 +106,15 @@ export const updateCompetenceById = async (person_id: number, competences: Compe
       );
     }
 
-    await client.query("COMMIT");  // Commit the transaction after successful operations.
+    await client.query("COMMIT");  
 
-    // Return the updated competences.
     return getCompetenceById(person_id);
   } catch (error) {
-    await client.query("ROLLBACK");  // Rollback the transaction if an error occurs.
+    await client.query("ROLLBACK"); 
     console.error("Error updating competences:", error);
-    throw error;  // Propagate the error to be handled by the caller.
+    throw error;  
   } finally {
-    client.release();  // Release the client back to the pool.
+    client.release();  
   }
 };
 
@@ -139,6 +133,5 @@ export const hasCompetence = async (person_id: number): Promise<boolean> => {
     [person_id]
   );
 
-  // Return true if there is at least one competence for the person, otherwise false.
   return result.length > 0;
 };

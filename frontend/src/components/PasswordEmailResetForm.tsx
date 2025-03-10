@@ -33,7 +33,7 @@ const PasswordEmailResetForm: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setError(null); // Clear previous errors
+    setError(null);
 
     if (!email.trim()) {
       setError("Email cannot be empty.");
@@ -43,16 +43,13 @@ const PasswordEmailResetForm: React.FC = () => {
     try {
       await passwordResetByEmail(email);
     } catch (err: unknown) {
-      // Narrow down the error type before accessing properties
       if (err instanceof Error) {
-        // Handle network errors
         if (err.message.includes("Failed to fetch")) {
           console.error("Network error or server unreachable:", err);
           setError("Unable to connect to the server. Please check your internet connection or try again later.");
           return;
         }
 
-        // Extract API error message if available
         if (err instanceof Error && err.message) {
           setError(err.message);
         } else {

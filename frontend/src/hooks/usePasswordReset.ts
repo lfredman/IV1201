@@ -39,8 +39,8 @@ export const usePasswordReset = () => {
   const location = useLocation();
   const [tokenFromUrl, setTokenFromUrl] = useState<string | undefined>(undefined);
 
-    //client side validation
-    const { validatePassword, validateEmail } = useValidation();
+  //client side validation
+  const { validatePassword, validateEmail } = useValidation();
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -55,14 +55,14 @@ export const usePasswordReset = () => {
 
     try {
 
-      if(!validatePassword(newPassword)){
+      if (!validatePassword(newPassword)) {
         setError("password is too weak!")
       }
 
       // Get the reset token from URL params if available
       //const queryParams = new URLSearchParams(location.search);
       //const tokenFromUrl = queryParams.get("token") ?? undefined;
-    
+
       // Make the request to reset the password, using the token from the URL if available
       const response = await authFetch(
         `/account/reset`,
@@ -75,22 +75,19 @@ export const usePasswordReset = () => {
             password: newPassword,
           }),
         },
-        tokenFromUrl // Pass token only if it exists, otherwise authFetch will use accessToken
+        tokenFromUrl
       );
 
-      // If response is not OK, throw an error
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to reset password");
       }
 
-      // Successfully reset password
       setSuccess(true);
 
-      // Logout after a short delay to give feedback
       setTimeout(() => {
         logoutUser();
-        navigate("/login");  // Optionally redirect to login page
+        navigate("/login");
       }, 3000);
     } catch (err: unknown) {
       let errMsg = "Password reset failed! An unknown error occurred.";
@@ -112,14 +109,14 @@ export const usePasswordReset = () => {
 
     try {
 
-      if(!validateEmail(email)){
+      if (!validateEmail(email)) {
         setError("no good email");
-      } 
+      }
 
       // Get the reset token from URL params if available
       const queryParams = new URLSearchParams(location.search);
       const tokenFromUrl = queryParams.get("token") ?? undefined;
-    
+
       // Make the request to reset the password, using the token from the URL if available
       const response = await authFetch(
         `/account/resetbyemail`,
@@ -147,7 +144,7 @@ export const usePasswordReset = () => {
       // Logout after a short delay to give feedback
       setTimeout(() => {
         logoutUser();
-        navigate("/login");  // Optionally redirect to login page
+        navigate("/login");
       }, 3000);
     } catch (err: unknown) {
       let errMsg = "Password reset failed! An unknown error occurred.";

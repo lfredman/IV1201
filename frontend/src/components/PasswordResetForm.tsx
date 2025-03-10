@@ -34,26 +34,22 @@ const PasswordResetForm: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setError(null); // Clear previous errors
+    setError(null);
 
-    // Validate password input
     if (!password.trim()) {
       setError("Password cannot be empty.");
       return;
     }
 
     try {
-      // Call password reset API with the new password
       await passwordReset(password);
     } catch (err: unknown) {
-      // Handle network errors
       if (err instanceof TypeError && err.message.includes("Failed to fetch")) {
         console.error("Network error or server unreachable:", err);
         setError("Unable to connect to the server. Please check your internet connection or try again later.");
         return;
       }
-    
-      // Handle API errors
+
       if (err instanceof Error && err.message) {
         setError(err.message);
       } else if (err && typeof err === 'object' && 'response' in err) {
@@ -68,27 +64,27 @@ const PasswordResetForm: React.FC = () => {
       }
     }
   }
-    
+
 
   return (
-    <Box 
-          sx={{ 
-            display: "flex", 
-            justifyContent: "center", 
-            alignItems: "center", 
-            //minHeight: "80vh"
-          }}
-        >
-            <Box
-              sx={{
-                width: 300,
-                p: 3,
-                borderRadius: 2,
-                boxShadow: 3,
-                textAlign: "center",
-                backgroundColor: "white",
-              }}
-            >
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        //minHeight: "80vh"
+      }}
+    >
+      <Box
+        sx={{
+          width: 300,
+          p: 3,
+          borderRadius: 2,
+          boxShadow: 3,
+          textAlign: "center",
+          backgroundColor: "white",
+        }}
+      >
         <Typography variant="h5" gutterBottom>
           Change Password
         </Typography>

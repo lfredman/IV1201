@@ -40,6 +40,7 @@ export const useProfile = () => {
     setError(message);
     setTimeout(() => setError(null), seconds * 1000);
   };
+
   /*Trigger success alert for 5 seconds*/
   const triggerSuccess = (seconds = 5) => {
     setSuccess(true);
@@ -67,14 +68,14 @@ export const useProfile = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        resetChanges(); //reset temporary competences
+        resetChanges();
         throw new Error(errorData.message || 'Failed to update competences');
       }
       triggerSuccess();
       const res = await response.json();
       
 
-      updateProfile(); // Apply tempCompetences to competence
+      updateProfile();
       
       return res.data;
     } catch (err) {
@@ -143,18 +144,18 @@ export const useProfile = () => {
     };
 
     fetchProfile();
-  }, []); // ✅ Only re-fetch when token changes
+  }, []); 
 
   return { 
     competences, 
-    tempCompetences, // Expose tempCompetences so UI can show changes before saving
+    tempCompetences,
     loading, 
     error, 
     success,
-    saveProfileChanges, // Call this to apply changes
+    saveProfileChanges,
     handleDeleteCompetence,
     addCompetence,
     handleAddCompetence,
-    resetChanges // Call this to discard changes
+    resetChanges 
   };
 };

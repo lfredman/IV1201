@@ -55,7 +55,7 @@ const ApplicationsList: React.FC = () => {
 
   const sortedApplications = [...applications].sort((a, b) => {
     if (!sortConfig.key) return 0;
-  
+
     // Determine the value to sort based on the key
     const getTotalAvailability = (app: Application): number => {
       return app.availability.reduce((sum, comp) => {
@@ -64,33 +64,33 @@ const ApplicationsList: React.FC = () => {
         return sum + (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
       }, 0);
     };
-  
+
     const aValue =
       sortConfig.key === "totalCompetences"
         ? a.competences.length
         : sortConfig.key === "totalYears"
-        ? a.competences.reduce((sum, comp) => sum + comp.years, 0)
-        : sortConfig.key === "totalAvailability"
-        ? getTotalAvailability(a)
-        : a[sortConfig.key];
-  
+          ? a.competences.reduce((sum, comp) => sum + comp.years, 0)
+          : sortConfig.key === "totalAvailability"
+            ? getTotalAvailability(a)
+            : a[sortConfig.key];
+
     const bValue =
       sortConfig.key === "totalCompetences"
         ? b.competences.length
         : sortConfig.key === "totalYears"
-        ? b.competences.reduce((sum, comp) => sum + comp.years, 0)
-        : sortConfig.key === "totalAvailability"
-        ? getTotalAvailability(b)
-        : b[sortConfig.key];
-  
+          ? b.competences.reduce((sum, comp) => sum + comp.years, 0)
+          : sortConfig.key === "totalAvailability"
+            ? getTotalAvailability(b)
+            : b[sortConfig.key];
+
     if (aValue === null || aValue === undefined) return -1;
     if (bValue === null || bValue === undefined) return 1;
-  
+
     if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
     if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
     return 0;
   });
-  
+
 
   /**
    * Filters applications based on the search query. Searches across all application fields.
@@ -104,14 +104,14 @@ const ApplicationsList: React.FC = () => {
     })
   );
 
- /**
- * Handles sorting by different application attributes.
- * Allows sorting by "name", "email", "application_status", "competences", "totalYears", and "totalAvailability".
- * 
- * @param {keyof Application | "totalCompetences" | "totalYears" | "totalAvailability"} key - The field to sort by.
- */
+  /**
+  * Handles sorting by different application attributes.
+  * Allows sorting by "name", "email", "application_status", "competences", "totalYears", and "totalAvailability".
+  * 
+  * @param {keyof Application | "totalCompetences" | "totalYears" | "totalAvailability"} key - The field to sort by.
+  */
 
-  const handleSort = (key: keyof Application | "totalCompetences" | "totalYears" | "totalAvailability" ) => {
+  const handleSort = (key: keyof Application | "totalCompetences" | "totalYears" | "totalAvailability") => {
     setSortConfig(prev => ({
       key,
       direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
@@ -139,7 +139,7 @@ const ApplicationsList: React.FC = () => {
 
   const handleApplicationAction = async (action: ApplicationAction) => {
     if (selectedApplication) {
-  
+
       try {
         const newApplication = await updateApplication(
           selectedApplication.person_id,
@@ -154,8 +154,8 @@ const ApplicationsList: React.FC = () => {
     }
   };
 
-  if (user.user?.role_id != 1){
-    return(<div>You need to be an admin to access this!</div>)
+  if (user.user?.role_id != 1) {
+    return (<div>You need to be an admin to access this!</div>)
   }
 
 
@@ -176,12 +176,12 @@ const ApplicationsList: React.FC = () => {
   }
 
   return (
-    <Box  sx={{
+    <Box sx={{
       width: "100%",
-      maxWidth: "100vw", // Ensures it does not exceed viewport width
+      maxWidth: "100vw", 
       padding: 1,
-      overflowX: "hidden", // Prevents horizontal overflow
-      boxSizing: "border-box", // Ensures padding is included in width calculations
+      overflowX: "hidden", 
+      boxSizing: "border-box", 
       backgroundColor: "white",
     }}>
       <TextField
@@ -247,8 +247,8 @@ const ApplicationsList: React.FC = () => {
                 const toDate: Date = new Date(comp.to_date);
                 const differenceInDays: number = (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24);
                 return sum + differenceInDays;
-            }, 0);
-                       
+              }, 0);
+
 
               return (
                 <TableRow key={app.person_id} onClick={() => handleProfileClick(app)} style={{ cursor: "pointer" }}>
@@ -266,8 +266,8 @@ const ApplicationsList: React.FC = () => {
                       backgroundColor: app.application_status === "accepted"
                         ? "green"
                         : app.application_status === "rejected"
-                        ? "red"
-                        : "orange",
+                          ? "red"
+                          : "orange",
                       color: "white",
                       marginLeft: "8px",
                     }}
@@ -288,7 +288,7 @@ const ApplicationsList: React.FC = () => {
                   <TableCell>{numCompetences}</TableCell>
                   <TableCell>{totalYears.toFixed(2)}</TableCell>
                   <TableCell>{totalAvailability}</TableCell>
-                  </TableRow>
+                </TableRow>
               );
             })}
           </TableBody>
@@ -301,16 +301,16 @@ const ApplicationsList: React.FC = () => {
         aria-labelledby="user-details-modal"
         aria-describedby="user-details-description"
       >
-        <Box sx={{ 
-          position: "absolute", 
-          top: "50%", 
-          left: "50%", 
-          transform: "translate(-50%, -50%)", 
-          bgcolor: "white", 
-          p: 4, 
-          borderRadius: 2, 
-          boxShadow: 3, 
-          width: 400 
+        <Box sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          bgcolor: "white",
+          p: 4,
+          borderRadius: 2,
+          boxShadow: 3,
+          width: 400
         }}>
           {selectedApplication && (
             <div>
@@ -322,7 +322,7 @@ const ApplicationsList: React.FC = () => {
                 <Grid item xs={12}><strong>Pnr:</strong> {selectedApplication.pnr}</Grid>
                 <Grid item xs={12}><strong>Total experience:</strong> {selectedApplication.competences.reduce((sum, comp) => sum + comp.years, 0)} years</Grid>
                 <Grid item xs={12}><strong>Submitted At:</strong> {selectedApplication.created_at}</Grid>
-                <Grid item xs={12} ><strong>Status:</strong> 
+                <Grid item xs={12} ><strong>Status:</strong>
                   <Box
                     component="span"
                     sx={{
@@ -333,15 +333,15 @@ const ApplicationsList: React.FC = () => {
                       backgroundColor: selectedApplication.application_status === "accepted"
                         ? "green"
                         : selectedApplication.application_status === "rejected"
-                        ? "red"
-                        : "orange",
+                          ? "red"
+                          : "orange",
                       color: "white",
                       marginLeft: "8px",
                     }}
                   >
                     {selectedApplication.application_status}
                   </Box>
-                
+
                 </Grid>
               </Grid>
 
@@ -398,7 +398,7 @@ const ApplicationsList: React.FC = () => {
                     <Button
                       key={status}
                       variant="contained"
-                      color="primary" 
+                      color="primary"
                       onClick={() => handleApplicationAction(status as ApplicationAction)}
                       sx={{ mr: 2 }}
                     >

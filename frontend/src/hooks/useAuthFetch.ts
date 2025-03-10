@@ -23,14 +23,13 @@ const useAuthFetch = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-  if (!BACKEND_URL){
+  if (!BACKEND_URL) {
     throw new Error('Could not find backend server!');
   }
 
-  // Memoizing authFetch to ensure it doesn't change on each render
   const authFetch = useCallback(
     async (url: string, options: RequestInit = {}, customToken?: string) => {
-      const tokenToUse = customToken ?? accessToken; // Use the provided token or fallback to state token
+      const tokenToUse = customToken ?? accessToken;
 
       const headers = {
         ...options.headers,
@@ -67,20 +66,18 @@ const useAuthFetch = () => {
 
         return response;
       } catch (error) {
-        // Check for network errors like net::ERR_CONNECTION_REFUSED
         if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
           console.error('Network error or server unreachable:', error);
           return Promise.reject(new Error('Unable to connect to the server. Please check your internet connection or try again later.'));
         }
 
-        // Catch any other errors
         console.error('Request failed:', error);
         return Promise.reject(error);
       } finally {
         setIsRefreshing(false);
       }
     },
-    [accessToken, refreshToken, isRefreshing, updateAccessToken, logoutUser, BACKEND_URL] // Add dependencies to ensure stable function
+    [accessToken, refreshToken, isRefreshing, updateAccessToken, logoutUser, BACKEND_URL]
   );
 
   return authFetch;

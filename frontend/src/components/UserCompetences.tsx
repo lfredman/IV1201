@@ -100,14 +100,14 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
     animation: 'blink 1s infinite',
     '@keyframes blink': {
       '0%': {
-        outline: 'none', // No outline at the start
+        outline: 'none',
       },
       '50%': {
-        outline: '5px solid', // Green outline at 50% of the animation
-        outlineOffset: '0px', // Creates space between the outline and the button
+        outline: '5px solid',
+        outlineOffset: '0px',
       },
       '100%': {
-        outline: 'none', // Remove outline at the end
+        outline: 'none',
       },
     },
   };
@@ -183,8 +183,8 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
                 <Table>
                   <TableBody>
                     <TableRow style={{
-                      fontWeight: 'bold',           // Bold text
-                      borderTop: '2px solid #ccc', // Border separating the row
+                      fontWeight: 'bold',
+                      borderTop: '2px solid #ccc',
                     }}>
                       <TableCell align="center">
                         <FormControl fullWidth>

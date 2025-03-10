@@ -23,7 +23,7 @@ import { useApplication } from '../hooks/useApply';
  */
 
 const ApplicationForm: React.FC = () => {
-    const { application, loading, error, success,submitApplication } = useApplication();
+    const { application, loading, error, success, submitApplication } = useApplication();
 
     const handleSubmit = async () => {
         await submitApplication();
@@ -43,7 +43,7 @@ const ApplicationForm: React.FC = () => {
                 gap: 2,
                 maxWidth: 400,
                 backgroundColor: "white",
-                
+
             }}
         >
             <Typography variant="h5">Application</Typography>
@@ -52,11 +52,11 @@ const ApplicationForm: React.FC = () => {
             {error && <Alert severity="error">{error}</Alert>}
             {success && <Alert severity="success">Your application has been submitted!</Alert>}
             {!application && !error && !loading && (
-                <Typography 
-                style={{ fontSize: '0.8rem', padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '5px' }}
+                <Typography
+                    style={{ fontSize: '0.8rem', padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '5px' }}
                 >
-                You have not submitted any application! <br />
-                Add your availability + competences and click submit!
+                    You have not submitted any application! <br />
+                    Add your availability + competences and click submit!
                 </Typography>
 
             )}
@@ -70,25 +70,25 @@ const ApplicationForm: React.FC = () => {
                             borderRadius: "4px",
                             fontWeight: "bold",
                             backgroundColor: application.status === "accepted"
-                            ? "green"
-                            : application.status === "rejected"
-                            ? "red"
-                            : "orange",
+                                ? "green"
+                                : application.status === "rejected"
+                                    ? "red"
+                                    : "orange",
                             color: "white",
                             marginLeft: "8px",
                         }}
-                        >
-                                            <Typography>Status: {application.status.charAt(0).toUpperCase() + application.status.slice(1).replace(/_/g, ' ')}</Typography>
+                    >
+                        <Typography>Status: {application.status.charAt(0).toUpperCase() + application.status.slice(1).replace(/_/g, ' ')}</Typography>
 
-                                  </Box>
+                    </Box>
                     <Typography>Created at: {new Date(application.created_at).toLocaleString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      second: "2-digit",
-                      hour12: false,
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        hour12: false,
                     })}</Typography>
                 </>
             )}

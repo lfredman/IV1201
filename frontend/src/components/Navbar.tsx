@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useUser } from '../context/UserContext'; 
+import { useUser } from '../context/UserContext';
 import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -24,15 +24,14 @@ import Typography from "@mui/material/Typography";
  * @returns {JSX.Element} A navigation bar with conditional rendering based on user state.
  */
 const Navbar: React.FC = () => {
-  const { user, logoutUser } = useUser();  // Get user and logout function from context
-
+  const { user, logoutUser } = useUser();
   const buttonStyle = {
     mx: 1,
-    color: "white", // Default text color
-    transition: "background-color 0.3s ease", // Smooth transition
+    color: "white",
+    transition: "background-color 0.3s ease",
     "&:hover": {
-      backgroundColor: "rgba(255, 255, 255, 0.1)", // Light white overlay on hover
-      color: "#FFD700" // Optional: Gold text on hover
+      backgroundColor: "rgba(255, 255, 255, 0.1)",
+      color: "#FFD700"
     }
   };
 
@@ -47,7 +46,6 @@ const Navbar: React.FC = () => {
           Home
         </Button>
         {user ? (
-          // If logged in, show profile, applications, and logout
           <>
             <Button color="inherit" component={Link} to="/profile" sx={buttonStyle}>
               Profile
@@ -64,7 +62,6 @@ const Navbar: React.FC = () => {
             </Button>
           </>
         ) : (
-          // If NOT logged in, show login and signup
           <>
             <Button color="inherit" component={Link} to="/login" sx={buttonStyle}>
               Log in

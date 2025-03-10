@@ -17,17 +17,15 @@ import { usePasswordReset } from "../hooks/usePasswordReset";
  * @returns {JSX.Element} A form for either resetting the password or requesting a reset email.
  */
 const ResetPasswordPage: React.FC = () => {
-  // Destructure the tokenFromUrl from the usePasswordReset hook
   const { tokenFromUrl } = usePasswordReset();
 
-  // Check for token either in URL or in localStorage (whichever you prefer)
-  const tokenInLocalStorage = localStorage.getItem('resetToken'); // Example of getting token from localStorage
+  const tokenInLocalStorage = localStorage.getItem('resetToken');
 
   const token = tokenFromUrl || tokenInLocalStorage;
 
   return (
     <>
-      {token ? <PasswordResetForm /> : <PasswordEmailResetForm /> }
+      {token ? <PasswordResetForm /> : <PasswordEmailResetForm />}
     </>
   );
 };

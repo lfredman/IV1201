@@ -18,12 +18,10 @@ import { deleteUserByUsername } from '../models/accountModel';
 describe('User Registration, Login, and Token Refresh', () => {
 
     afterAll(async () => {
-        // Clean up the database by deleting the test user after all tests have been executed
         await deleteUserByUsername("john_doe");
-        await closeDB();  // Close the database connection
+        await closeDB();  
     });
 
-    // Sample user data to use in multiple test cases
     const userdata = {
         name: 'John',
         surname: 'Doe',
@@ -53,7 +51,7 @@ describe('User Registration, Login, and Token Refresh', () => {
             // Test case for attempting to register with an already registered email
             const modifiedUserData = {
                 ...userdata,
-                username: userdata.username + Math.floor(Math.random() * 1000)  // Ensure unique username for this test
+                username: userdata.username + Math.floor(Math.random() * 1000)  
             };
             const response = await request(app).post('/account/register').send(modifiedUserData);
             expect(response.status).toBe(400);
@@ -118,7 +116,7 @@ describe('User Registration, Login, and Token Refresh', () => {
                 username: userdata.username + Math.floor(Math.random() * 1000),
                 email: userdata.email + Math.floor(Math.random() * 1000),
                 pnr: '8989898988',
-                password: 'weak'  // Weak password
+                password: 'weak'
             };
 
             const response = await request(app).post('/account/register').send(modifiedUserData);
@@ -250,7 +248,7 @@ describe('User Registration, Login, and Token Refresh', () => {
             // Test case for successfully resetting the password
             const response = await request(app)
                 .post('/account/reset')
-                .set('Authorization', `Bearer ${accessToken}`) // Provide access token in the header
+                .set('Authorization', `Bearer ${accessToken}`) 
                 .send({password: "Hejhej123456!"});
 
             expect(response.status).toBe(200);
@@ -262,7 +260,7 @@ describe('User Registration, Login, and Token Refresh', () => {
             const response = await request(app)
                 .post('/account/reset')
                 .set('Authorization', `Bearer ${accessToken}`)
-                .send({password: "hejhej"});  // Weak password
+                .send({password: "hejhej"}); 
 
             expect(response.status).toBe(400);
             expect(response.body.message).toBe('Password must contain at least 8 characters, one uppercase letter, one number, and one special character');
@@ -273,7 +271,7 @@ describe('User Registration, Login, and Token Refresh', () => {
             const response = await request(app)
                 .post('/account/reset')
                 .set('Authorization', `Bearer ${accessToken}`)
-                .send({});  // Missing password
+                .send({}); 
 
             expect(response.status).toBe(400);
             expect(response.body.message).toBe('Missing parameters');

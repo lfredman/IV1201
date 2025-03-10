@@ -1,4 +1,4 @@
-import {Competence} from "../context/ProfileContext"
+import { Competence } from "../context/ProfileContext"
 
 /**
  * Custom hook for validating user input data.
@@ -31,7 +31,7 @@ export const useValidation = () => {
         const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
         return passwordRegex.test(password);
     };
-    
+
     const validatePnr = (input: string) => {
         const pnrRegex = /^[0-9 -]+$/;
         const digitsOnly = input.replace(/\D/g, '');
@@ -40,7 +40,7 @@ export const useValidation = () => {
 
     const validateCompetence = (competence: Competence) => {
         return typeof competence.years_of_experience === 'number' &&
-               competence.years_of_experience >= 0;
+            competence.years_of_experience >= 0;
     }
 
     const validateUsername = (input: string): boolean => {
