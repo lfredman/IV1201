@@ -44,8 +44,6 @@ export const sendEmail = async (to: string, subject: string, text: string, html?
             html, // Optional HTML version of the email content
         });
 
-        // Log the message ID for debugging purposes
-        console.log(`Email sent: ${info.messageId}`);
         return info; // Return the result from the email send operation
     } catch (error) {
         // Catch any error that occurs during the email sending process

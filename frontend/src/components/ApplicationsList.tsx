@@ -139,7 +139,6 @@ const ApplicationsList: React.FC = () => {
 
   const handleApplicationAction = async (action: ApplicationAction) => {
     if (selectedApplication) {
-      console.log(`${action} application for ${selectedApplication.name}`);
   
       try {
         const newApplication = await updateApplication(

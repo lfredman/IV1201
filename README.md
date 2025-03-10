@@ -81,11 +81,6 @@ The application follows a **Monolithic Architecture using Client-Side Rendering 
 ### Installation
 1. Clone the repository: `git clone <repository-url>`
 2. Create a `.env` file in the `backend` folder with the following variables, also add them to the Github secrets:
-    - DB_USER=""
-    - DB_HOST=""
-    - DB_DATABASE=""
-    - DB_PASSWORD=""
-    - DB_PORT=""
     - JWT_SECRET=""
     - GMAIL=""
     - GMAIL_SECRET=""
@@ -100,7 +95,7 @@ The application follows a **Monolithic Architecture using Client-Side Rendering 
 
 ### Local development
 1. Start the development servers: 
-   - Backend: `cd backend && npm start`
+   - Backend: `cd backend && npm run dev`
    - Frontend: `cd frontend && npm run dev`
 
 ### Cloud deployment

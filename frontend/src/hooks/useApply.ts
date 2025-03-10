@@ -70,7 +70,6 @@ export const useApplication = () => {
             }
 
             const res = await response.json();
-            console.log("APPLICATION DATA:", res);
 
             if (res.data) {
                 setApplication(res.data); // assuming backend sends application in res.data
@@ -101,13 +100,11 @@ export const useApplication = () => {
             if (!response.ok) {
                 const errorData = await response.json();
                 const message = errorData.message || 'Failed to submit application';
-                console.log('Throwing error:', message);
                 throw new Error(message);
             }
 
             const res = await response.json();
             triggerSuccess();
-            console.log("APPLICATION SUBMIT RESPONSE:", res);
 
             if (res.data) {
                 setApplication(res.data);

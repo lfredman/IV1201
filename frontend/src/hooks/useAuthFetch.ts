@@ -42,7 +42,6 @@ const useAuthFetch = () => {
 
         if (response.status === 401 && refreshToken && !isRefreshing) {
           setIsRefreshing(true);
-          console.log("REFRESHING TOKEN");
 
           const refreshResponse = await fetch(`${BACKEND_URL}/account/refresh?refreshToken=${refreshToken}`, {
             method: 'GET',
@@ -51,7 +50,6 @@ const useAuthFetch = () => {
 
           if (refreshResponse.ok) {
             const { data } = await refreshResponse.json();
-            console.log("NEW TOKEN", data.accessToken);
             updateAccessToken(data.accessToken);
 
             return fetch(BACKEND_URL + url, {

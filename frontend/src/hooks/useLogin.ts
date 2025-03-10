@@ -37,8 +37,6 @@ export const useLogin = () => {
       const res = await loginUser(username, password); // Model function (API request)
       const { message, accessToken, refreshToken, userData } = res;
 
-      console.log(message);
-      console.log("User Data:", userData); // Debugging to ensure userData is correct
 
       // Set user globally in context and save the tokens to localStorage
       updateUserContext(userData, accessToken, refreshToken); // Update global context with the new user data

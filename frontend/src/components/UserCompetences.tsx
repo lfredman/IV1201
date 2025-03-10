@@ -30,30 +30,47 @@ interface UserCompetencesProps {
  */
 
 const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) => {
-  const { competences, tempCompetences, loading, error, success, handleAddCompetence, resetChanges, saveProfileChanges, handleDeleteCompetence} = useProfile();
+  const { competences, tempCompetences, loading, error, success, handleAddCompetence, resetChanges, saveProfileChanges, handleDeleteCompetence } = useProfile();
   const [isEditing, setIsEditing] = useState(editable);
   const [newCompetence, setNewCompetence] = useState({ competence: '', years_of_experience: '' });
   const [alert, setAlert] = useState<string | null>(null); // State to store alert message
 
   const displayedCompetences = isEditing ? tempCompetences : competences;
-
+  /**
+     * Toggles the edit mode between view-only and editable states.
+     */
   const handleEditToggle = () => {
     setIsEditing((prev) => !prev);
   };
 
+  /**
+   * Resets changes made during editing and switches to view-only mode.
+   */
   const handleDiscard = () => {
     resetChanges();
     setIsEditing(false);
   };
 
+  /**
+   * Saves changes made to the competences and switches to view-only mode.
+   */
   const handleSave = () => {
     saveProfileChanges();
     setIsEditing(false);
   };
 
+  /**
+   * Deletes a specific competence based on its ID.
+   * 
+   * @param {number} competence_id - The ID of the competence to be deleted.
+   */
   const handleDelete = (competence_id: number) => {
     handleDeleteCompetence(competence_id);
   };
+
+  /**
+   * Adds a new competence to the list if both the competence and years of experience are provided.
+   */
 
   const handleAdd = () => {
     if (!newCompetence.competence || !newCompetence.years_of_experience) {
@@ -94,7 +111,7 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
       },
     },
   };
-  
+
 
   return (
     <Box sx={{ width: "auto", mx: "auto", mt: 5, p: 3, borderRadius: 2, boxShadow: 3, textAlign: "center", backgroundColor: "white" }}>
@@ -112,108 +129,108 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
 
       {!loading && (
         <>
-        <TableContainer component={Paper} sx={{ marginBottom: '20px' }}>
-          <Table>
-            <TableHead>
-            <TableRow>
-              {getTableHeaders().map((header, index) => (
-                <TableCell align="center" key={index}>
-                  <strong>{header.charAt(0).toUpperCase() + header.slice(1).replace(/_/g, ' ')}</strong>
-                </TableCell>
-              ))}
-              {isEditing && <TableCell><strong>Actions</strong></TableCell>}
-            </TableRow>
-            </TableHead>
-            <TableBody>
-              {displayedCompetences.length > 0 ? (
-                displayedCompetences.map((comp, index) => (
-                  <TableRow key={index}>
-                    {Object.entries(comp).slice(1).map(([key, value], idx) => (
-                      <TableCell align="center" key={idx}>
-                        {typeof value === 'string' ? value.charAt(0).toUpperCase() + value.slice(1) : value}
-                      </TableCell>
-                    ))}
-                    {isEditing && (
-                      <TableCell align="center">
-                        <IconButton aria-label="delete" size="small" color="error" onClick={() => handleDelete(comp.competence_id)}>
-                          <DeleteOutlineIcon fontSize="inherit" />
-                        </IconButton>
-                      </TableCell>
-                    )}
-                  </TableRow>
-                ))
-              ) : (
+          <TableContainer component={Paper} sx={{ marginBottom: '20px' }}>
+            <Table>
+              <TableHead>
                 <TableRow>
-                  <TableCell colSpan={isEditing ? getTableHeaders().length + 1 : getTableHeaders().length} align="center">
-                    No competences found.
-                  </TableCell>
+                  {getTableHeaders().map((header, index) => (
+                    <TableCell align="center" key={index}>
+                      <strong>{header.charAt(0).toUpperCase() + header.slice(1).replace(/_/g, ' ')}</strong>
+                    </TableCell>
+                  ))}
+                  {isEditing && <TableCell><strong>Actions</strong></TableCell>}
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-
-        {isEditing && (
-          <>
-        <Typography style={{ fontSize: '0.8rem', padding: '10px', borderRadius: '5px' }}>
-          You can add or edit competences in the table below.
-          <br />
-          Fill in the necessary fields and click the "Add" button to save.
-        </Typography>
-
-        {/* Editing Table */}
-        <TableContainer component={Paper}>
-          <Table>
-            <TableBody>
-              <TableRow style={{
-                fontWeight: 'bold',           // Bold text
-                borderTop: '2px solid #ccc', // Border separating the row
-              }}>
-                <TableCell align="center">
-                  <FormControl fullWidth>
-                    <InputLabel>Competence</InputLabel>
-                    <Select
-                      name="competence"
-                      value={newCompetence.competence}
-                      onChange={(e) => setNewCompetence({ ...newCompetence, competence: e.target.value })}
-                      label="Competence"
-                      sx={{ width: 'auto', minWidth: '130px', textAlign: 'center' }}
-
-                      autoWidth
-                    >
-                      {competenceOptions.map(({ competence_id, name }) => (
-                        <MenuItem key={competence_id} value={competence_id.toString()}>{name.charAt(0).toUpperCase() + name.slice(1).replace(/_/g, ' ')}</MenuItem>
+              </TableHead>
+              <TableBody>
+                {displayedCompetences.length > 0 ? (
+                  displayedCompetences.map((comp, index) => (
+                    <TableRow key={index}>
+                      {Object.entries(comp).slice(1).map(([key, value], idx) => (
+                        <TableCell align="center" key={idx}>
+                          {typeof value === 'string' ? value.charAt(0).toUpperCase() + value.slice(1) : value}
+                        </TableCell>
                       ))}
-                    </Select>
-                  </FormControl>
-                </TableCell>
-                <TableCell align="center">
-                  <TextField
-                    type="number"
-                    value={newCompetence.years_of_experience}
-                    onChange={(e) => setNewCompetence({ ...newCompetence, years_of_experience: e.target.value })}
-                    label="Years"
-                    sx={{ width: 'auto', maxWidth: '100px', textAlign: 'center' }}
-                    inputProps={{ min: 0 }}
-                  />
-                </TableCell>
-                <TableCell align="center">
-                      <IconButton 
-                        color="primary" 
-                        size="small" 
-                        onClick={handleAdd} 
-                        sx={newCompetence.competence && newCompetence.years_of_experience ? blinkStyle : {}}
-                      >
-                      <AddIcon />
-                    </IconButton>
-                  
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-        </>)}
-      </>
+                      {isEditing && (
+                        <TableCell align="center">
+                          <IconButton aria-label="delete" size="small" color="error" onClick={() => handleDelete(comp.competence_id)}>
+                            <DeleteOutlineIcon fontSize="inherit" />
+                          </IconButton>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={isEditing ? getTableHeaders().length + 1 : getTableHeaders().length} align="center">
+                      No competences found.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          {isEditing && (
+            <>
+              <Typography style={{ fontSize: '0.8rem', padding: '10px', borderRadius: '5px' }}>
+                You can add or edit competences in the table below.
+                <br />
+                Fill in the necessary fields and click the "Add" button to save.
+              </Typography>
+
+              {/* Editing Table */}
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableBody>
+                    <TableRow style={{
+                      fontWeight: 'bold',           // Bold text
+                      borderTop: '2px solid #ccc', // Border separating the row
+                    }}>
+                      <TableCell align="center">
+                        <FormControl fullWidth>
+                          <InputLabel>Competence</InputLabel>
+                          <Select
+                            name="competence"
+                            value={newCompetence.competence}
+                            onChange={(e) => setNewCompetence({ ...newCompetence, competence: e.target.value })}
+                            label="Competence"
+                            sx={{ width: 'auto', minWidth: '130px', textAlign: 'center' }}
+
+                            autoWidth
+                          >
+                            {competenceOptions.map(({ competence_id, name }) => (
+                              <MenuItem key={competence_id} value={competence_id.toString()}>{name.charAt(0).toUpperCase() + name.slice(1).replace(/_/g, ' ')}</MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell align="center">
+                        <TextField
+                          type="number"
+                          value={newCompetence.years_of_experience}
+                          onChange={(e) => setNewCompetence({ ...newCompetence, years_of_experience: e.target.value })}
+                          label="Years"
+                          sx={{ width: 'auto', maxWidth: '100px', textAlign: 'center' }}
+                          inputProps={{ min: 0 }}
+                        />
+                      </TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          color="primary"
+                          size="small"
+                          onClick={handleAdd}
+                          sx={newCompetence.competence && newCompetence.years_of_experience ? blinkStyle : {}}
+                        >
+                          <AddIcon />
+                        </IconButton>
+
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </>)}
+        </>
       )}
 
       {isEditing && (

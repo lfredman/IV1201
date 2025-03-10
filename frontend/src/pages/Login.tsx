@@ -1,5 +1,5 @@
 import LoginForm from "../components/LoginForm";
-import { useUser } from '../context/UserContext';  // Import the useUser hook
+import { useUser } from '../context/UserContext'; 
 
 /**
  * `Login` Component
@@ -16,7 +16,7 @@ import { useUser } from '../context/UserContext';  // Import the useUser hook
  * - If not logged in, the `LoginForm` component is displayed for the user to input their credentials.
  */
 const Login: React.FC = () => {
-    const { user } = useUser();  // Access user from the context
+    const { user } = useUser(); 
 
     return (
       <div>
