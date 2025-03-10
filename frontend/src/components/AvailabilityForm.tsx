@@ -31,6 +31,25 @@ interface AvailabilityFormProps {
     editable?: boolean;
 }
 
+/**
+ * AvailabilityForm Component
+ *
+ * This component allows users to manage their availability by adding, editing, or deleting date ranges.
+ *
+ * Features:
+ * - Displays a list of availability periods in a table.
+ * - Enables editing mode to modify availability entries.
+ * - Allows adding new availability periods using a date picker modal.
+ * - Provides options to save or discard changes.
+ * - Shows feedback messages for loading, errors, and successful updates.
+ *
+ * Uses:
+ * - `useAvailability` hook to manage availability state and actions.
+ *
+ * @param {boolean} editable - Determines if the component starts in edit mode.
+ * @returns {JSX.Element} The rendered availability management form.
+ */
+
 const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ editable = false }) => {
     const { availabilities, tempAvailabilities, loading, error, success, saveAvailabilitiesChanges, discardChanges, add, handleDeleteAvailability, } = useAvailability();
     const [isEditing, setIsEditing] = React.useState(editable);

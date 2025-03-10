@@ -3,6 +3,25 @@ import SendIcon from '@mui/icons-material/Send';
 import React from "react";
 import { useApplication } from '../hooks/useApply';
 
+/**
+ * ApplicationForm Component
+ *
+ * This component allows users to submit or update a job application. It provides:
+ * - Display of the current application status if one exists.
+ * - Submission button to create or update an application.
+ * - Loading, success, and error messages for feedback.
+ *
+ * Uses:
+ * - `useApplication` hook to manage application state and submission.
+ *
+ * Features:
+ * - Displays application details (status and creation date) if already submitted.
+ * - Shows relevant messages if no application is found.
+ * - Role-based UI feedback based on application status (accepted, rejected, unhandled).
+ *
+ * @returns {JSX.Element} The rendered application form with submission functionality.
+ */
+
 const ApplicationForm: React.FC = () => {
     const { application, loading, error, success,submitApplication } = useApplication();
 
