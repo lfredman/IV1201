@@ -1,6 +1,36 @@
 import React, { Component, ErrorInfo } from "react";
 import { Container, Typography, Button, Paper } from "@mui/material";
 
+/**
+ * ErrorBoundary Component
+ *
+ * A React error boundary component that catches JavaScript errors in its child component tree,
+ * logs the errors, and displays a user-friendly message.
+ *
+ * Features:
+ * - Captures JavaScript errors anywhere in the component tree.
+ * - Displays a fallback UI when an error occurs.
+ * - Logs error details to the console.
+ * - Allows users to retry by refreshing the page.
+ *
+ * Props:
+ * @param {React.ReactNode} children - The child components wrapped by the error boundary.
+ *
+ * State:
+ * @property {boolean} hasError - Indicates whether an error has been caught.
+ * @property {Error | undefined} error - Stores the caught error for display.
+ *
+ * Methods:
+ * - `static getDerivedStateFromError(error: Error)`: Updates state when an error is caught.
+ * - `componentDidCatch(error: Error, errorInfo: ErrorInfo)`: Logs error details.
+ * - `handleRetry()`: Resets the state and reloads the page when the user clicks "Try Again".
+ *
+ * Usage:
+ * Wrap this component around any section of the application where you want to catch errors.
+ *
+ * @returns {JSX.Element} Either the child components or an error message UI.
+ */
+
 interface Props {
   children: React.ReactNode;
 }

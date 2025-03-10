@@ -33,7 +33,8 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
   const { competences, tempCompetences, loading, error, success, handleAddCompetence, resetChanges, saveProfileChanges, handleDeleteCompetence} = useProfile();
   const [isEditing, setIsEditing] = useState(editable);
   const [newCompetence, setNewCompetence] = useState({ competence: '', years_of_experience: '' });
-  
+  const [alert, setAlert] = useState<string | null>(null); // State to store alert message
+
   const displayedCompetences = isEditing ? tempCompetences : competences;
 
   const handleEditToggle = () => {
@@ -55,6 +56,12 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
   };
 
   const handleAdd = () => {
+    if (!newCompetence.competence || !newCompetence.years_of_experience) {
+      setAlert("Please select a competence and enter years of experience before adding.");
+      setTimeout(() => setAlert(null), 5000); // Hide after 5 seconds
+      return;
+    }
+
     if (newCompetence.competence && newCompetence.years_of_experience) {
       handleAddCompetence({
         competence_id: parseInt(newCompetence.competence, 10),
@@ -100,6 +107,7 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
 
       {loading && <Typography>Loading...</Typography>}
       {error && <Alert severity="error">{error}</Alert>}
+      {alert && <Alert severity="warning">{alert}</Alert>}
       {success && <Alert severity="success">Changes saved successfully!</Alert>}
 
       {!loading && (
