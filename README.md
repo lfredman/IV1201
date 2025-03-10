@@ -5,8 +5,6 @@ This project is a web-based recruitment application designed for an amusement pa
 - **Applicants**: Register and submit job applications via a browser.
 - **Recruiters**: Administer applications (sort, accept, reject, or mark as "unhandled") via a browser or a future mobile app.
 
-The application is built with **robustness**, **security**, and **scalability** in mind, and it supports future features such as **internationalization** and a **mobile app for recruiters**.
-
 ---
 
 ## Key Features
@@ -50,7 +48,7 @@ The application is built with **robustness**, **security**, and **scalability** 
 The application follows a **Monolithic Architecture using Client-Side Rendering (CSR).**:
 1. **Presentation Layer**: Frontend (React) for user interaction.
 2. **Application Layer**: Backend (Express.js) for business logic and API handling.
-3. **Data Layer**: Database ([Database Name]) for persistent storage.
+3. **Data Layer**: Database (PostgreSQL) for persistent storage.
 
 ### Justification for Layered Architecture
 - **Separation of Concerns**: Each layer has a distinct responsibility, making the system modular and easier to maintain.
@@ -83,10 +81,16 @@ The application follows a **Monolithic Architecture using Client-Side Rendering 
 ### Installation
 1. Clone the repository: `git clone <repository-url>`
 2. Create a `.env` file in the `backend` folder with the following variables, also add them to the Github secrets:
+    - DB_USER=""
+    - DB_HOST=""
+    - DB_DATABASE=""
+    - DB_PASSWORD=""
+    - DB_PORT=""
     - JWT_SECRET=""
     - GMAIL=""
     - GMAIL_SECRET=""
     - DATABASE_URL=""
+
 3. Create a `.env` file in the `frontend` folder with the following variables, also add to the Github environment variables:
     - VITE_BACKEND_URL=http://localhost:3000 # or the heroku backend URL
 4. Install dependencies:
@@ -96,7 +100,7 @@ The application follows a **Monolithic Architecture using Client-Side Rendering 
 
 ### Local development
 1. Start the development servers: 
-   - Backend: `cd backend && npm run dev`
+   - Backend: `cd backend && npm start`
    - Frontend: `cd frontend && npm run dev`
 
 ### Cloud deployment
@@ -112,12 +116,14 @@ The allowed urls may need to be adjusted depending on the application usage.
 
 ## Development Workflow
 - Run tests: `npm test` (backend) and `npm test` (frontend).
-- Run static analysing: ` npm run lint` (backend) and ` npm run lint` (frontend).
-- Follow the Git branching strategy: [describe strategy].
 
 ## Logging
 - Backend: All major actions within the system generates a system-log which gets timestamped and stored in the /logs folder. The logs are rotated daily.
 - Frontend: No logging implemented
+  
+## Validation
+- Backend: Server-side validation occurs in middleware. Integration layer validation ocuurs in models and services in backend using validation functions from /utils/validation.ts
+- Frontend: Client-side validation happens in the hooks folder using validation functions from useValidation.ts
 
 ## Transactions
 - Backend: Transactions are used for all database-affecting actions to ensure data integrity and consistency. Transactions begin when an action that affects the database starts and end when the action completes successfully or is rolled back if an error occurs.
@@ -127,11 +133,11 @@ The allowed urls may need to be adjusted depending on the application usage.
 - Frontend: Unit testing is partially implemented and configured to run within GitHub Actions for continuous integration. While the current setup ensures basic functionality is tested, there is room for improvement to expand coverage and enhance reliability. Further work is needed to ensure comprehensive test coverage across all critical frontend components.
 
 ## Codebase Documentation
-- Backend: [link to backend docs].
-- Frontend: [link to frontend docs].
+- Backend: backend\README.md .
+- Frontend: frontend\README.md. 
+- Database: Documentation on how the tables look like found in db.txt
 
-## Diagrams
-Refer to the `Diagrams` folder for system architecture and ER diagrams.
+
 
 ## Troubleshooting
 - Issue: Database connection failed.
@@ -141,7 +147,8 @@ Solution: Verify that the frontend URL is included in the CORS configuration.
 - Issue: Deployment error
 Solution: Verify test results and check Heroku email/apikey in GitHub secrets.
 
-
-## Additional Resources
-- [API Documentation](#)
-- [Coding Style Guide](#)
+## Contributors
+ - Anton
+ - Haron 
+ - Lucas 
+ - Natali 
