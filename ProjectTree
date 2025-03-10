@@ -1,57 +1,45 @@
 ```
 IV1201
 ├─ backend
+│  ├─ eslint.config.js
 │  ├─ jest.config.js
 │  ├─ package-lock.json
 │  ├─ package.json
 │  ├─ Procfile
-│  ├─ src
-│  │  ├─ app.ts
-│  │  ├─ controllers
-│  │  │  ├─ accountController.ts
-│  │  │  ├─ adminController.ts
-│  │  │  └─ profileController.ts
-│  │  ├─ middleware
-│  │  │  ├─ authMiddleware.ts
-│  │  │  └─ serverSideValidation.ts
-│  │  ├─ models
-│  │  │  ├─ accountModel.ts
-│  │  │  ├─ applicationModel.ts
-│  │  │  ├─ availabilityModel.ts
-│  │  │  └─ competenceModel.ts
-│  │  ├─ routes
-│  │  │  ├─ accountRoutes.test.ts
-│  │  │  ├─ accountRoutes.ts
-│  │  │  ├─ adminRoutes.ts
-│  │  │  └─ profileRoutes.ts
-│  │  ├─ services
-│  │  │  ├─ accountService.ts
-│  │  │  ├─ adminService.ts
-│  │  │  └─ profileService.ts
-│  │  └─ utils
-│  │     ├─ db.ts
-│  │     ├─ email.ts
-│  │     ├─ logger.ts
-│  │     └─ validation.ts
-│  └─ tsconfig.json
+├─ src/
+│ ├─ app.ts                         # Main application entry point
+│ ├─ controllers/                   # Controllers for handling routes
+│ │ ├─ accountController.ts         # Handles account-related logic
+│ │ ├─ adminController.ts           # Handles admin-related logic
+│ │ └─ profileController.ts         # Handles profile-related logic
+│ ├─ middleware/                    # Middleware for authentication and validation
+│ │ ├─ authMiddleware.ts            # Authentication middleware
+│ │ └─ serverSideValidation.ts      # Server-side validation
+│ ├─ models/                        # Database models
+│ │ ├─ accountModel.ts              # Model for account data
+│ │ ├─ applicationModel.ts          # Model for application data
+│ │ ├─ availabilityModel.ts         # Model for availability data
+│ │ └─ competenceModel.ts           # Model for competence data
+│ ├─ routes/                        # API routes
+│ │ ├─ accountRoutes.ts             # Routes for account-related endpoints
+│ │ ├─ adminRoutes.ts               # Routes for admin-related endpoints
+│ │ └─ profileRoutes.ts             # Routes for profile-related endpoints
+│ ├─ services/                      # Business logic services
+│ │ ├─ accountService.ts            # Service for account-related logic
+│ │ ├─ adminService.ts              # Service for admin-related logic
+│ │ └─ profileService.ts            # Service for profile-related logic
+│ └─ utils/                         # Utility functions
+│ ├─ db.ts                          # Database connection utility
+│ ├─ email.ts                       # Email utility for password reset
+│ ├─ logger.ts                      # Logging utility
+│ └─ validation.ts                  # Validation utility
+├─ jest.config.js                   # Jest configuration for testing
+├─ package.json                     # Backend dependencies and scripts
+├─ Procfile                         # Heroku deployment configuration
+└─ tsconfig.json                    # TypeScript configuration
 ├─ db.txt
-├─ Diagrams
-│  └─ readme.txt
 ├─ frontend
 │  ├─ .babelrc
-│  ├─ coverage
-│  │  ├─ lcov-report
-│  │  │  ├─ AvailabilityContext.tsx.html
-│  │  │  ├─ base.css
-│  │  │  ├─ block-navigation.js
-│  │  │  ├─ favicon.png
-│  │  │  ├─ index.html
-│  │  │  ├─ prettify.css
-│  │  │  ├─ prettify.js
-│  │  │  ├─ sort-arrow-sprite.png
-│  │  │  ├─ sorter.js
-│  │  │  └─ UserContext.tsx.html
-│  │  └─ lcov.info
 │  ├─ eslint.config.js
 │  ├─ index.html
 │  ├─ jest.config.cjs
@@ -84,6 +72,7 @@ IV1201
 │  │  ├─ context
 │  │  │  ├─ AvailabilityContext.test.tsx
 │  │  │  ├─ AvailabilityContext.tsx
+│  │  │  ├─ ProfileContext.test.tsx
 │  │  │  ├─ ProfileContext.tsx
 │  │  │  ├─ UserContext.test.tsx
 │  │  │  └─ UserContext.tsx
@@ -113,6 +102,7 @@ IV1201
 │  │  ├─ utils
 │  │  │  ├─ auth.ts
 │  │  │  ├─ competenceOptions.ts
+│  │  │  ├─ error.ts
 │  │  │  └─ signup.ts
 │  │  └─ vite-env.d.ts
 │  ├─ tsconfig.app.json
