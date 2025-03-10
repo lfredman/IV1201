@@ -3,6 +3,28 @@ import { useUser } from "../context/UserContext"; // User context for tokens
 import { useAvailability as useAvailabilityContext } from "../context/AvailabilityContext"; // Profile context
 import useAuthFetch  from "./useAuthFetch";
 
+/**
+ * Custom hook for managing user availability.
+ * 
+ * This hook provides functionalities to:
+ * - Fetch user availability from the backend.
+ * - Temporarily store availability changes before committing them.
+ * - Save or discard availability changes.
+ * - Handle errors and success states.
+ * 
+ * @returns {Object} The hook's return values, including:
+ * - `availabilities`: The current availability data.
+ * - `tempAvailabilities`: Temporarily stored availability before being saved.
+ * - `error`: Error message if something goes wrong.
+ * - `loading`: Boolean indicating if a request is in progress.
+ * - `success`: Boolean indicating if an operation was successful.
+ * - `add`: Function to add a new availability.
+ * - `addAvailability`: Function to add availability directly to context.
+ * - `saveAvailabilitiesChanges`: Function to commit temporary changes.
+ * - `handleDeleteAvailability`: Function to delete an availability.
+ * - `discardChanges`: Function to discard temporary changes.
+ */
+
 export const useAvailability = () => {
   const { accessToken } = useUser(); 
   const {availabilities, tempAvailabilities,discardChanges, addAvailability, deleteAvailability, setAvailabilitiesAndCache} = useAvailabilityContext();
