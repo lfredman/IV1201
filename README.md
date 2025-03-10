@@ -3,7 +3,7 @@
 ## Overview
 This project is a web-based recruitment application designed for an amusement park to handle up to **15,000 job applications** over a two-week period. The system supports two types of users:
 - **Applicants**: Register and submit job applications via a browser.
-- **Recruiters**: Administer applications (sort, accept, reject, or mark as "unhandled") via a browser or a future mobile app.
+- **Recruiters**: Administer applications (sort, accept, reject, or mark as "unhandled") via a browser, or a future mobile app.
 
 ---
 
