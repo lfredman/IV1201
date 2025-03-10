@@ -1,6 +1,6 @@
-import { getCompetenceById, updateCompetenceById, Competences, hasCompetence} from '../models/competenceModel';
+import { getCompetenceById, updateCompetenceById, Competences, hasCompetence } from '../models/competenceModel';
 import { getAvailabilityById, updateAvailabilityById, Availabilities, hasAvailability } from '../models/availabilityModel';
-import {getApplicationById, upsertApplication } from '../models/applicationModel'
+import { getApplicationById, upsertApplication } from '../models/applicationModel';
 import { logger } from '../utils/logger';
 import { isInputSafe, isCompetencesValid, isDateValid } from '../utils/validation';
 
@@ -15,18 +15,20 @@ import { isInputSafe, isCompetencesValid, isDateValid } from '../utils/validatio
 export const getCompetenceService = async (user_id: string) => {
     const id = Number(user_id);
 
-    logger.info("user: " + user_id + " retrives competences.");
+    logger.info(`User ${user_id} retrieves competences.`);
 
+    // Validate user_id
     if (isNaN(id)) {
-        logger.warn("Invalid userID: " + user_id);
+        logger.warn(`Invalid userID: ${user_id}`);
         throw new Error("Invalid user_id tones2");
     }
 
-    if(!isInputSafe(user_id)){
-        logger.warn("Not safe user id");
+    if (!isInputSafe(user_id)) {
+        logger.warn("Not safe user ID");
         throw new Error("Invalid user_id");
     }
 
+    // Fetch competence data by user ID
     return await getCompetenceById(id);
 };
 
@@ -41,22 +43,22 @@ export const getCompetenceService = async (user_id: string) => {
  * @returns {Promise<Object>} - A promise that resolves with the updated competence data.
  */
 export const updateCompetenceService = async (user_id: string, competences: Competences) => {
-    // Convert user_id to a number
-    logger.info("user: " + user_id + " updates competences.");
     const id = Number(user_id);
+
+    logger.info(`User ${user_id} updates competences.`);
+
+    // Validate user ID and competence data
     if (isNaN(id)) {
-        logger.warn("Invalid userID: " + user_id);
+        logger.warn(`Invalid userID: ${user_id}`);
         throw new Error("Invalid user_id");
     }
 
-    // Validate the `competences` object
     if (!competences || !isCompetencesValid(competences)) {
-        
-        logger.warn("Invalid competences for user: " + user_id);
+        logger.warn(`Invalid competences for user: ${user_id}`);
         throw new Error("Invalid competences data");
     }
 
-    if(!isInputSafe(user_id)){
+    if (!isInputSafe(user_id)) {
         logger.warn("Not safe user ID");
         throw new Error("Invalid user ID, not safe");
     }
@@ -64,56 +66,71 @@ export const updateCompetenceService = async (user_id: string, competences: Comp
     // Add user_id as person_id in the `competences` object
     competences.person_id = id;
 
-    // Call the model function to update the database
     try {
-        logger.info(user_id+" calls database for update ");
+        logger.info(`Calling database to update competences for user ${user_id}`);
         const result = await updateCompetenceById(id, competences);
-        return result; // Return the result from the model
+        logger.info(`Competences updated successfully for user: ${user_id}`);
+        return result;
     } catch (error) {
-        console.error("Error updating competences:", error);
-        logger.error("Error updating competences for user: " + user_id);
+        logger.error(`Error updating competences for user: ${user_id}`, { error });
         throw new Error("Failed to update competences");
     }
 };
 
-
+/**
+ * Retrieves the availability data for a user based on the provided user ID.
+ * If the user ID is invalid, throws an error.
+ *
+ * @param {string} user_id - The ID of the user whose availability data is to be fetched.
+ * @returns {Promise<Object>} - A promise that resolves with the user's availability data.
+ */
 export const getAvailabilityService = async (user_id: string) => {
-
-    logger.info("user: " + user_id + " retrives availability service.");
     const id = Number(user_id);
 
+    logger.info(`User ${user_id} retrieves availability.`);
+
+    // Validate user ID
     if (isNaN(id)) {
-        logger.warn("Invalid userID: " + user_id);
+        logger.warn(`Invalid userID: ${user_id}`);
         throw new Error("Invalid user_id");
     }
 
-    if(!isInputSafe(user_id)){
+    if (!isInputSafe(user_id)) {
         logger.warn("Not safe user ID");
         throw new Error("Invalid user ID, not safe");
     }
 
+    // Fetch availability data by user ID
     return await getAvailabilityById(id);
 };
 
-
+/**
+ * Updates the availability data for a specific user based on the provided user ID and availability details.
+ * If the user ID or availability data is invalid, throws an error.
+ * Logs each step for debugging purposes.
+ *
+ * @param {string} user_id - The ID of the user whose availability data is to be updated.
+ * @param {Availabilities} availabilities - The availability data to update, including the user's availabilities.
+ * @returns {Promise<Object>} - A promise that resolves with the updated availability data.
+ */
 export const updateAvailabilityService = async (user_id: string, availabilities: Availabilities) => {
-    // Convert user_id to a number
     const id = Number(user_id);
-    logger.info("user: " + user_id + " updates availability.");
-    if (isNaN(id)) {
 
-        logger.warn("Invalid userID: " + user_id);
-        throw new Error("Invalid user_id!!!");
+    logger.info(`User ${user_id} updates availability.`);
+
+    // Validate user ID and availability data
+    if (isNaN(id)) {
+        logger.warn(`Invalid userID: ${user_id}`);
+        throw new Error("Invalid user_id");
     }
 
     if (!availabilities) {
-        logger.warn("Invalid availability data for user: " + user_id);
+        logger.warn(`Invalid availability data for user: ${user_id}`);
         throw new Error("Invalid availability data");
     }
 
-    // Validate
+    // Validate each availability entry for correct dates
     if (Array.isArray(availabilities.availabilities)) {
-        // Validate each availability entry
         for (const av of availabilities.availabilities) {
             if (!isDateValid(av.from_date) || !isDateValid(av.to_date)) {
                 logger.warn("Invalid date in availabilities");
@@ -125,62 +142,66 @@ export const updateAvailabilityService = async (user_id: string, availabilities:
         throw new Error("Availabilities data is invalid or missing.");
     }
 
-    // Add user_id as person_id in the `competences` object
     availabilities.person_id = id;
 
-    logger.info("Validated competences data for user: " + user_id);
-
-    // Call the model function to update the database
     try {
+        logger.info(`Updating availability for user: ${user_id}`);
         const result = await updateAvailabilityById(id, availabilities.availabilities);
-        logger.info("Updated availability successful for user: " + user_id);
-        return result; // Return the result from the model
+        logger.info(`Updated availability successfully for user: ${user_id}`);
+        return result;
     } catch (error) {
-        console.error("Error updating availabilities:", error);
-        logger.error("Updated availability NOT successful for user: " + user_id);
+        logger.error(`Error updating availability for user: ${user_id}`, { error });
         throw new Error("Failed to update availabilities");
     }
 };
 
+/**
+ * Retrieves the application data for a user based on the provided user ID.
+ * If the user ID is invalid, throws an error.
+ *
+ * @param {string} user_id - The ID of the user whose application data is to be fetched.
+ * @returns {Promise<Object>} - A promise that resolves with the user's application data.
+ */
 export const getApplicationService = async (user_id: string) => {
-    // Convert user_id to a number
-    
-    logger.info("Get Application service for user: " + user_id);
-    
+    logger.info(`Get Application service for user: ${user_id}`);
+
     if (!isInputSafe(user_id)) {
-        logger.warn("Invalid userID: " + user_id);
-        throw new Error("Invalid user_id: " + user_id);
+        logger.warn(`Invalid userID: ${user_id}`);
+        throw new Error(`Invalid user_id: ${user_id}`);
     }
 
     const id = Number(user_id);
     return await getApplicationById(id);
-}
+};
 
+/**
+ * Upserts the application data for a user based on the provided user ID.
+ * Checks for the existence of availability before performing the upsert.
+ *
+ * @param {string} user_id - The ID of the user whose application data is to be upserted.
+ * @returns {Promise<Object>} - A promise that resolves with the upserted application data.
+ */
 export const upsertApplicationService = async (user_id: string) => {
-    
-    logger.info("Upsert Application service for user: " + user_id);
-    
-    if ( !isInputSafe(user_id)) {
-        logger.warn("Invalid userID: " + user_id);
+    logger.info(`Upsert Application service for user: ${user_id}`);
+
+    if (!isInputSafe(user_id)) {
+        logger.warn(`Invalid userID: ${user_id}`);
         throw new Error("Invalid user_id");
     }
+
     const id = Number(user_id);
 
-    const [hasComp, hasAvail] = await Promise.all([
-        hasCompetence(id),
-        hasAvailability(id)
+    // Check for the existence of availability
+    const [hasAvail] = await Promise.all([
+        hasAvailability(id),
     ]);
 
-    if (!hasComp || !hasAvail) {
-        logger.warn("Missing fields! For user: " + user_id);
-        throw new Error(
-            `Missing ${!hasComp ? 'competence' : ''}${!hasComp && !hasAvail ? ' and ' : ''}${!hasAvail ? 'availability' : ''}`
-        );
+    if (!hasAvail) {
+        logger.warn(`Missing availability for user: ${user_id}`);
+        throw new Error(`Missing availability`);
     }
 
-    logger.info("Upsert Application service successful for user: " + user_id);
-
+    logger.info(`Upsert Application service successful for user: ${user_id}`);
     const application = await upsertApplication(id, 'unhandled');
     return application;
-
 };

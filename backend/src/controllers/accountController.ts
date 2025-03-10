@@ -20,9 +20,11 @@ import { AuthRequest } from "../middleware/authMiddleware"; // Import the AuthRe
  */
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
+    // Attempt to register the user with data from the request body
     const data = await registerService(req.body);
     res.status(201).json({ message: "User registered successfully", data });
   } catch (error) {
+    // Handle errors and send appropriate status and message
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });
     } else {
@@ -42,9 +44,11 @@ export const register = async (req: Request, res: Response): Promise<void> => {
  */
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
+    // Attempt to log the user in with data from the request body
     const data = await loginService(req.body);
     res.json({ message: "Login successful", data });
   } catch (error) {
+    // Handle errors and send appropriate status and message
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });
     } else {
@@ -66,17 +70,20 @@ export const login = async (req: Request, res: Response): Promise<void> => {
  */
 export const reset = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
+    // Ensure the user ID exists in the token
     if (!req.user?.userId) {
       res.status(400).json({ message: 'User ID not found in the token' });
       return;
     }
 
-    // Ensure userId is passed as a string
-    const id = req.user.userId.toString(); // Convert the userId to string
+    // Extract userId and convert it to a string
+    const id = req.user.userId.toString();
 
-    const data = await pwdResetService(id, req.body); // Pass the extracted user_id with the request body
+    // Call the password reset service with the extracted user ID and body data
+    const data = await pwdResetService(id, req.body);
     res.json({ message: "Password reset successfully", data });
   } catch (error) {
+    // Handle errors and send appropriate status and message
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });
     } else {
@@ -84,7 +91,6 @@ export const reset = async (req: AuthRequest, res: Response): Promise<void> => {
     }
   }
 };
-
 
 /**
  * Handles password reset request by sending a reset link to the user's registered email address.
@@ -97,9 +103,11 @@ export const reset = async (req: AuthRequest, res: Response): Promise<void> => {
  */
 export const resetByEmail = async (req: Request, res: Response): Promise<void> => {
   try {
+    // Attempt to trigger password reset by sending an email to the user
     const data = await pwdResetByEmailService(req.body);
     res.json({ message: "Reset link sent to your email!", data });
   } catch (error) {
+    // Handle errors and send appropriate status and message
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });
     } else {
@@ -123,16 +131,17 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
     // Extract refreshToken from query parameters
     const refreshToken = req.query.refreshToken as string;
 
+    // Check if refreshToken exists, return an error if missing
     if (!refreshToken) {
       res.status(400).json({ message: "Refresh token is required" });
-      return
+      return;
     }
 
-    // Call the tokenRefreshService with the extracted token
+    // Call the tokenRefreshService with the extracted token to get a new access token
     const data = await tokenRefreshService(refreshToken);
-
     res.json({ message: "Token refreshed successfully", data });
   } catch (error) {
+    // Handle errors and send appropriate status and message
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });
     } else {

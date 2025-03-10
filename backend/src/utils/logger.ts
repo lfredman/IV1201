@@ -3,36 +3,38 @@ import 'winston-daily-rotate-file';
 
 /**
  * Creates a daily rotating file transport for Winston logger.
- * Logs are stored in the './logs' directory with the format 'application-%DATE%.log',
- * where '%DATE%' is replaced by the current date in 'YYYY-MM-DD' format.
- * The logs are zipped and archived, with a maximum file size of 20MB and a retention period of 14 days.
+ * The log files are stored in the './logs' directory with filenames formatted as 'application-%DATE%.log',
+ * where '%DATE%' is replaced with the current date in 'YYYY-MM-DD' format.
+ * Additionally, logs are zipped and archived to save space, with a maximum file size of 20MB per log file.
+ * Older logs are retained for up to 14 days, after which they are deleted.
  *
- * @type {winston.transports.DailyRotateFile} - The transport that handles daily rotation of log files.
+ * @type {winston.transports.DailyRotateFile} - A transport that manages daily rotation and archiving of log files.
  */
 const dailyRotateFileTransport = new winston.transports.DailyRotateFile({
-  dirname: './logs',
-  filename: 'application-%DATE%.log',
-  datePattern: 'YYYY-MM-DD',
-  zippedArchive: true,
-  maxSize: '20m',
-  maxFiles: '14d',
+  dirname: './logs', // Directory where log files will be stored
+  filename: 'application-%DATE%.log', // Log file naming pattern, %DATE% is replaced by current date
+  datePattern: 'YYYY-MM-DD', // The format of the date in the filename (e.g., application-2025-03-10.log)
+  zippedArchive: true, // Compress old log files to save disk space
+  maxSize: '20m', // Maximum size of a log file before a new one is created (20MB)
+  maxFiles: '14d', // Log files older than 14 days are deleted
 });
 
 /**
  * Creates and configures a Winston logger instance.
- * The logger uses the daily rotate file transport and outputs log entries in JSON format.
- * The log level is set to 'info', meaning it will log messages of 'info' level and higher.
+ * This logger uses the daily rotating file transport to manage log files.
+ * It formats log entries as JSON, including a timestamp for each log message.
+ * The log level is set to 'info', which means it will log messages with 'info' level and higher severity.
  *
- * @type {winston.Logger} - The logger instance for logging messages.
+ * @type {winston.Logger} - The logger instance used for logging messages throughout the application.
  */
 const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
+  level: 'info', // The minimum log level to capture ('info' and all levels above)
+  format: winston.format.combine( // Log formatting: combines timestamp and JSON format
+    winston.format.timestamp(), // Adds a timestamp to each log entry
+    winston.format.json() // Formats log entries as JSON objects
   ),
   transports: [
-    dailyRotateFileTransport,
+    dailyRotateFileTransport, // Add the daily rotating file transport to the logger
   ],
 });
 

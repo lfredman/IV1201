@@ -35,7 +35,7 @@ export const registerService = async (data: {
 
   logger.info('Registration attempt', { username, email, pnr });
 
-  // DOES FIELDS LOOK OK FOR SIGNUP?
+  // Ensure all required fields are provided
   if (!name || !surname || !pnr || !username || !email || !password) {
     logger.error('Fields are missing during registration');
     throw new Error('Fields are missing');
@@ -51,7 +51,7 @@ export const registerService = async (data: {
     throw new Error("Invalid email");
   }
 
-  // BUSINESS LOGIC RELATED TO REGISTER
+  // Business logic to handle user registration
   try {
     // 1. Check if username already exists
     const existingUserByUsername = await getUserByUsername(username);
@@ -67,26 +67,28 @@ export const registerService = async (data: {
       throw new Error('Email is already registered');
     }
 
+    // 3. Check if personal number already exists
     const existingUserByPnr = await getUserByPnr(pnr);
     if (existingUserByPnr) {
       logger.warn('Personal number already registered', { pnr });
       throw new Error('Personal number is already registered');
     }
 
-    // 3. Validate password strength
+    // 4. Validate password strength
     if (!isPasswordValid(password)) {
       logger.warn('Invalid password entered');
       throw new Error('Password must contain at least 8 characters, one uppercase letter, one number, and one special character');
     }
 
-    // 4. Hash password before saving
+    // 5. Hash password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
     logger.info('Password hashed successfully');
 
-    // 5. Create new user
+    // 6. Create new user
     const newUser = await createPerson(data.name, data.surname, pnr, username, email, hashedPassword);
     logger.info('User registered successfully', { userId: newUser?.person_id });
 
+    // 7. Return login service result (tokens)
     return await loginService({ loginField: username, password });
 
   }
@@ -305,20 +307,14 @@ export const pwdResetByEmailService = async (data: { email: string }) => {
           <p style="color: #555;">Hello <strong>${user.name || "User"}</strong>,</p>
           <p style="color: #555;">We received a request to reset your password. Click the button below to set a new one:</p>
           <div style="text-align: center; margin: 20px 0;">
-              <a href="${resetLink}" style="background-color: #007bff; color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 5px; display: inline-block; font-size: 16px;">
-                  Reset Your Password
-              </a>
+              <a href="${resetLink}" style="background-color: #007bff; color: #fff; text-decoration: none; padding: 15px 25px; font-size: 16px; border-radius: 5px;">Reset Your Password</a>
           </div>
-          <p style="color: #555;">This link will expire at <strong>${expirationTimeFormatted}</strong>. If you didn’t request this, you can safely ignore this email.</p>
-          <hr style="border: 0; border-top: 1px solid #eee;">
-          <p style="color: #777; font-size: 12px; text-align: center;">Best,<br>The Recruitment Team</p>
+          <p style="color: #555;">This link will expire in 15 minutes. If you didn’t request this, you can ignore this email.</p>
+          <p style="color: #777;">Best regards, <br/> The KTH Team</p>
       </div>
-      `
-  );
+      `);
 
-  console.log("Password reset email sent to:", user.email);
-
-  logger.info("Password reset email sent successfully", user.email);
-
+  logger.info("Password reset email sent to:", email);
+  
   return { message: "Password reset email sent successfully" };
 };
