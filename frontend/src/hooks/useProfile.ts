@@ -95,8 +95,8 @@ export const useProfile = () => {
 
   };
   const handleAddCompetence = (newCompetence: Competence) => {
-    if (newCompetence.years_of_experience <= 0) {
-      triggerError("Years of experiences must be above zero!")
+    if (newCompetence.years_of_experience <= 0 || newCompetence.years_of_experience >= 100) {
+      triggerError("Years of experience must be greater than 0 and less than 100")
     }
     else {
       addCompetence(newCompetence);

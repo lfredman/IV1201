@@ -1,12 +1,36 @@
 import { useState, useEffect } from "react";
 import useAuthFetch  from "./useAuthFetch";
 
+/**
+ * Interface representing the structure of an application.
+ * 
+ * - applicant_id: Unique identifier for the applicant.
+ * - created_at: Timestamp indicating when the application was created.
+ * - person_id: Unique identifier for the person associated with the application.
+ * - status: Current status of the application (e.g., "pending", "approved", "rejected").
+ */
 interface ApplicationData {
     applicant_id: number;
     created_at: string;
     person_id: number;
     status: string;
-  }
+}
+
+/**
+ * Custom hook for handling a user's job application.
+ * 
+ * This hook provides functionality to:
+ * - Fetch the user's application from the backend.
+ * - Submit a new application.
+ * - Handle loading, error, and success states.
+ * 
+ * @returns {Object} The hook's return value includes:
+ * - `application`: The user's application data, if available.
+ * - `submitApplication`: A function to submit an application.
+ * - `loading`: A boolean indicating whether an operation is in progress.
+ * - `error`: A string containing any error message, if an error occurs.
+ * - `success`: A boolean indicating whether an application was successfully submitted.
+ */
 
 export const useApplication = () => {
     const [application, setApplication] = useState<ApplicationData | null>(null);
