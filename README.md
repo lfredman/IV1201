@@ -15,7 +15,7 @@ This project is a web-based recruitment application designed for an amusement pa
 - **Error Handling**: Comprehensive error handling with user-friendly messages and logging.
 - **Transactions**: Proper use of database transactions to handle concurrent updates.
 - **CI/CD Pipeline**: Automated testing, static analysis, and deployment via a CI/CD pipeline.
-- **Cloud Deployment**: The application is hosted on a cloud platform (e.g., Heroku) for live access.
+- **Cloud Deployment**: The application is hosted on Heroku a cloud platform for live access.
 - **Responsive Design**: Built with **MUI (Material-UI)** for a consistent and modern user experience across devices.
 
 ---
@@ -148,7 +148,7 @@ Solution: Verify that the frontend URL is included in the CORS configuration.
 Solution: Verify test results and check Heroku email/apikey in GitHub secrets.
 
 ## Contributors
- - Anton
+ - Anton 
  - Haron 
  - Lucas 
  - Natali 

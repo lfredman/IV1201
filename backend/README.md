@@ -9,7 +9,8 @@
 - ### utils for utility functions (db.ts, email.ts, etc.)
 
 ---
- 
+```
+
 ├─ backend
 │  ├─ eslint.config.js
 │  ├─ jest.config.js
@@ -47,5 +48,7 @@
 ├─ package.json                     # Backend dependencies and scripts
 ├─ Procfile                         # Heroku deployment configuration
 └─ tsconfig.json                    # TypeScript configuration
+
+```
 
 ---

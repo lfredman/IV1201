@@ -10,7 +10,11 @@ const mockCompetence = {
   years_of_experience: 3,
 };
 
-// Test Component
+/**
+ * Test component that interacts with ProfileContext, allowing adding,
+ * deleting, updating, and resetting competences.
+ */
+
 const TestComponent = () => {
   const {
     competences,
@@ -47,7 +51,11 @@ const TestComponent = () => {
   );
 };
 
-// Render with Context
+/**
+ * Helper function that renders the TestComponent wrapped inside the ProfileProvider
+ * to provide the necessary context for testing.
+ */
+
 const renderWithContext = () => {
   return render(
     <ProfileProvider>
@@ -56,11 +64,21 @@ const renderWithContext = () => {
   );
 };
 
-// Tests
+/**
+ * Test suite for ProfileProvider context functionality, including adding,
+ * deleting, updating competences, setting and caching competences in localStorage, 
+ * and resetting changes.
+ */
+
 describe("ProfileProvider Context", () => {
   beforeEach(() => {
     localStorage.clear();
   });
+
+  /**
+   * Test case to check that adding a competence works as expected,
+   * by updating the `tempCompetences` and displaying the competence in the UI.
+   */
 
   it("should add a competence to tempCompetences", async () => {
     renderWithContext();
@@ -70,6 +88,11 @@ describe("ProfileProvider Context", () => {
       expect(screen.getByTestId("temp-competences")).toHaveTextContent("React Development - 3 years");
     });
   });
+
+  /**
+   * Test case to verify that deleting a competence removes it from `tempCompetences`
+   * and updates the UI accordingly.
+   */
 
   it("should delete a competence from tempCompetences", async () => {
     renderWithContext();
@@ -81,6 +104,11 @@ describe("ProfileProvider Context", () => {
     });
   });
 
+  /**
+   * Test case to ensure that setting competences and caching them in localStorage
+   * works as expected. It should store the competences and display them in the UI.
+   */
+
   it("should set competences and cache in localStorage", async () => {
     renderWithContext();
     await userEvent.click(screen.getByText("Set & Cache"));
@@ -91,6 +119,11 @@ describe("ProfileProvider Context", () => {
     });
   });
 
+   /**
+   * Test case to check that updating the profile successfully persists the competences.
+   * It should also update the `competences` displayed in the UI.
+   */
+
   it("should update the profile and persist competences", async () => {
     renderWithContext();
     await userEvent.click(screen.getByText("Add Competence"));
@@ -100,6 +133,11 @@ describe("ProfileProvider Context", () => {
       expect(screen.getByTestId("competences")).toHaveTextContent("React Development - 3 years");
     });
   });
+
+  /**
+   * Test case to verify that resetting changes correctly reverts any temporary changes made
+   * to `tempCompetences` and clears them from the UI.
+   */
 
   it("should reset changes and revert tempCompetences", async () => {
     renderWithContext();

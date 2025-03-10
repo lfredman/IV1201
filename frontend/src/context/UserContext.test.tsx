@@ -5,6 +5,8 @@ import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
 import { UserProvider, useUser } from "../context/UserContext";
 
+
+
 // Mock user data
 const mockUser = {
   username: "john_doe",
@@ -15,6 +17,11 @@ const mockUser = {
   email: "john@example.com",
   pnr: 1234567800,
 };
+
+/**
+ * Test component that uses the UserContext to display and manage user state.
+ * It allows login, logout, and token update for testing purposes.
+ */
 
 const TestComponent = () => {
   const { user, loginUser, logoutUser, updateAccessToken, accessToken } = useUser();
@@ -41,7 +48,11 @@ const TestComponent = () => {
   );
 };
 
-// Wrap the component with context
+/**
+ * Wrapper function to render the TestComponent with the UserProvider
+ * and BrowserRouter context for routing.
+ */
+
 const renderWithContext = () => {
   return render(
     <BrowserRouter>
@@ -52,20 +63,36 @@ const renderWithContext = () => {
   );
 };
 
-// Test cases
+/**
+ * Test suite for the UserContext functionality, including login, logout,
+ * token management, and data persistence using localStorage.
+ */
+
 describe("UserContext", () => {
   beforeEach(() => {
     localStorage.clear(); // Ensure no previous data remains
   });
+
+  /**
+   * Test case to check that the app initially shows "No user logged in"
+   * when no user is logged in.
+   */
+
 
   it("should start with no user logged in", () => {
     renderWithContext();
     expect(screen.getByText("No user logged in")).toBeInTheDocument();
   });
 
+  /**
+   * Test case to check that when a user logs in, their data is stored
+   * in localStorage and displayed in the UI.
+   */
+
   it("should allow user to log in and store data", async () => {
     renderWithContext();
     await userEvent.click(screen.getByText("Login"));
+    
 
     await waitFor(() => {
       expect(screen.getByText("John Doe")).toBeInTheDocument();
@@ -77,6 +104,11 @@ describe("UserContext", () => {
     expect(localStorage.getItem("accessToken")).toBe("mock-access-token");
     expect(localStorage.getItem("refreshToken")).toBe("mock-refresh-token");
   });
+
+  /**
+   * Test case to check that when the user logs out, their data is cleared
+   * from localStorage and the UI is updated to reflect that no user is logged in.
+   */
 
   it("should allow user to log out and clear data", async () => {
     renderWithContext();
@@ -96,6 +128,11 @@ describe("UserContext", () => {
     expect(localStorage.getItem("accessToken")).toBeNull();
     expect(localStorage.getItem("refreshToken")).toBeNull();
   });
+
+  /**
+   * Test case to check that when the user updates their access token,
+   * the updated token is reflected in the UI and saved in localStorage.
+   */
 
   it("should update access token", async () => {
     renderWithContext();
