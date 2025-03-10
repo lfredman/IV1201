@@ -114,36 +114,41 @@ export const registerService = async (data: {
 export const loginService = async (data: { loginField: string; password: string }) => {
   const { loginField, password } = data;
 
+  // Log the login attempt
   logger.info('Login attempt', { loginField });
 
-  let user: Person | null;
+  // First, check if the input is safe
+  if (!isInputSafe(loginField)) {
+    logger.warn("Not safe input");
+    throw new Error("Invalid input! Not safe");
+  }
+
+  let user: Person | null = null;
 
   // Check if it's an email
   if (isEmailValid(loginField)) {
-
     user = await getUserByEmail(loginField);
     logger.info('Login attempt using email', { loginField });
   }
   // Check if it's a personal number (PNR)
   else if (isPnrValid(loginField)) {
-
     user = await getUserByPnr(loginField);
     logger.info('Login attempt using PNR', { loginField });
   }
-
   // Otherwise, treat it as a username
-  if(!isInputSafe(loginField)){
-    logger.warn("Not safe input");
-    throw new Error("Invalid input! Not safe");
-  }
-  
   else {
     user = await getUserByUsername(loginField);
     logger.info('Login attempt using username', { loginField });
   }
 
-  // If no user is found or password doesn't match, throw error
-  if (!user || !(await bcrypt.compare(password, user.password))) {
+  // If no user is found, throw an error
+  if (!user) {
+    logger.warn('User not found', { loginField });
+    throw new Error('Invalid credentials');
+  }
+
+  // If the password doesn't match, throw an error
+  if (!(await bcrypt.compare(password, user.password))) {
     logger.warn('Invalid credentials', { loginField });
     throw new Error('Invalid credentials');
   }
