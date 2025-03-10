@@ -28,6 +28,7 @@ export const useSignup = () => {
   const { validateEmail } = useValidation();
   const { validatePnr } = useValidation();
   const { validatePassword } = useValidation();
+  const { validateUsername } = useValidation();
 
   const signup = async (formData: {
     name: string;
@@ -58,6 +59,14 @@ export const useSignup = () => {
         setError("Password must include at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character ")
         return;
       }
+      if(!validateUsername(formData.username)){
+        setError("Invalid characters in username!");
+        return;
+      }
+      if(!validateUsername(formData.name)||!validateUsername(formData.surname)){ //checks so that no crazy characters occur
+        setError("Invalid characters in your name!?");
+        return;
+      }
    
       const res = await signupUser(formData);
       const { message, accessToken, refreshToken, userData } = res;
@@ -83,10 +92,10 @@ export const useSignup = () => {
         if (err.response?.data?.message) {
           setError(`Sign up failed! ${err.response.data.message}`);
         } else {
-          setError("Sign up failed! Please try again.");
+          setError("Sign up failed! Please try again!!");
         }
       } else if (err instanceof Error) {
-        setError("Sign up failed! Please try again.");
+        setError("Sign up failed! "+ err.message);
       } else {
         setError("An unexpected error occurred.");
       }

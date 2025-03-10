@@ -43,9 +43,14 @@ export const useValidation = () => {
                competence.years_of_experience >= 0;
     }
 
+    const validateUsername = (input: string): boolean => {
+        const safeRegex = /^[a-zA-Z0-9_\-@.åäöÅÄÖ]+$/;
+        return safeRegex.test(input);
+    };
+
     const validateCompetences = (competences: Competence[]) => {
         return competences.every(validateCompetence);
     }
 
-    return { validateEmail, validatePassword, validatePnr, validateCompetence, validateCompetences };
+    return { validateEmail, validatePassword, validatePnr, validateCompetence, validateCompetences, validateUsername };
 };
