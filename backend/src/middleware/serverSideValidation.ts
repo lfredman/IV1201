@@ -3,13 +3,13 @@ import { isEmailValid, isPnrValid, isPasswordValid } from '../utils/validation';
 
 /**
  * Middleware to validate the user registration data.
- * Checks if the required fields (username, email, password) are present and properly formatted.
- * - Username should be a string.
+ * Checks if the required fields (name, surname, username, email, password) are present and properly formatted.
+ * - Name, surname, and username should be strings.
  * - Email should be a valid string and a valid email address.
  * - Password should be a string, at least 8 characters long, and contain uppercase, lowercase, a number, and a special character.
- * - If PNR is provided, it must be a valid string.
+ * - If PNR (Personal Number) is provided, it must be a valid string.
  * 
- * If any validation fails, a 400 response with the error details is sent.
+ * If any validation fails, a 400 response with the specific error details is sent.
  * If all checks pass, the request proceeds to the next middleware or route handler.
  * 
  * @param {Request} req - The request object containing the registration data.
@@ -21,49 +21,54 @@ export const validateRegister = (req: Request, res: Response, next: NextFunction
   const { name, surname, username, email, password, pnr } = req.body;
   const errors: string[] = [];
 
-  // Check required fields
-
+  // Check if name is present and is a string
   if (!name || typeof name !== 'string') {
     errors.push('Name is required and must be a string.');
   }
 
+  // Check if surname is present and is a string
   if (!surname || typeof surname !== 'string') {
     errors.push('Surname is required and must be a string.');
   }
 
+  // Check if username is present and is a string
   if (!username || typeof username !== 'string') {
     errors.push('Username is required and must be a string.');
   }
 
+  // Check if email is present, is a string, and is a valid email address
   if (!email || typeof email !== 'string' || !isEmailValid(email)) {
     errors.push('A valid email is required.');
   }
 
+  // Check if password is present, is a string, and meets the specified criteria
   if (!password || typeof password !== 'string' || !isPasswordValid(password)) {
     errors.push('Password must be at least 8 characters long and include uppercase, lowercase, number, and a special character.');
   }
 
+  // If PNR is provided, validate it (it must be a string and valid)
   if (pnr && (typeof pnr !== 'string' || !isPnrValid(pnr))) {
     errors.push('Provided Pnr is not valid.');
   }
 
-
-  // If errors exist, send a response and exit the middleware
+  // If errors exist, send a response with a 400 status and the error details
   if (errors.length > 0) {
     res.status(400).json({ errors });
-    return; // ensure no further execution
+    return; // Ensure no further execution if there are validation errors
   }
 
+  // If validation passes, proceed to the next middleware or route handler
   next();
 };
 
 /**
  * Middleware to validate login data.
  * - Password is required and must be a string.
- * - You can add more checks for password complexity if needed.
+ * 
+ * You can add more checks for password complexity if needed in the future.
  * 
  * If any validation fails, a 400 response with the error details is sent.
- * If the validation passes, the request proceeds to the next middleware or route handler.
+ * If validation passes, the request proceeds to the next middleware or route handler.
  * 
  * @param {Request} req - The request object containing the login data.
  * @param {Response} res - The response object used to send error messages or proceed with the request.
@@ -74,8 +79,9 @@ export const validateLogin = (req: Request, res: Response, next: NextFunction): 
     const { password } = req.body;
     const errors: string[] = [];
 
-    // Validate password: must be provided and be a string (you may add more complexity checks if needed)
-    if (!password || typeof password !== 'string') {  // We cant validate password requirements due to old users must be able to login
+    // Validate password: must be provided and be a string
+    // Note: We can't enforce password complexity as old users must still be able to log in
+    if (!password || typeof password !== 'string') {
       errors.push('Password is required.');
     }
 
@@ -85,7 +91,7 @@ export const validateLogin = (req: Request, res: Response, next: NextFunction): 
       return;
     }
 
-    // Otherwise, pass control to the next middleware/controller
+    // If validation passes, proceed to the next middleware/controller
     next();
 };
 
@@ -105,16 +111,17 @@ export const validateEmail = (req: Request, res: Response, next: NextFunction): 
     const { email } = req.body;
     const errors: string[] = [];
   
+    // Validate that email is provided, is a string, and is a valid email format
     if (!email || typeof email !== 'string' || !isEmailValid(email)) {
         errors.push('A valid email is required.');
     }
 
-    // If any errors exist, send a 400 response and return
+    // If any errors exist, send a 400 response with the error details
     if (errors.length > 0) {
       res.status(400).json({ errors });
       return;
     }
 
-    // Otherwise, pass control to the next middleware/controller
+    // If validation passes, proceed to the next middleware or route handler
     next();
 };

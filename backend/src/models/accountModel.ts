@@ -19,9 +19,9 @@ export interface Person {
  * Creates a new person in the database.
  * 
  * - Validates input fields: name, surname, username, email, pnr, and password.
- * - Inserts the new person into the database with a default role_id of 2.
+ * - Inserts the new person into the database with a default role_id of 2 (general user role).
  * - If the operation is successful, returns the created person object.
- * - If any error occurs during the process, a transaction rollback is performed, and an error message is thrown.
+ * - If any error occurs during the process, a transaction rollback is performed, and an error message is thrown to ensure no partial data is saved.
  * 
  * @param {string} name - The first name of the person.
  * @param {string} surname - The surname of the person.
@@ -83,7 +83,7 @@ export const createPerson = async (
 /**
  * Retrieves a user from the database by their username.
  * 
- * - Validates that the username is safe for database input.
+ * - Validates that the username is safe for database input to prevent SQL injection attacks.
  * - Executes a query to find the person by username.
  * - If the user is found, returns the user object; otherwise, returns null.
  * 
@@ -309,17 +309,16 @@ export const getUsersAll = async (): Promise<Person[] | null> => {
 };
 
 
-
 /**
  * Changes the password of a person in the database.
  * 
  * - Begins a transaction to safely change the password.
  * - Updates the password in the database for the given person_id.
- * - If the update is successful, the transaction is committed.
- * - If an error occurs, the transaction is rolled back.
+ * - If the update is successful, the transaction is committed to ensure data integrity.
+ * - If an error occurs, the transaction is rolled back to prevent leaving the database in an inconsistent state.
  * 
  * @param {number} person_id - The ID of the person whose password needs to be changed.
- * @param {string} newPassword - The new password to set.
+ * @param {string} newPassword - The new password to set, which must meet certain security requirements.
  * @returns {Promise<boolean>} - Returns true if the password was updated, otherwise false.
  */
 export const changePassword = async (
