@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>IV1201</title>
         <style>
-            body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f4; }
+            body { font-family: Arial, sans-serif; margin: 40px; background-color: #111111; color: #111111; }
             .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
             h1 { text-align: center; }
             .section { margin-top: 20px; }
