@@ -118,6 +118,10 @@ The allowed urls may need to be adjusted depending on the application usage.
 ## Logging
 - Backend: All major actions within the system generates a system-log which gets timestamped and stored in the /logs folder. The logs are rotated daily.
 - Frontend: No logging implemented
+  
+## Validation
+- Backend: Server-side validation occurs in middleware. Integration layer validation ocuurs in models and services in backend using validation functions from /utils/validation.ts
+- Frontend: Client-side validation happens in the hooks folder using validation functions from useValidation.ts
 
 ## Transactions
 - Backend: Transactions are used for all database-affecting actions to ensure data integrity and consistency. Transactions begin when an action that affects the database starts and end when the action completes successfully or is rolled back if an error occurs.
