@@ -6,7 +6,7 @@ import {
   pwdResetByEmailService,
   tokenRefreshService,
 } from "../services/accountService";
-import { AuthRequest } from "../middleware/authMiddleware"; // Import the AuthRequest type
+import { AuthRequest } from "../middleware/authMiddleware"; 
 
 /**
  * Registers a new user by invoking the registerService with the request body data.

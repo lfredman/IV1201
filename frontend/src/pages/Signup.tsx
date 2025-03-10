@@ -1,5 +1,5 @@
 import SignupForm from '../components/SignupForm';
-import { useUser } from '../context/UserContext';  // Import the useUser hook
+import { useUser } from '../context/UserContext';  
 
 /**
  * `Login` Component
@@ -15,7 +15,7 @@ import { useUser } from '../context/UserContext';  // Import the useUser hook
  * @returns {JSX.Element} A message for logged-in users or a signup form for users who are not logged in.
  */
 const Login: React.FC = () => {
-    const { user } = useUser();  // Access user from the context
+    const { user } = useUser(); 
 
     return (
       <div>

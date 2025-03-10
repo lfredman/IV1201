@@ -6,16 +6,16 @@ const pickersDayStyles = (
   isInRange: boolean
 ): SxProps<Theme> => ({
   position: "relative",
-  backgroundColor: isStart || isEnd || isInRange ? "#90caf9" : undefined, // Highlight start, end, and in-range
-  color: isStart || isEnd || isInRange ? "white" : undefined, // White text for highlighted days
+  backgroundColor: isStart || isEnd || isInRange ? "#90caf9" : undefined, 
+  color: isStart || isEnd || isInRange ? "white" : undefined,
   "&:hover": {
-    backgroundColor: "#64b5f6", // Hover effect for highlighted days
+    backgroundColor: "#64b5f6", 
   },
   "&:focus": {
-    outline: "none", // Remove the default outline on focus
+    outline: "none", 
   },
   "&:active": {
-    backgroundColor: "white", // Maintain the same color when clicked but no additional styles
+    backgroundColor: "white", 
   },
 });
 

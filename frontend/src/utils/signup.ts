@@ -1,5 +1,4 @@
-// src/utils/auth.ts
-import { User } from "../context/UserContext"; // Import User type from context
+import { User } from "../context/UserContext";
 
 /**
  * Registers a new user by sending the provided form data to the backend.

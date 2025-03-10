@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { signupUser } from "../utils/signup"; // API call
+import { signupUser } from "../utils/signup"; 
 import { useNavigate } from "react-router-dom";
-import { useUser } from '../context/UserContext'; // Import the context
+import { useUser } from '../context/UserContext';
 import { useValidation } from "../hooks/useValidation";
 import { isCustomError } from "../utils/error";
 

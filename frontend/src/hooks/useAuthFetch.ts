@@ -1,4 +1,4 @@
-import { useUser } from '../context/UserContext'; // Import your custom hook
+import { useUser } from '../context/UserContext';
 import { useState, useCallback } from 'react';
 
 /**

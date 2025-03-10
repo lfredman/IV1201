@@ -1,7 +1,6 @@
-// src/hooks/useLogin.ts
 import { useState } from 'react';
-import { useUser } from '../context/UserContext'; // Import the context
-import { loginUser } from '../utils/auth'; // Import model function (API call)
+import { useUser } from '../context/UserContext';
+import { loginUser } from '../utils/auth'; 
 import { useValidation } from './useValidation';
 
 /**

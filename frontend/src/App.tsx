@@ -6,11 +6,11 @@ import Signup from "./pages/Signup";
 import Profile from "./pages/profile";
 import ApplyForJob from "./pages/ApplyForJob";
 import ResetPassword from "./pages/ResetPassword"
-import "./styles/App.css"; // Import global styles here
+import "./styles/App.css";
 import { AvailabilityProvider } from "./context/AvailabilityContext";
 
-import { UserProvider } from './context/UserContext';  // Import UserProvider
-import { ProfileProvider } from './context/ProfileContext';  // Import ProfileProvider
+import { UserProvider } from './context/UserContext'; 
+import { ProfileProvider } from './context/ProfileContext';
 import Navbar from "./components/Navbar";
 import ApplicationsList from "./components/ApplicationsList";
 import ErrorBoundary from "./components/ErrorBoundry";

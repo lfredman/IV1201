@@ -7,7 +7,7 @@ import {
   getApplicationService,
   upsertApplicationService,
 } from "../services/profileService";
-import { AuthRequest } from "../middleware/authMiddleware";  // Import the AuthRequest type
+import { AuthRequest } from "../middleware/authMiddleware"; 
 
 // Helper function to get the user ID, either from the token or the request parameters.
 const getUserId = (req: AuthRequest): string => {

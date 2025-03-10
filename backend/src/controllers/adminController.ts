@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { getApplicationService, updateApplicationService } from "../services/adminService";
-import { AuthRequest } from "../middleware/authMiddleware";  // Import the AuthRequest type
+import { AuthRequest } from "../middleware/authMiddleware"; 
 
 /**
  * Handles the retrieval of applications based on provided query parameters.

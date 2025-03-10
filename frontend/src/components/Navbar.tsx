@@ -1,8 +1,6 @@
-// src/components/Navbar.tsx
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useUser } from '../context/UserContext';  // Import the useUser hook
+import { useUser } from '../context/UserContext'; 
 import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";

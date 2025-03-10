@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography} from "@mui/material";
-import { useUser } from '../context/UserContext';  // Import the useUser hook
+import { useUser } from '../context/UserContext';
 
 
 /**

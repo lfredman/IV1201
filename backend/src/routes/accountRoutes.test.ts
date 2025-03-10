@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../app'; // Import your Express app
+import app from '../app';
 import { closeDB } from '../utils/db';
 import { deleteUserByUsername } from '../models/accountModel';
 
