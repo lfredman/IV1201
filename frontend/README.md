@@ -61,41 +61,43 @@ export default tseslint.config({
 ```
 
 ### Frontend Structure
+```
 frontend/
 ├─ src/
-│ ├─ App.tsx # Main application component
-│ ├─ assets/ # Static assets (images, videos)
-│ │ ├─ ferriswheel.mp4 # Background video
-│ │ └─ react.svg # React logo
-│ ├─ components/ # Reusable UI components
-│ │ ├─ AccountInfoForm.tsx # Form for account information
-│ │ ├─ ApplicationForm.tsx # Form for job applications
-│ │ ├─ ApplicationsList.tsx # List of applications for recruiters
-│ │ ├─ LoginForm.tsx # Login form
-│ │ ├─ Navbar.tsx # Navigation bar
-│ │ └─ PasswordResetForm.tsx # Password reset form
-│ ├─ context/ # React context for state management
-│ │ ├─ UserContext.tsx # Context for user authentication
-│ │ ├─ ProfileContext.tsx # Context for profile data
+│ ├─ App.tsx                   # Main application component
+│ ├─ assets/                   # Static assets (images, videos)
+│ │ ├─ ferriswheel.mp4         # Background video
+│ │ └─ react.svg               # React logo 
+│ ├─ components/               # Reusable UI components
+│ │ ├─ AccountInfoForm.tsx     # Form for account information
+│ │ ├─ ApplicationForm.tsx     # Form for job applications
+│ │ ├─ ApplicationsList.tsx    # List of applications for recruiters
+│ │ ├─ LoginForm.tsx           # Login form
+│ │ ├─ Navbar.tsx              # Navigation bar
+│ │ └─ PasswordResetForm.tsx   # Password reset form
+│ ├─ context/                  # React context for state management
+│ │ ├─ UserContext.tsx         # Context for user authentication
+│ │ ├─ ProfileContext.tsx      # Context for profile data
 │ │ └─ AvailabilityContext.tsx # Context for availability data
-│ ├─ hooks/ # Custom React hooks
-│ │ ├─ useAuthFetch.ts # Hook for authenticated API requests
-│ │ ├─ useLogin.ts # Hook for login functionality
-│ │ └─ useSignup.ts # Hook for signup functionality
-│ ├─ pages/ # Application pages
-│ │ ├─ Home.tsx # Home page
-│ │ ├─ Login.tsx # Login page
-│ │ ├─ Signup.tsx # Signup page
-│ │ ├─ ApplyForJob.tsx # Job application page
-│ │ └─ ResetPassword.tsx # Password reset page
-│ ├─ styles/ # CSS and styling files
-│ │ ├─ App.css # Global styles
-│ │ └─ video.css # Styles for video backgrounds
-│ └─ utils/ # Utility functions
-│ ├─ auth.ts # Authentication utilities
-│ ├─ error.ts # Error handling utilities
-│ └─ signup.ts # Signup validation utilities
-├─ jest.config.cjs # Jest configuration for testing
-├─ package.json # Frontend dependencies and scripts
-├─ Procfile # Heroku deployment configuration
-└─ vite.config.ts # Vite configuration
+│ ├─ hooks/                    # Custom React hooks
+│ │ ├─ useAuthFetch.ts         # Hook for authenticated API requests
+│ │ ├─ useLogin.ts             # Hook for login functionality
+│ │ └─ useSignup.ts            # Hook for signup functionality
+│ ├─ pages/                    # Application pages
+│ │ ├─ Home.tsx                # Home page
+│ │ ├─ Login.tsx               # Login page
+│ │ ├─ Signup.tsx              # Signup page
+│ │ ├─ ApplyForJob.tsx         # Job application page
+│ │ └─ ResetPassword.tsx       # Password reset page
+│ ├─ styles/                   # CSS and styling files
+│ │ ├─ App.css                 # Global styles
+│ │ └─ video.css               # Styles for video backgrounds
+│ └─ utils/                    # Utility functions
+│ ├─ auth.ts                   # Authentication utilities
+│ ├─ error.ts                  # Error handling utilities
+│ └─ signup.ts                 # Signup validation utilities
+├─ jest.config.cjs             # Jest configuration for testing
+├─ package.json                # Frontend dependencies and scripts
+├─ Procfile                    # Heroku deployment configuration
+└─ vite.config.ts              # Vite configuration
+```

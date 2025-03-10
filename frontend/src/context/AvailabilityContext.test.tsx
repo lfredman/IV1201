@@ -3,7 +3,11 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AvailabilityProvider, useAvailability } from "./AvailabilityContext";
 
-// Helper component to test the context
+/**
+ * A helper component that interacts with the AvailabilityContext to test
+ * functionality such as adding, deleting, updating, saving, and discarding availabilities.
+ */
+
 const TestComponent = () => {
   const {
     availabilities,
@@ -44,7 +48,10 @@ const TestComponent = () => {
   );
 };
 
-// Wrap the component with the context
+/**
+ * Helper function that renders the TestComponent wrapped in the AvailabilityProvider
+ * to provide necessary context for the tests.
+ */
 const renderWithContext = () => {
   return render(
     <AvailabilityProvider>
@@ -53,11 +60,20 @@ const renderWithContext = () => {
   );
 };
 
-// Test cases
+/**
+ * Test suite for AvailabilityContext functionality, including adding, deleting,
+ * updating, saving, and discarding availabilities. It also tests if changes are persisted in localStorage.
+ */
+
 describe("AvailabilityContext", () => {
   beforeEach(() => {
     localStorage.clear(); // Clear localStorage before each test
   });
+
+  /**
+   * Test case to check if an availability is correctly added to tempAvailabilities.
+   * It verifies that clicking "Add Availability" correctly updates the `tempAvailabilities` list.
+   */
 
   it("should add an availability to tempAvailabilities", async () => {
     renderWithContext();
@@ -70,6 +86,12 @@ describe("AvailabilityContext", () => {
       expect(screen.getByTestId("temp-availabilities")).toHaveTextContent("2023-10-01 - 2023-10-05");
     });
   });
+
+  /**
+   * Test case to check if an availability is correctly deleted from tempAvailabilities.
+   * It verifies that clicking "Delete Availability" correctly removes the availability from `tempAvailabilities`.
+   */
+
 
   it("should delete an availability from tempAvailabilities", async () => {
     renderWithContext();
@@ -85,6 +107,11 @@ describe("AvailabilityContext", () => {
       expect(screen.getByTestId("temp-availabilities")).not.toHaveTextContent("2023-10-01 - 2023-10-05");
     });
   });
+
+  /**
+   * Test case to check if availabilities are updated and persisted in localStorage.
+   * It verifies that clicking "Update Availability" updates the availabilities list and persists the changes.
+   */
 
   it("should update availabilities and persist in localStorage", async () => {
     renderWithContext();
@@ -104,6 +131,12 @@ describe("AvailabilityContext", () => {
     });
   });
 
+  /**
+   * Test case to check if changes are saved and availabilities are updated.
+   * It verifies that clicking "Save Changes" updates the availabilities list and persists the changes.
+   */
+
+
   it("should save changes and update availabilities", async () => {
     renderWithContext();
 
@@ -118,6 +151,11 @@ describe("AvailabilityContext", () => {
       expect(screen.getByTestId("availabilities")).toHaveTextContent("2023-10-01 - 2023-10-05");
     });
   });
+
+  /**
+   * Test case to check if changes are discarded and tempAvailabilities are reset.
+   * It verifies that clicking "Discard Changes" resets the tempAvailabilities list.
+   */
 
   it("should discard changes and reset tempAvailabilities", async () => {
     renderWithContext();
