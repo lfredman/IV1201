@@ -46,68 +46,68 @@ IV1201
 │  ├─ jest.setup.js
 │  ├─ package-lock.json
 │  ├─ package.json
-│  ├─ Procfile
+│  ├─ Procfile                     # Heroku deployment configuration
 │  ├─ public
 │  │  └─ vite.svg
 │  ├─ README.md
 │  ├─ src
-│  │  ├─ App.tsx
-│  │  ├─ assets
+│  │  ├─ App.tsx                    # Main application 
+│  │  ├─ assets                     # Static assets like images and videos 
 │  │  │  ├─ 125183-732837197_small.mp4
 │  │  │  ├─ ferriswheel.mp4
 │  │  │  ├─ react.svg
 │  │  │  └─ rollercoaster.mp4
 │  │  ├─ components
-│  │  │  ├─ AccountInfoForm.tsx
-│  │  │  ├─ ApplicationForm.tsx
-│  │  │  ├─ ApplicationsList.tsx
-│  │  │  ├─ AvailabilityForm.tsx
-│  │  │  ├─ ErrorBoundry.tsx
-│  │  │  ├─ LoginForm.tsx
-│  │  │  ├─ Navbar.tsx
-│  │  │  ├─ PasswordEmailResetForm.tsx
-│  │  │  ├─ PasswordResetForm.tsx
-│  │  │  ├─ SignupForm.tsx
-│  │  │  └─ UserCompetences.tsx
-│  │  ├─ context
-│  │  │  ├─ AvailabilityContext.test.tsx
-│  │  │  ├─ AvailabilityContext.tsx
-│  │  │  ├─ ProfileContext.test.tsx
-│  │  │  ├─ ProfileContext.tsx
-│  │  │  ├─ UserContext.test.tsx
-│  │  │  └─ UserContext.tsx
-│  │  ├─ hooks
-│  │  │  ├─ useApplications.ts
-│  │  │  ├─ useApply.ts
-│  │  │  ├─ useAuthFetch.ts
-│  │  │  ├─ useAvailiblity.ts
-│  │  │  ├─ useLogin.ts
-│  │  │  ├─ usePasswordReset.ts
-│  │  │  ├─ useProfile.ts
-│  │  │  ├─ useSignup.ts
-│  │  │  └─ useValidation.ts
-│  │  ├─ main.tsx
-│  │  ├─ pages
-│  │  │  ├─ ApplyForJob.tsx
-│  │  │  ├─ Home.tsx
-│  │  │  ├─ Login.tsx
-│  │  │  ├─ NotFound.tsx
-│  │  │  ├─ profile.tsx
-│  │  │  ├─ ResetPassword.tsx
-│  │  │  └─ Signup.tsx
-│  │  ├─ styles
+│  │  │  ├─ AccountInfoForm.tsx     # Form for updating account information
+│  │  │  ├─ ApplicationForm.tsx     # Form for creating an application
+│  │  │  ├─ ApplicationsList.tsx    # List of applications  
+│  │  │  ├─ AvailabilityForm.tsx    # Form for updating availability
+│  │  │  ├─ ErrorBoundry.tsx        # Error boundary component
+│  │  │  ├─ LoginForm.tsx           # Form for logging in
+│  │  │  ├─ Navbar.tsx              # Navigation bar
+│  │  │  ├─ PasswordEmailResetForm.tsx      # Form for resetting password by email
+│  │  │  ├─ PasswordResetForm.tsx           # Form for resetting password
+│  │  │  ├─ SignupForm.tsx          # Form for signing up
+│  │  │  └─ UserCompetences.tsx     # List of user competences
+│  │  ├─ context 
+│  │  │  ├─ AvailabilityContext.test.tsx #unit test for AvailabilityContext
+│  │  │  ├─ AvailabilityContext.tsx      #Context for availability
+│  │  │  ├─ ProfileContext.test.tsx      #unit test for ProfileContext and competences 
+│  │  │  ├─ ProfileContext.tsx           #Context for profile and competences   
+│  │  │  ├─ UserContext.test.tsx         #unit test for UserContext
+│  │  │  └─ UserContext.tsx              #Context for user login and signup
+│  │  ├─ hooks                       # Custom hooks for fetching data
+│  │  │  ├─ useApplications.ts       # Hook for fetching applications
+│  │  │  ├─ useApply.ts              # Hook for applying for a job
+│  │  │  ├─ useAuthFetch.ts          # Hook for fetching data with authentication 
+│  │  │  ├─ useAvailiblity.ts        # Hook for fetching availability
+│  │  │  ├─ useLogin.ts              # Hook for logging in
+│  │  │  ├─ usePasswordReset.ts      # Hook for resetting password
+│  │  │  ├─ useProfile.ts            # Hook for fetching profile
+│  │  │  ├─ useSignup.ts             # Hook for signing up
+│  │  │  └─ useValidation.ts         # Hook for form validation
+│  │  ├─ main.tsx                    # Main application entry point  
+│  │  ├─ pages                       # Pages for the application
+│  │  │  ├─ ApplyForJob.tsx          # Page for applying for a job
+│  │  │  ├─ Home.tsx                 # Home page
+│  │  │  ├─ Login.tsx                # Page for logging in
+│  │  │  ├─ NotFound.tsx             # Page for 404 errors
+│  │  │  ├─ profile.tsx              # Page for viewing and updating profile
+│  │  │  ├─ ResetPassword.tsx        # Page for resetting password
+│  │  │  └─ Signup.tsx               # Page for signing up
+│  │  ├─ styles                      # Styles for the application                
 │  │  │  ├─ App.css
 │  │  │  ├─ PickersDayStyles.ts
 │  │  │  └─ video.css
-│  │  ├─ utils
-│  │  │  ├─ auth.ts
-│  │  │  ├─ competenceOptions.ts
-│  │  │  ├─ error.ts
-│  │  │  └─ signup.ts
+│  │  ├─ utils                       # Utility functions
+│  │  │  ├─ auth.ts                  # Authentication utility
+│  │  │  ├─ competenceOptions.ts     # Options for competences
+│  │  │  ├─ error.ts                 # Error utility
+│  │  │  └─ signup.ts                # Signup utility
 │  │  └─ vite-env.d.ts
-│  ├─ tsconfig.app.json
-│  ├─ tsconfig.json
-│  ├─ tsconfig.node.json
+│  ├─ tsconfig.app.json             # TypeScript configuration for the application
+│  ├─ tsconfig.json                 # TypeScript configuration
+│  ├─ tsconfig.node.json 
 │  └─ vite.config.ts
 ├─ mod.sql
 ├─ package-lock.json
