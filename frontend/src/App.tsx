@@ -16,6 +16,7 @@ import ApplicationsList from "./components/ApplicationsList";
 import ErrorBoundary from "./components/ErrorBoundry";
 import rollercoasterVideo from './assets/rollercoaster.mp4';
 import './styles/video.css';
+import { useEffect } from "react";
 /**
  * Main entry point of the application.
  * 
@@ -39,6 +40,13 @@ import './styles/video.css';
  * 
  * @component
  */
+
+useEffect(() => {
+  if (window.location.protocol !== "https:") {
+    window.location.href = "https://" + window.location.host + window.location.pathname;
+  }
+}, []);
+
 const App: React.FC = () => {
   return (
     <UserProvider>
