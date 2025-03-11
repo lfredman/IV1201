@@ -69,7 +69,7 @@ export const useSignup = () => {
       }
    
       const res = await signupUser(formData);
-      const { message, accessToken, refreshToken, userData } = res;
+      const { accessToken, refreshToken, userData } = res;
 
 
       updateUserContext(userData, accessToken, refreshToken);

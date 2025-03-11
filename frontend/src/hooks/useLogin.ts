@@ -33,7 +33,7 @@ export const useLogin = () => {
       }
 
       const res = await loginUser(username, password); 
-      const { message, accessToken, refreshToken, userData } = res;
+      const { accessToken, refreshToken, userData } = res;
 
 
       updateUserContext(userData, accessToken, refreshToken);
