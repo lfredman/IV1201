@@ -145,7 +145,7 @@ const UserCompetences: React.FC<UserCompetencesProps> = ({ editable = false }) =
                 {displayedCompetences.length > 0 ? (
                   displayedCompetences.map((comp, index) => (
                     <TableRow key={index}>
-                      {Object.entries(comp).slice(1).map(([value], idx) => (
+                      {Object.entries(comp).slice(1).map(([key, value], idx) => (
                         <TableCell align="center" key={idx}>
                           {typeof value === 'string' ? value.charAt(0).toUpperCase() + value.slice(1) : value}
                         </TableCell>
